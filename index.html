@@ -1,0 +1,1252 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Softnear Complaints CRM</title><meta name="description" content="Softnear CRM: complaints management for food manufacturers. Ticketing, CPMU dashboards and AI-drafted customer responses."><link rel="icon" type="image/svg+xml" href="/favicon.svg"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* Layout: marketing site (#home) + app shell with floating ink sidebar and a soft card grid */
+:root{
+  --bg:#F2F3F7; --surface:#FFFFFF; --surface-2:#F7F8FB; --ink:#10131F; --fg:#1A1E2C; --muted:#6A6F84; --line:#E3E5EE;
+  --accent:#1E74DC; --accent-soft:#E4F0FF; --brand-blue:#3B8DF0; --brand-yellow:#FFD635; --brand-yellow-ink:#1A1A1A; --accent-ink:#FFFFFF;
+  --coral:#FF7452; --teal:#11A69A; --amber:#F2B705; --violet:#7A68EE; --pink:#E25C9A;
+  --good:#14935F; --good-soft:#E2F5EC; --warn:#B7740F; --warn-soft:#FDF1DC; --bad:#D9363E; --bad-soft:#FCE6E7;
+  --side:#0E1726; --side-fg:#C9CCDA; --side-active:#FFFFFF; --side-hi:#1A2638;
+  --paper:#FFFFFF; --paper-fg:#1B1D24;
+  --shadow:0 1px 2px rgba(16,19,31,.04),0 8px 24px -12px rgba(16,19,31,.12);
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-lg:20px; --r-md:14px; --r-sm:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C0E15; --surface:#151824; --surface-2:#1B1F2D; --ink:#F1F2F7; --fg:#E4E6EF; --muted:#9398AD; --line:#272B3B;
+  --accent:#5AA4FF; --accent-soft:#132A47; --brand-blue:#3B8DF0; --brand-yellow:#FFD635; --brand-yellow-ink:#1A1A1A; --accent-ink:#0C0E15;
+  --coral:#FF8B6E; --teal:#2CC2B5; --amber:#FFD43B; --violet:#9887FF; --pink:#F07AB2;
+  --good:#43C58C; --good-soft:#132B22; --warn:#F0B458; --warn-soft:#2E2414; --bad:#FF6B72; --bad-soft:#341819;
+  --side:#070B13; --side-fg:#A6AAC0; --side-active:#FFFFFF; --side-hi:#142033;
+  --paper:#FBFBF8; --paper-fg:#1B1D24;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C0E15; --surface:#151824; --surface-2:#1B1F2D; --ink:#F1F2F7; --fg:#E4E6EF; --muted:#9398AD; --line:#272B3B;
+  --accent:#5AA4FF; --accent-soft:#132A47; --brand-blue:#3B8DF0; --brand-yellow:#FFD635; --brand-yellow-ink:#1A1A1A; --accent-ink:#0C0E15;
+  --coral:#FF8B6E; --teal:#2CC2B5; --amber:#FFD43B; --violet:#9887FF; --pink:#F07AB2;
+  --good:#43C58C; --good-soft:#132B22; --warn:#F0B458; --warn-soft:#2E2414; --bad:#FF6B72; --bad-soft:#341819;
+  --side:#070B13; --side-fg:#A6AAC0; --side-active:#FFFFFF; --side-hi:#142033;
+  --paper:#FBFBF8; --paper-fg:#1B1D24;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6); color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--f-display);color:var(--ink);margin:0;text-wrap:balance;letter-spacing:-.02em}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- buttons, pills ---------- */
+.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:600;font-size:13.5px;white-space:nowrap;transition:transform .12s,background .15s,border-color .15s}
+.btn:hover{border-color:var(--muted)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.dark{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.sm{height:32px;padding:0 12px;font-size:12.5px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.pill{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.Open{background:var(--bad-soft);color:var(--bad)}
+.pill.Pending{background:var(--warn-soft);color:var(--warn)}
+.pill.Closed{background:var(--good-soft);color:var(--good)}
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);font-size:12px;color:var(--fg);white-space:nowrap}
+
+/* ================= LANDING ================= */
+#landing{min-height:100%}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding-inline:24px}
+.lnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)}
+.lnav .wrap{display:flex;align-items:center;gap:24px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;font-size:19px;color:var(--ink);letter-spacing:-.02em;text-decoration:none}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink)}
+.mark svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.lnav nav{display:flex;gap:4px;margin-left:12px}
+.lnav nav a{color:var(--muted);text-decoration:none;font-weight:500;padding:8px 12px;border-radius:999px}
+.lnav nav a:hover{color:var(--ink);background:var(--surface)}
+.lnav .sp{flex:1}
+.hero{padding-block:72px 40px;display:grid;grid-template-columns:1.02fr 1fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:700;letter-spacing:-.035em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lede{font-size:18px;color:var(--muted);max-width:52ch;margin-top:22px;line-height:1.55}
+.hero .ctas{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
+.hero .ctas .btn{height:48px;padding:0 22px;font-size:15px}
+.hero .fine{display:flex;gap:18px;margin-top:22px;color:var(--muted);font-size:13px;flex-wrap:wrap}
+.hero .fine span{display:inline-flex;gap:6px;align-items:center}
+.hero .fine svg{width:15px;height:15px;stroke:var(--good)}
+.chip-new{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13px;font-weight:500;margin-bottom:22px}
+.chip-new b{background:var(--brand-yellow);color:var(--brand-yellow-ink);border-radius:999px;padding:2px 9px;font-size:11.5px;letter-spacing:.04em}
+
+.preview{position:relative;border-radius:26px;background:var(--side);padding:14px;box-shadow:0 40px 80px -40px rgba(16,19,31,.55);transform:perspective(1600px) rotateY(-7deg) rotateX(3deg);transition:transform .6s}
+.preview:hover{transform:none}
+.pv-inner{background:var(--bg);border-radius:16px;padding:16px;display:grid;gap:12px}
+.pv-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pv-k{background:var(--surface);border-radius:12px;padding:12px;border:1px solid var(--line)}
+.pv-k .n{font-family:var(--f-display);font-size:26px;font-weight:700;color:var(--ink);line-height:1.1;margin-top:4px}
+.pv-k .n small{font-size:12px;color:var(--good);font-family:var(--f-body);font-weight:600;margin-left:6px}
+.pv-chart{background:var(--surface);border-radius:12px;padding:14px;border:1px solid var(--line)}
+.pv-bars{display:flex;align-items:flex-end;gap:6px;height:110px;margin-top:10px}
+.pv-bars i{flex:1;border-radius:5px 5px 2px 2px;background:var(--accent);opacity:.9;display:block}
+.pv-bars i.c{background:var(--coral)}
+.pv-float{position:absolute;right:-18px;bottom:-26px;width:250px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow);transform:rotate(2deg)}
+.pv-float .t{display:flex;gap:8px;align-items:center;font-weight:600;font-size:13px;color:var(--ink)}
+.pv-float .t svg{color:var(--accent)}
+.pv-float p{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+.pv-float .ln{height:6px;border-radius:4px;background:var(--surface-2);margin-top:6px}
+
+.section{padding-block:72px}
+.sec-head{max-width:680px;margin-bottom:40px}
+.sec-head h2{font-size:clamp(30px,3.6vw,44px);line-height:1.05;margin-top:10px}
+.sec-head p{color:var(--muted);font-size:16.5px;margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-block:1px solid var(--line);margin-top:24px}
+.stats div{padding:26px 22px;border-right:1px solid var(--line)}
+.stats div:last-child{border-right:0}
+.stats b{display:block;font-family:var(--f-display);font-size:34px;color:var(--ink);letter-spacing:-.03em}
+.stats span{color:var(--muted);font-size:13.5px}
+.feat{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.fcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;display:flex;flex-direction:column;gap:10px;grid-column:span 2;min-width:0}
+.fcard.wide{grid-column:span 3}
+.fcard .ic{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin-bottom:6px}
+.fcard h3{font-size:20px}
+.fcard p{color:var(--muted)}
+.fcard .demo{margin-top:auto;padding-top:14px;display:flex;flex-wrap:wrap;gap:6px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s}
+.step{padding:22px;border-radius:var(--r-lg);border:1px dashed var(--line);background:var(--surface-2)}
+.step .num{font-family:var(--f-mono);font-size:12px;color:var(--accent);font-weight:500}
+.step h4{font-size:17px;margin-top:8px}
+.step p{color:var(--muted);font-size:13.5px;margin-top:6px}
+.ai-band{background:var(--side);color:var(--side-fg);border-radius:30px;padding:56px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.ai-band h2{color:#fff;font-size:clamp(28px,3.4vw,42px);line-height:1.05;margin-top:12px}
+.ai-band .eyebrow{color:#7DB8FF}
+.ai-band p{margin-top:14px;font-size:16px;line-height:1.6}
+.ai-band ul{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px}
+.ai-band li{display:flex;gap:10px;align-items:flex-start}
+.ai-band li svg{stroke:#7DB8FF;margin-top:2px}
+.letter-mini{background:#FBFBF8;color:#1B1D24;border-radius:14px;padding:26px 28px;font-size:12.5px;line-height:1.6;box-shadow:0 30px 60px -30px rgba(0,0,0,.7);font-family:Georgia,"Times New Roman",serif;transform:rotate(-1.2deg)}
+.letter-mini .lh{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #E4E2DA;padding-bottom:10px;margin-bottom:12px;font-family:var(--f-body)}
+.letter-mini .lh b{font-family:var(--f-display);font-size:15px}
+.letter-mini .typing::after{content:"";display:inline-block;width:7px;height:14px;background:#3B8DF0;vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;display:flex;flex-direction:column;gap:14px}
+.plan.pop{border:2px solid var(--accent);position:relative}
+.plan.pop .badge{position:absolute;top:-12px;left:24px;background:var(--brand-yellow);color:var(--brand-yellow-ink);font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.03em}
+.plan h3{font-size:20px}
+.plan .price{font-family:var(--f-display);font-size:44px;font-weight:700;color:var(--ink);letter-spacing:-.03em;line-height:1}
+.plan .price small{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:500;letter-spacing:0}
+.plan ul{list-style:none;padding:0;margin:0;display:grid;gap:9px;color:var(--fg)}
+.plan li{display:flex;gap:9px;align-items:flex-start}
+.plan li svg{width:16px;height:16px;stroke:var(--good);margin-top:2px}
+.plan .btn{margin-top:auto}
+.toggle{display:inline-flex;padding:4px;border-radius:999px;background:var(--surface);border:1px solid var(--line);gap:2px}
+.toggle button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font-weight:600;font-size:13px;color:var(--muted)}
+.toggle button.on{background:var(--ink);color:var(--bg)}
+.save{color:var(--good);font-weight:600;font-size:12.5px;margin-left:8px}
+.cta-final{text-align:center;padding:64px 24px;border-radius:30px;background:var(--accent);color:var(--accent-ink)}
+.cta-final h2{color:inherit;font-size:clamp(28px,4vw,48px)}
+.cta-final p{opacity:.85;margin-top:12px;font-size:16.5px}
+.cta-final .btn{margin-top:26px;height:50px;padding:0 26px;font-size:15px;background:var(--surface);color:var(--ink);border:0}
+footer.lf{padding-block:40px 56px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ================= APP SHELL ================= */
+#app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100%;gap:0}
+.side{position:sticky;top:0;height:100vh;padding:14px 0 14px 14px}
+.side-in{height:100%;background:var(--side);border-radius:24px;padding:18px 14px;display:flex;flex-direction:column;gap:6px;color:var(--side-fg)}
+.side .brand{color:#fff;padding:4px 8px 18px}
+.side .ws{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:var(--side-hi);margin-bottom:12px}
+.side .ws .av{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--brand-blue),#2A6FD0);display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
+.side .ws b{color:#fff;font-size:13.5px;display:block;line-height:1.2}
+.side .ws small{font-size:11.5px}
+.navl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;padding:12px 10px 6px;color:#6D7290}
+.navi{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--side-fg);text-decoration:none;font-weight:500;font-size:14px;position:relative}
+.navi:hover{background:var(--side-hi);color:#fff}
+.navi.on{background:var(--side-hi);color:var(--side-active)}
+.navi.on::before{content:"";position:absolute;left:-14px;top:10px;bottom:10px;width:3px;border-radius:0 3px 3px 0;background:#7DB8FF}
+.navi .ct{margin-left:auto;font-size:11.5px;background:var(--brand-yellow);color:var(--brand-yellow-ink);border-radius:999px;padding:0 7px;line-height:18px;font-weight:600}
+.side .upg{margin-top:auto;background:linear-gradient(160deg,#173A6B,#0F1C30);border-radius:16px;padding:16px;color:#C9CEF0}
+.side .upg b{color:#fff;font-family:var(--f-display);font-size:15px}
+.side .upg p{font-size:12px;margin:4px 0 12px}
+.side .upg .bar{height:6px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden;margin-bottom:12px}
+.side .upg .bar i{display:block;height:100%;width:28%;background:#7DB8FF}
+.side .upg .btn{width:100%;height:34px;background:#fff;color:#10131F;border:0;font-size:12.5px}
+
+.main{min-width:0;padding:14px 22px 40px 22px}
+.top{display:flex;align-items:center;gap:12px;height:64px;position:sticky;top:0;z-index:15;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);margin:0 -22px;padding:0 22px}
+.top h1{font-size:24px;font-weight:700}
+.top .sub{color:var(--muted);font-size:13px}
+.top .sp{flex:1}
+.search{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);width:280px;color:var(--muted)}
+.search input{border:0;background:transparent;outline:0;width:100%;color:var(--fg)}
+.iconbtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--fg);position:relative}
+.iconbtn .dot{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--coral);border:2px solid var(--surface)}
+.me{display:flex;align-items:center;gap:10px;padding:4px 12px 4px 4px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.me .av{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:700;font-size:12px}
+.me b{font-size:13px;display:block;line-height:1.15;color:var(--ink)}
+.me small{font-size:11.5px;color:var(--muted)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;min-width:0}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.card-h h3{font-size:16.5px;font-weight:600;letter-spacing:-.01em}
+.card-h .sp{flex:1}
+.seg{display:inline-flex;padding:3px;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:5px 12px;border-radius:999px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(16,19,31,.12)}
+
+/* dashboard */
+.dash-intro{display:flex;align-items:flex-end;gap:16px;margin:8px 0 18px;flex-wrap:wrap}
+.dash-intro h2{font-size:30px;font-weight:700}
+.dash-intro p{color:var(--muted)}
+.dash-intro .sp{flex:1}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.kpi{padding:18px;display:flex;flex-direction:column;gap:4px}
+.kpi.hero-k{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.kpi.hero-k .eyebrow,.kpi.hero-k .ft{color:color-mix(in srgb,var(--accent-ink) 78%,transparent)}
+.kpi.hero-k .v{color:var(--accent-ink)}
+.kpi .v{font-family:var(--f-display);font-size:34px;font-weight:700;color:var(--ink);letter-spacing:-.03em;line-height:1.1;margin-top:6px}
+.kpi .v small{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0;margin-left:4px}
+.kpi.hero-k .v small{color:inherit;opacity:.75}
+.kpi .ft{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.delta{font-weight:600;border-radius:6px;padding:0 6px;font-size:12px}
+.delta.up{background:var(--bad-soft);color:var(--bad)}
+.delta.down{background:var(--good-soft);color:var(--good)}
+.kpi.hero-k .delta{background:rgba(255,255,255,.18);color:inherit}
+.meter{height:6px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin-top:8px;position:relative}
+.meter i{display:block;height:100%;border-radius:4px}
+.grid-d{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px;margin-top:14px}
+.c8{grid-column:span 8}.c4{grid-column:span 4}.c6{grid-column:span 6}.c12{grid-column:span 12}.c5{grid-column:span 5}.c7{grid-column:span 7}
+.chart-box{position:relative;height:270px}
+.chart-box.sm{height:220px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.att-list{display:grid;gap:4px}
+.att{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px;border-radius:12px;cursor:pointer;border:1px solid transparent}
+.att:hover{background:var(--surface-2);border-color:var(--line)}
+.att .sev{width:4px;height:34px;border-radius:3px}
+.att b{display:block;font-size:13.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.att small{color:var(--muted);font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.age{font-family:var(--f-mono);font-size:12px;color:var(--muted);text-align:right}
+.age b{font-size:15px;color:var(--ink);display:block}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+
+/* tickets */
+.tb-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:14px;overflow-x:auto}
+.tabs button{border:0;background:transparent;padding:10px 14px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.tabs button.on{color:var(--ink);border-color:var(--accent)}
+.tabs button .n{font-family:var(--f-mono);font-size:11.5px;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:0 7px;line-height:18px}
+.sel{height:36px;border-radius:999px;border:1px solid var(--line);background:var(--surface);padding:0 32px 0 14px;font-size:13px;font-weight:500;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236A6F84' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.tbl-wrap{overflow-x:auto;margin:0 -20px;padding:0 20px}
+table.tk{width:100%;border-collapse:separate;border-spacing:0;min-width:920px}
+.tk th{text-align:left;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tk td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tk tr.r{cursor:pointer}
+.tk tr.r:hover td{background:var(--surface-2)}
+.tk .id{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.tk .pr b{display:block;color:var(--ink);font-weight:600;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk .pr small{color:var(--muted);font-size:12px;display:block;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.who .av{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:10.5px;font-weight:700;color:#fff}
+.pager{display:flex;align-items:center;gap:10px;justify-content:flex-end;margin-top:14px;color:var(--muted);font-size:13px}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(10,12,20,.42);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--surface);z-index:41;transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.drawer.on{transform:none}
+.dr-h{padding:20px 22px 16px;border-bottom:1px solid var(--line)}
+.dr-h .row{display:flex;gap:10px;align-items:center}
+.dr-h h2{font-size:22px;margin-top:10px}
+.dr-h p{color:var(--muted);margin-top:4px}
+.dr-b{flex:1;overflow:auto;padding:18px 22px 24px;display:grid;gap:18px;align-content:start}
+.dr-f{padding:14px 22px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+.dsec h4{font-family:var(--f-body);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.dsec h4::after{content:"";flex:1;height:1px;background:var(--line)}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}
+.kv div{min-width:0}
+.kv .full{grid-column:1/-1}
+.kv dt{font-size:12px;color:var(--muted)}
+.kv dd{margin:2px 0 0;color:var(--ink);font-weight:500;overflow-wrap:anywhere}
+.kv dd.blank{color:var(--muted);font-weight:400;font-style:italic}
+.quote{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink)}
+
+/* form */
+.form-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:14px;align-items:start}
+.fsec{margin-bottom:14px}
+.fsec .card-h p{color:var(--muted);font-size:13px;width:100%}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fld.full{grid-column:1/-1}
+.fld label{font-size:12.5px;font-weight:600;color:var(--ink);display:flex;gap:6px;align-items:baseline}
+.fld label .req{color:var(--coral)}
+.fld label .hint{font-weight:400;color:var(--muted);font-size:12px}
+.inp{height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);padding:0 12px;outline:0;width:100%;transition:border-color .15s,background .15s}
+textarea.inp{height:auto;min-height:92px;padding:10px 12px;resize:vertical;line-height:1.5}
+select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236A6F84' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.inp:focus{border-color:var(--accent);background:var(--surface)}
+.inp.err{border-color:var(--bad)}
+.inp[readonly]{color:var(--muted)}
+.segf{display:flex;gap:6px;flex-wrap:wrap}
+.segf label{position:relative;cursor:pointer}
+.segf input{position:absolute;opacity:0;pointer-events:none}
+.segf span{display:inline-flex;align-items:center;height:38px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);font-size:13px;font-weight:600;color:var(--muted)}
+.segf input:checked+span{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.segf input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.aside-sticky{position:sticky;top:78px;display:grid;gap:14px}
+.check-list{display:grid;gap:8px;font-size:13px}
+.check-list div{display:flex;gap:8px;align-items:center;color:var(--muted)}
+.check-list div.ok{color:var(--ink)}
+.check-list i{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;flex:none}
+.check-list div.ok i{background:var(--good);border-color:var(--good)}
+.check-list div.ok i::after{content:"";width:7px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.progress{height:8px;border-radius:5px;background:var(--surface-2);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .3s}
+
+/* AI */
+.ai-grid{display:grid;grid-template-columns:360px minmax(0,1fr);gap:14px;align-items:start}
+.tk-sum{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:6px;font-size:13px}
+.tk-sum b{color:var(--ink)}
+.ai-status{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;padding:5px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.ai-status.tpl{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.ai-status .spin{width:12px;height:12px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.desk{background:var(--surface-2);border-radius:var(--r-lg);padding:28px;border:1px solid var(--line);min-height:640px;display:flex;justify-content:center}
+.paper{background:var(--paper);color:var(--paper-fg);width:100%;max-width:680px;border-radius:6px;box-shadow:0 2px 4px rgba(0,0,0,.06),0 24px 48px -24px rgba(0,0,0,.25);padding:44px 52px 56px;display:flex;flex-direction:column}
+.paper .lh{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:16px;border-bottom:2px solid #1B1D24;margin-bottom:26px;gap:16px}
+.paper .lh b{font-family:var(--f-display);font-size:22px;letter-spacing:-.02em;color:#1B1D24;display:block}
+.paper .lh small{font-family:var(--f-body);font-size:11.5px;color:#6B6D75;line-height:1.5;display:block;text-align:right}
+.paper .lh .tagl{font-family:var(--f-body);font-size:11.5px;color:#6B6D75}
+.paper .body{font-family:Georgia,"Times New Roman",serif;font-size:14.5px;line-height:1.7;white-space:pre-wrap;outline:0;min-height:380px;overflow-wrap:anywhere}
+.paper .body:empty::before{content:attr(data-ph);color:#9A9CA4;font-style:italic}
+.paper.email .lh{border-bottom:1px solid #E1E1E6}
+.paper .meta{font-family:var(--f-body);font-size:12.5px;color:#55575F;display:grid;gap:4px;margin-bottom:18px}
+.paper .meta b{color:#1B1D24}
+.out-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+
+/* settings */
+.set-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.list-chips{display:flex;flex-wrap:wrap;gap:6px}
+.list-chips .tag button{border:0;background:transparent;padding:0 0 0 6px;color:var(--muted);font-size:14px;line-height:1}
+.addchip{display:flex;gap:6px;margin-top:10px}
+.addchip input{height:32px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);padding:0 12px;outline:0;width:170px}
+.team{display:grid;gap:2px}
+.team .tm{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.team .tm:last-child{border-bottom:0}
+
+/* modal & toast */
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(10,12,20,.5);backdrop-filter:blur(4px)}
+.modal-c{background:var(--surface);border-radius:24px;width:min(460px,100%);padding:30px;box-shadow:0 40px 80px -20px rgba(0,0,0,.4);max-height:calc(100% - 32px);overflow:auto}
+.modal-c h3{font-size:26px}
+.modal-c .muted{margin-top:6px}
+.modal-c form{display:grid;gap:14px;margin-top:20px}
+.plan-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.plan-pick label{cursor:pointer}
+.plan-pick input{position:absolute;opacity:0}
+.plan-pick span{display:block;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-size:12.5px;color:var(--muted);background:var(--surface-2)}
+.plan-pick span b{display:block;color:var(--ink);font-size:13.5px}
+.plan-pick input:checked+span{border-color:var(--accent);background:var(--accent-soft)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:999px;font-weight:600;font-size:13.5px;z-index:70;opacity:0;transition:all .25s;pointer-events:none;display:flex;gap:10px;align-items:center;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+
+.brand .logo{height:38px;width:156px;display:block;color:var(--ink)}
+.brand .prod{font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.06em;color:var(--accent);background:var(--accent-soft);border-radius:7px;padding:2px 8px;margin-left:2px}
+.side .brand{padding:2px 6px 16px}
+.side .brand .logo.full{color:#fff;width:150px;height:37px}
+.side .brand .logo.markonly{display:none;width:30px;height:21px}
+.hero h1 em{text-decoration:underline;text-decoration-color:var(--brand-yellow);text-decoration-thickness:.12em;text-underline-offset:.1em}
+.side .upg{margin-top:10px}
+.side-credit{margin-top:auto;display:flex;align-items:center;gap:8px;font-size:11.5px;color:#7F8BA3;padding:8px 10px}
+.side-credit .cm,.credit .cm{width:20px;height:14px;flex:none}
+.lf-l,.lf-r{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.lf-l .logo{height:30px;width:122px;color:var(--ink)}
+.credit{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--fg)}
+.credit b{color:var(--ink)}
+@media (max-width:960px){.side .brand .logo.full{display:none}.side .brand .logo.markonly{display:block}.side-credit{display:none}}
+/* responsive */
+@media (max-width:1180px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .c8,.c4,.c6,.c5,.c7{grid-column:span 12}
+  .form-grid,.ai-grid{grid-template-columns:minmax(0,1fr)}
+  .aside-sticky{position:static}
+  .search{width:200px}
+}
+@media (max-width:960px){
+  .hero,.ai-band{grid-template-columns:1fr}
+  .preview{transform:none}
+  .pv-float{right:8px}
+  .feat{grid-template-columns:1fr 1fr}
+  .fcard,.fcard.wide{grid-column:span 1}
+  .flow,.pricing{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .stats div:nth-child(2){border-right:0}
+  .stats div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .lnav nav{display:none}
+  #app{grid-template-columns:minmax(0,1fr)}
+  .side{position:sticky;top:0;height:auto;padding:0;z-index:30}
+  .side-in{border-radius:0;flex-direction:row;align-items:center;padding:10px 14px;overflow-x:auto;gap:4px}
+  .side .brand{padding:0 10px 0 0}
+  .side .brand span,.side .ws,.navl,.side .upg{display:none}
+  .navi{padding:8px 10px;white-space:nowrap}
+  .navi.on::before{display:none}
+  .navi .lbl{display:none}
+  .top{position:static}
+  .set-grid{grid-template-columns:1fr}
+  .me div{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .main{padding:8px 16px 32px}
+  .top{margin:0 -16px;padding:0 16px;height:auto;padding-block:10px;flex-wrap:wrap}
+  .search{order:5;width:100%}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi.hero-k{grid-column:1/-1}
+  .feat,.flow,.pricing{grid-template-columns:1fr}
+  .ai-band{padding:32px 22px}
+  .fields,.kv{grid-template-columns:minmax(0,1fr)}
+  .paper{padding:28px 22px 36px}
+  .desk{padding:12px;min-height:0}
+  .pv-float{display:none}
+  .hero{padding-block:40px 24px}
+  .lnav .btn.ghost{display:none}
+  .plan-pick{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.preview{transform:none}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 278 68"><path d="M80.2129 27.8235C80.4395 28.7724 80.8007 29.601 81.2964 30.3092C81.7922 31.0032 82.3941 31.5839 83.1023 32.0513C83.8246 32.5045 84.632 32.8445 85.5243 33.0711C86.4307 33.2977 87.4151 33.411 88.4774 33.411C89.5396 33.411 90.4319 33.3048 91.1543 33.0923C91.8766 32.8657 92.4573 32.5754 92.8964 32.2213C93.3496 31.8672 93.6754 31.4706 93.8737 31.0315C94.072 30.5783 94.1711 30.1251 94.1711 29.6718C94.1711 29.0911 94.0507 28.6025 93.8099 28.2059C93.5833 27.7952 93.2434 27.434 92.7902 27.1224C92.3511 26.8108 91.7987 26.5346 91.133 26.2938C90.4815 26.0389 89.7237 25.7698 88.8598 25.4865L84.2495 24.233C81.6151 23.454 79.5968 22.3493 78.1946 20.9188C76.8066 19.4882 76.1126 17.6257 76.1126 15.3312C76.1126 13.929 76.3888 12.6968 76.9411 11.6345C77.4935 10.5581 78.2867 9.65873 79.3206 8.93639C80.3546 8.21405 81.5939 7.66876 83.0386 7.3005C84.4974 6.93225 86.1333 6.74812 87.9462 6.74812C91.2747 6.74812 93.9657 7.47047 96.0194 8.91515C98.0873 10.3598 99.5603 12.449 100.438 15.1825L95.1696 16.9884L94.9997 16.9459C94.7589 15.9119 94.3765 15.0834 93.8524 14.4602C93.3284 13.8228 92.7406 13.3342 92.0891 12.9943C91.4517 12.6402 90.7789 12.4065 90.0708 12.2932C89.3767 12.1657 88.7323 12.1019 88.1374 12.1019C87.1601 12.1019 86.3174 12.194 85.6092 12.3781C84.9152 12.5623 84.3487 12.8101 83.9096 13.1217C83.4705 13.4333 83.1448 13.7874 82.9323 14.184C82.734 14.5664 82.6349 14.9559 82.6349 15.3525C82.6349 15.9332 82.7553 16.4218 82.9961 16.8184C83.2368 17.215 83.5484 17.5549 83.9309 17.8382C84.3274 18.1215 84.7807 18.3622 85.2906 18.5605C85.8146 18.7588 86.3528 18.95 86.9052 19.1341L91.9616 20.4514C93.4063 20.9046 94.6881 21.3932 95.807 21.9173C96.9259 22.4272 97.8607 23.0291 98.6114 23.7231C99.3762 24.4172 99.9498 25.2316 100.332 26.1664C100.729 27.087 100.927 28.1847 100.927 29.4594C100.927 30.8191 100.644 32.0726 100.077 33.2198C99.5249 34.367 98.7176 35.3585 97.6553 36.1941C96.5931 37.0156 95.2971 37.6601 93.7674 38.1275C92.2519 38.5949 90.5311 38.8286 88.6048 38.8286C86.9477 38.8286 85.3614 38.6374 83.8459 38.2549C82.3304 37.8725 80.9707 37.306 79.7668 36.5553C78.5629 35.8046 77.5431 34.8769 76.7074 33.7722C75.8718 32.6533 75.3053 31.3644 75.0078 29.9055L80.0642 27.781L80.2129 27.8235ZM116.319 38.6799C114.506 38.6799 112.828 38.4249 111.284 37.915C109.754 37.391 108.43 36.6403 107.311 35.663C106.192 34.6716 105.321 33.4606 104.698 32.0301C104.075 30.5854 103.763 28.9424 103.763 27.1011C103.763 25.2599 104.075 23.624 104.698 22.1935C105.335 20.7488 106.213 19.5307 107.332 18.5393C108.451 17.5478 109.775 16.7972 111.305 16.2873C112.835 15.7632 114.506 15.5012 116.319 15.5012C118.118 15.5012 119.782 15.7632 121.312 16.2873C122.855 16.7972 124.18 17.5478 125.284 18.5393C126.403 19.5307 127.274 20.7417 127.898 22.1722C128.535 23.6028 128.854 25.2316 128.854 27.0587C128.854 28.9141 128.542 30.5641 127.919 32.0088C127.296 33.4393 126.425 34.6503 125.306 35.6418C124.201 36.6332 122.877 37.391 121.333 37.915C119.803 38.4249 118.132 38.6799 116.319 38.6799ZM116.319 33.9846C117.183 33.9846 117.969 33.8501 118.677 33.581C119.4 33.2977 120.016 32.8728 120.526 32.3063C121.05 31.7397 121.453 31.0245 121.736 30.1605C122.02 29.2965 122.161 28.2696 122.161 27.0799C122.161 25.9043 122.02 24.8846 121.736 24.0206C121.453 23.1566 121.05 22.4413 120.526 21.8748C120.016 21.3083 119.4 20.8904 118.677 20.6213C117.969 20.3381 117.183 20.1964 116.319 20.1964C115.441 20.1964 114.641 20.3381 113.918 20.6213C113.21 20.8904 112.601 21.3083 112.091 21.8748C111.581 22.4413 111.185 23.1637 110.901 24.0418C110.618 24.9058 110.476 25.9256 110.476 27.1011C110.476 28.2767 110.618 29.2965 110.901 30.1605C111.185 31.0245 111.581 31.7397 112.091 32.3063C112.601 32.8728 113.21 33.2977 113.918 33.581C114.641 33.8501 115.441 33.9846 116.319 33.9846ZM165.809 30.7129C165.71 31.6193 165.498 32.547 165.172 33.496C164.846 34.4308 164.344 35.2877 163.664 36.0667C162.998 36.8315 162.141 37.4618 161.093 37.9575C160.045 38.4391 158.749 38.6799 157.205 38.6799C155.732 38.6799 154.457 38.4816 153.381 38.085C152.319 37.6884 151.441 37.1077 150.747 36.3429C150.053 35.578 149.543 34.6291 149.217 33.496C148.891 32.3629 148.728 31.0599 148.728 29.5869V19.644H140.867V38H134.451V19.644H130.818V16.2023H133.878C133.807 15.8057 133.722 15.3312 133.623 14.7789C133.538 14.2265 133.495 13.7024 133.495 13.2067C133.495 12.1869 133.672 11.2521 134.026 10.4023C134.395 9.53834 134.919 8.80184 135.599 8.19281C136.293 7.56961 137.128 7.08805 138.106 6.74812C139.097 6.39404 140.209 6.21699 141.441 6.21699C142.829 6.21699 144.033 6.39404 145.053 6.74812C146.087 7.10221 146.901 7.55545 147.496 8.10783L145.69 11.8045C145.464 11.6487 145.237 11.5071 145.01 11.3796C144.784 11.2521 144.529 11.1459 144.245 11.0609C143.976 10.9759 143.672 10.9122 143.332 10.8697C143.006 10.8131 142.631 10.7847 142.206 10.7847C141.356 10.7847 140.683 11.0326 140.188 11.5283C139.692 12.0099 139.444 12.6897 139.444 13.5679C139.444 13.9786 139.487 14.4106 139.572 14.8638C139.656 15.3029 139.756 15.7491 139.869 16.2023H147.39C148.353 16.2023 149.019 15.9615 149.387 15.48C149.755 14.9984 149.939 14.2902 149.939 13.3554V9.38254H155.187V16.2023H162.516V19.644H155.187V29.948C155.187 30.7129 155.258 31.3502 155.399 31.8601C155.541 32.37 155.739 32.7736 155.994 33.0711C156.263 33.3685 156.582 33.581 156.95 33.7084C157.318 33.8359 157.736 33.8997 158.204 33.8997C158.714 33.8997 159.16 33.7863 159.542 33.5597C159.925 33.3331 160.243 33.0215 160.498 32.6249C160.767 32.2142 160.98 31.7397 161.136 31.2015C161.291 30.6633 161.398 30.0826 161.454 29.4594L165.809 30.7129ZM186.916 38V26.7187C186.916 25.8406 186.853 25.0191 186.725 24.2543C186.598 23.4753 186.357 22.7954 186.003 22.2147C185.663 21.634 185.188 21.1808 184.579 20.855C183.984 20.5151 183.213 20.3451 182.264 20.3451C181.527 20.3451 180.805 20.5151 180.097 20.855C179.403 21.1949 178.779 21.6907 178.227 22.3422C177.675 22.9937 177.228 23.7869 176.889 24.7217C176.563 25.6423 176.4 26.6833 176.4 27.8447V38H169.899V16.2023H174.424L175.508 21.6411C175.904 20.6213 176.428 19.729 177.08 18.9642C177.731 18.1994 178.461 17.562 179.268 17.0521C180.075 16.5422 180.946 16.1598 181.881 15.9049C182.816 15.6358 183.772 15.5012 184.749 15.5012C186.406 15.5012 187.787 15.7845 188.892 16.351C190.011 16.9034 190.903 17.6611 191.569 18.6243C192.249 19.5732 192.723 20.6851 192.992 21.9598C193.276 23.2345 193.417 24.5871 193.417 26.0176V38H186.916ZM216.585 30.5429L221.047 32.3275C219.928 34.3529 218.504 35.918 216.776 37.0227C215.048 38.1275 212.945 38.6799 210.466 38.6799C208.384 38.6799 206.55 38.4037 204.964 37.8513C203.392 37.2847 202.074 36.4916 201.012 35.4718C199.964 34.452 199.171 33.234 198.633 31.8176C198.109 30.3871 197.847 28.8008 197.847 27.0587C197.847 25.3165 198.102 23.7373 198.611 22.3209C199.135 20.8904 199.907 19.6724 200.927 18.6668C201.947 17.6611 203.215 16.8821 204.73 16.3298C206.26 15.7774 208.037 15.5012 210.063 15.5012C211.89 15.5012 213.511 15.7703 214.928 16.3085C216.358 16.8467 217.562 17.6186 218.54 18.6243C219.531 19.6157 220.282 20.8196 220.792 22.236C221.316 23.6382 221.578 25.2032 221.578 26.9312V28.3121H203.944C203.987 29.2611 204.178 30.1109 204.518 30.8616C204.858 31.6122 205.311 32.2496 205.877 32.7736C206.458 33.2835 207.138 33.6801 207.917 33.9634C208.71 34.2325 209.581 34.367 210.53 34.367C211.861 34.367 213.037 34.0625 214.057 33.4535C215.077 32.8445 215.856 31.8743 216.394 30.5429H216.585ZM215.416 24.9341C215.388 24.1268 215.254 23.3903 215.013 22.7246C214.772 22.0448 214.418 21.4711 213.951 21.0037C213.497 20.5222 212.931 20.1539 212.251 19.899C211.585 19.6299 210.806 19.4953 209.914 19.4953C209.05 19.4953 208.264 19.6299 207.556 19.899C206.862 20.1681 206.26 20.5434 205.75 21.025C205.24 21.5065 204.829 22.0802 204.518 22.7459C204.22 23.4115 204.043 24.141 203.987 24.9341H215.416ZM250.503 37.7026C250.375 37.7734 250.177 37.8654 249.908 37.9788C249.653 38.0921 249.348 38.1983 248.994 38.2974C248.64 38.4107 248.251 38.5028 247.826 38.5736C247.415 38.6444 246.997 38.6799 246.572 38.6799C245.85 38.6799 245.206 38.602 244.639 38.4462C244.072 38.2904 243.591 38.0425 243.194 37.7026C242.812 37.3626 242.514 36.9165 242.302 36.3641C242.104 35.7976 242.005 35.1106 242.005 34.3033C242.005 33.9492 242.026 33.5314 242.068 33.0498C242.125 32.5683 242.196 32.0088 242.281 31.3715C241.998 32.7028 241.537 33.8359 240.9 34.7707C240.277 35.6913 239.526 36.442 238.648 37.0227C237.77 37.6034 236.792 38.0212 235.716 38.2762C234.654 38.5453 233.549 38.6799 232.402 38.6799C231.141 38.6799 230.015 38.5311 229.024 38.2337C228.046 37.9363 227.218 37.5114 226.538 36.959C225.872 36.4066 225.362 35.748 225.008 34.9832C224.654 34.2042 224.477 33.3331 224.477 32.37C224.477 31.421 224.675 30.5995 225.072 29.9055C225.469 29.1974 226.028 28.5954 226.75 28.0997C227.473 27.5898 228.337 27.179 229.342 26.8674C230.348 26.5417 231.46 26.2938 232.678 26.1239C233.91 25.9397 235.227 25.8193 236.63 25.7627C238.032 25.6919 239.483 25.6565 240.985 25.6565V24.1693C240.985 23.5319 240.893 22.9512 240.709 22.4272C240.539 21.889 240.255 21.4286 239.859 21.0462C239.476 20.6638 238.974 20.3664 238.35 20.1539C237.727 19.9415 236.969 19.8352 236.077 19.8352C235.468 19.8352 234.88 19.9061 234.314 20.0477C233.747 20.1893 233.23 20.416 232.763 20.7275C232.295 21.025 231.899 21.4074 231.573 21.8748C231.247 22.3422 231.021 22.9017 230.893 23.5532L225.816 22.5971C226.071 21.5349 226.481 20.5718 227.048 19.7078C227.614 18.8296 228.344 18.079 229.236 17.4558C230.143 16.8326 231.212 16.351 232.444 16.0111C233.691 15.6712 235.121 15.5012 236.736 15.5012C240.39 15.5012 243.095 16.3014 244.851 17.9019C246.608 19.5024 247.486 21.9598 247.486 25.274V32.9011C247.486 33.5668 247.585 34.0625 247.783 34.3883C247.996 34.6999 248.35 34.8557 248.846 34.8557C249.186 34.8557 249.504 34.8203 249.802 34.7495C250.113 34.6645 250.347 34.5866 250.503 34.5158V37.7026ZM241.006 28.5033C239.576 28.5458 238.258 28.6237 237.054 28.737C235.851 28.8362 234.802 29.0132 233.91 29.2682C233.032 29.5231 232.345 29.8772 231.849 30.3304C231.354 30.7837 231.106 31.3785 231.106 32.115C231.106 32.4833 231.169 32.8303 231.297 33.1561C231.424 33.4677 231.623 33.7439 231.892 33.9846C232.175 34.2254 232.543 34.4166 232.997 34.5583C233.45 34.6999 233.995 34.7707 234.632 34.7707C235.496 34.7707 236.318 34.6007 237.097 34.2608C237.876 33.9067 238.549 33.4535 239.115 32.9011C239.696 32.3346 240.156 31.6901 240.496 30.9678C240.836 30.2313 241.006 29.4806 241.006 28.7158V28.5033ZM254.868 38V16.2023H259.5L260.774 21.4499C261.001 20.6284 261.362 19.8565 261.858 19.1341C262.354 18.4118 262.941 17.7815 263.621 17.2433C264.315 16.7051 265.073 16.2802 265.895 15.9686C266.73 15.657 267.601 15.5012 268.508 15.5012C269.782 15.5012 270.873 15.6641 271.779 15.9898C272.686 16.3156 273.437 16.7618 274.031 17.3283C274.641 17.8807 275.108 18.5322 275.434 19.2829C275.759 20.0194 275.986 20.8054 276.114 21.6411C276.255 22.4626 276.305 23.3195 276.262 24.2118C276.22 25.0899 276.128 25.9397 275.986 26.7612L270.887 27.2711C270.93 26.2938 270.923 25.3803 270.866 24.5305C270.823 23.6806 270.661 22.9512 270.377 22.3422C270.108 21.719 269.69 21.2304 269.124 20.8763C268.571 20.5222 267.807 20.3451 266.829 20.3451C265.895 20.3451 265.08 20.5859 264.386 21.0675C263.706 21.549 263.14 22.1722 262.686 22.9371C262.247 23.6877 261.915 24.5234 261.688 25.444C261.476 26.3505 261.369 27.2357 261.369 28.0997V38H254.868Z" fill="currentColor"/><path d="M158.803 61.1408H154.822L153.739 63.1641H152.486L157.368 54.1182H158.738L160.422 63.1641H159.169L158.803 61.1408ZM158.634 60.2141L157.798 55.5671L155.318 60.2141H158.634ZM164.753 53.5047L163.043 63.1641H161.856L163.566 53.5047H164.753ZM175.863 56.0109L172.365 63.1641H171.138L170.433 57.4729L167.692 63.1641H166.465L165.486 56.0109H166.7L167.287 62.0154L170.106 56.0109H171.333L172.012 61.9762L174.688 56.0109H175.863ZM175.958 59.5614C176.089 58.8304 176.35 58.1908 176.742 57.6426C177.142 57.0857 177.625 56.6549 178.19 56.3503C178.765 56.0458 179.374 55.8935 180.018 55.8935C180.644 55.8935 181.162 56.0284 181.571 56.2981C181.98 56.5679 182.263 56.9073 182.42 57.3163L182.655 56.0109H183.855L182.589 63.1641H181.388L181.636 61.8326C181.323 62.2503 180.91 62.5984 180.396 62.8769C179.883 63.1467 179.317 63.2815 178.699 63.2815C178.143 63.2815 177.651 63.1641 177.224 62.9291C176.798 62.6854 176.467 62.3417 176.232 61.8979C175.997 61.4541 175.88 60.9407 175.88 60.3576C175.88 60.0966 175.906 59.8312 175.958 59.5614ZM182.028 59.5745C182.063 59.3917 182.08 59.1959 182.08 58.9871C182.08 58.3518 181.889 57.8514 181.506 57.486C181.132 57.1118 180.653 56.9247 180.07 56.9247C179.626 56.9247 179.2 57.0291 178.791 57.2379C178.391 57.4468 178.047 57.7514 177.76 58.1517C177.472 58.552 177.281 59.0219 177.185 59.5614C177.151 59.7441 177.133 59.9443 177.133 60.1618C177.133 60.8058 177.32 61.3149 177.694 61.6891C178.069 62.0545 178.547 62.2373 179.13 62.2373C179.574 62.2373 179.996 62.1329 180.396 61.924C180.805 61.7065 181.153 61.3975 181.441 60.9972C181.737 60.5882 181.932 60.114 182.028 59.5745ZM186.333 56.0109L187.547 61.7804L190.797 56.0109H192.024L185.863 66.5318H184.623L186.646 63.0857L185.014 56.0109H186.333ZM194.471 63.2815C193.723 63.2815 193.109 63.1031 192.631 62.7464C192.152 62.3896 191.913 61.911 191.913 61.3105C191.913 61.1974 191.917 61.1147 191.926 61.0625H193.087C193.053 61.4367 193.161 61.7413 193.414 61.9762C193.675 62.2112 194.049 62.3287 194.536 62.3287C195.024 62.3287 195.415 62.2373 195.711 62.0545C196.016 61.8631 196.168 61.5977 196.168 61.2583C196.168 60.9711 196.046 60.7449 195.802 60.5795C195.559 60.4142 195.185 60.2358 194.68 60.0444C194.236 59.879 193.871 59.7224 193.583 59.5745C193.296 59.4265 193.053 59.222 192.852 58.961C192.652 58.6912 192.552 58.3518 192.552 57.9428C192.552 57.5425 192.665 57.1857 192.892 56.8725C193.127 56.5592 193.449 56.3199 193.858 56.1545C194.275 55.9805 194.75 55.8935 195.28 55.8935C196.011 55.8935 196.612 56.0762 197.082 56.4417C197.552 56.8072 197.787 57.2858 197.787 57.8775C197.787 57.9907 197.782 58.0777 197.773 58.1386H196.638L196.651 57.982C196.651 57.6339 196.516 57.3598 196.246 57.1596C195.985 56.9508 195.637 56.8463 195.202 56.8463C194.776 56.8463 194.423 56.9421 194.145 57.1335C193.875 57.325 193.74 57.5817 193.74 57.9037C193.74 58.2082 193.866 58.4475 194.119 58.6216C194.371 58.7956 194.763 58.9871 195.293 59.1959C195.737 59.37 196.094 59.5309 196.364 59.6789C196.634 59.8181 196.864 60.0139 197.056 60.2663C197.247 60.5186 197.343 60.8363 197.343 61.2191C197.343 61.6368 197.217 62.0023 196.964 62.3156C196.721 62.6289 196.381 62.8682 195.946 63.0335C195.511 63.1989 195.019 63.2815 194.471 63.2815ZM207.437 55.8804C208.177 55.8804 208.768 56.0806 209.212 56.4809C209.656 56.8725 209.878 57.4468 209.878 58.2039C209.878 58.4823 209.856 58.7303 209.813 58.9479L209.069 63.1641H207.894L208.612 59.1176C208.646 58.9348 208.664 58.7434 208.664 58.5433C208.664 58.0124 208.516 57.6078 208.22 57.3293C207.933 57.0508 207.528 56.9116 207.006 56.9116C206.38 56.9116 205.844 57.1074 205.401 57.499C204.965 57.8906 204.683 58.4606 204.552 59.209V59.1829L203.847 63.1641H202.659L203.926 56.0109H205.113L204.931 57.0421C205.227 56.668 205.596 56.3808 206.04 56.1806C206.484 55.9805 206.95 55.8804 207.437 55.8804ZM215.382 55.8935C215.982 55.8935 216.5 56.0109 216.935 56.2459C217.379 56.4722 217.714 56.7941 217.94 57.2118C218.175 57.6208 218.292 58.0907 218.292 58.6216C218.292 58.8043 218.271 59.0262 218.227 59.2873C218.192 59.5135 218.136 59.7485 218.058 59.9922H212.34C212.323 60.1662 212.314 60.2924 212.314 60.3707C212.314 60.9711 212.493 61.441 212.849 61.7804C213.215 62.1111 213.689 62.2764 214.272 62.2764C214.786 62.2764 215.234 62.159 215.617 61.924C216.008 61.6804 216.304 61.3584 216.504 60.9581H217.783C217.47 61.6455 216.987 62.2068 216.335 62.6419C215.691 63.0683 214.942 63.2815 214.089 63.2815C213.193 63.2815 212.471 63.0248 211.923 62.5114C211.383 61.9893 211.113 61.2801 211.113 60.3837C211.113 60.1314 211.139 59.8616 211.192 59.5745C211.322 58.8348 211.588 58.1865 211.988 57.6295C212.388 57.0726 212.88 56.6462 213.463 56.3503C214.055 56.0458 214.694 55.8935 215.382 55.8935ZM217.026 59.1306C217.052 58.9566 217.065 58.7956 217.065 58.6477C217.065 58.0907 216.887 57.66 216.53 57.3554C216.182 57.0508 215.725 56.8986 215.16 56.8986C214.551 56.8986 213.998 57.0987 213.502 57.499C213.006 57.8906 212.671 58.4345 212.497 59.1306H217.026ZM219.286 59.5614C219.417 58.8304 219.678 58.1908 220.069 57.6426C220.47 57.0857 220.953 56.6549 221.518 56.3503C222.092 56.0458 222.702 55.8935 223.346 55.8935C223.972 55.8935 224.49 56.0284 224.899 56.2981C225.308 56.5679 225.591 56.9073 225.747 57.3163L225.982 56.0109H227.183L225.917 63.1641H224.716L224.964 61.8326C224.651 62.2503 224.238 62.5984 223.724 62.8769C223.211 63.1467 222.645 63.2815 222.027 63.2815C221.47 63.2815 220.979 63.1641 220.552 62.9291C220.126 62.6854 219.795 62.3417 219.56 61.8979C219.325 61.4541 219.208 60.9407 219.208 60.3576C219.208 60.0966 219.234 59.8312 219.286 59.5614ZM225.356 59.5745C225.391 59.3917 225.408 59.1959 225.408 58.9871C225.408 58.3518 225.217 57.8514 224.834 57.486C224.459 57.1118 223.981 56.9247 223.398 56.9247C222.954 56.9247 222.528 57.0291 222.119 57.2379C221.718 57.4468 221.375 57.7514 221.087 58.1517C220.8 58.552 220.609 59.0219 220.513 59.5614C220.478 59.7441 220.461 59.9443 220.461 60.1618C220.461 60.8058 220.648 61.3149 221.022 61.6891C221.396 62.0545 221.875 62.2373 222.458 62.2373C222.902 62.2373 223.324 62.1329 223.724 61.924C224.133 61.7065 224.481 61.3975 224.768 60.9972C225.064 60.5882 225.26 60.114 225.356 59.5745ZM230.143 57.3685C230.431 56.8986 230.792 56.5331 231.227 56.272C231.662 56.0109 232.158 55.8804 232.715 55.8804L232.493 57.1074H232.18C231.562 57.1074 231.044 57.2727 230.626 57.6034C230.217 57.9341 229.943 58.491 229.804 59.2742L229.112 63.1641H227.924L229.191 56.0109H230.378L230.143 57.3685ZM238.483 61.2061C238.457 61.3366 238.444 61.4498 238.444 61.5455C238.444 61.763 238.509 61.9197 238.64 62.0154C238.779 62.1111 239.001 62.159 239.305 62.159H240.18L239.997 63.1641H238.927C238.361 63.1641 237.935 63.0553 237.648 62.8377C237.369 62.6202 237.23 62.2634 237.23 61.7674C237.23 61.5759 237.247 61.3888 237.282 61.2061L238.026 56.9899H237.112L237.282 56.0109H238.209L238.522 54.2096H239.723L239.41 56.0109H241.263L241.094 56.9899H239.227L238.483 61.2061ZM244.582 63.2815C243.982 63.2815 243.451 63.1597 242.99 62.9161C242.537 62.6637 242.185 62.3156 241.932 61.8718C241.68 61.4193 241.554 60.8972 241.554 60.3054C241.554 59.4961 241.741 58.7565 242.115 58.0864C242.489 57.4076 243.003 56.8725 243.655 56.4809C244.317 56.0893 245.052 55.8935 245.861 55.8935C246.462 55.8935 246.993 56.0196 247.454 56.272C247.924 56.5157 248.285 56.8638 248.537 57.3163C248.798 57.7601 248.929 58.2822 248.929 58.8826C248.929 59.6919 248.737 60.4316 248.355 61.1017C247.972 61.7717 247.45 62.3026 246.788 62.6941C246.127 63.0857 245.391 63.2815 244.582 63.2815ZM244.726 62.2764C245.291 62.2764 245.8 62.1242 246.253 61.8196C246.706 61.5063 247.058 61.0973 247.31 60.5926C247.571 60.0792 247.702 59.5309 247.702 58.9479C247.702 58.2865 247.51 57.7818 247.128 57.4337C246.745 57.077 246.266 56.8986 245.692 56.8986C245.126 56.8986 244.621 57.0552 244.178 57.3685C243.734 57.673 243.39 58.082 243.146 58.5955C242.903 59.1089 242.781 59.6615 242.781 60.2532C242.781 60.8972 242.964 61.3975 243.329 61.7543C243.695 62.1024 244.16 62.2764 244.726 62.2764ZM255.41 56.0109L256.624 61.7804L259.874 56.0109H261.101L254.94 66.5318H253.7L255.723 63.0857L254.091 56.0109H255.41ZM264.175 63.2815C263.574 63.2815 263.043 63.1597 262.582 62.9161C262.13 62.6637 261.777 62.3156 261.525 61.8718C261.273 61.4193 261.146 60.8972 261.146 60.3054C261.146 59.4961 261.333 58.7565 261.708 58.0864C262.082 57.4076 262.595 56.8725 263.248 56.4809C263.909 56.0893 264.645 55.8935 265.454 55.8935C266.054 55.8935 266.585 56.0196 267.046 56.272C267.516 56.5157 267.877 56.8638 268.13 57.3163C268.391 57.7601 268.521 58.2822 268.521 58.8826C268.521 59.6919 268.33 60.4316 267.947 61.1017C267.564 61.7717 267.042 62.3026 266.381 62.6941C265.719 63.0857 264.984 63.2815 264.175 63.2815ZM264.318 62.2764C264.884 62.2764 265.393 62.1242 265.845 61.8196C266.298 61.5063 266.65 61.0973 266.903 60.5926C267.164 60.0792 267.294 59.5309 267.294 58.9479C267.294 58.2865 267.103 57.7818 266.72 57.4337C266.337 57.077 265.859 56.8986 265.284 56.8986C264.719 56.8986 264.214 57.0552 263.77 57.3685C263.326 57.673 262.982 58.082 262.739 58.5955C262.495 59.1089 262.373 59.6615 262.373 60.2532C262.373 60.8972 262.556 61.3975 262.922 61.7543C263.287 62.1024 263.753 62.2764 264.318 62.2764ZM276.988 56.0109L275.722 63.1641H274.534L274.717 62.1198C274.43 62.4853 274.064 62.7681 273.621 62.9683C273.177 63.1684 272.716 63.2685 272.237 63.2685C271.489 63.2685 270.888 63.0683 270.436 62.668C269.992 62.259 269.77 61.676 269.77 60.9189C269.77 60.7275 269.792 60.4882 269.835 60.201L270.579 56.0109H271.754L271.049 60.0444C271.014 60.2271 270.997 60.4186 270.997 60.6187C270.997 61.1495 271.14 61.5542 271.428 61.8326C271.723 62.1024 272.132 62.2373 272.655 62.2373C273.281 62.2373 273.812 62.0415 274.247 61.6499C274.691 61.2583 274.974 60.6883 275.096 59.9399V59.9791L275.8 56.0109H276.988Z" fill="currentColor" opacity=".72"/><path d="M40.0197 28.8325C40.9327 27.9358 41.4578 27.0147 41.5871 26.0533C41.7244 25.1 41.474 24.3083 40.8519 23.6781C40.2217 23.056 39.43 22.8055 38.4766 22.9348C37.5233 23.0722 36.6023 23.5731 35.7055 24.4537L29.3149 30.7311C28.0869 31.943 26.7377 32.7832 25.2512 33.276C23.7646 33.7689 22.3104 33.8577 20.8723 33.5426C19.4423 33.2276 18.182 32.5247 17.0913 31.434C15.9845 30.3272 15.2897 29.0588 14.9827 27.6368C14.6837 26.2068 14.7888 24.7607 15.2897 23.2822C15.7825 21.8037 16.6469 20.4626 17.875 19.2588L26.1237 11.1394C26.5357 10.7354 26.5357 10.081 26.1318 9.66896L21.5509 5.08812C21.147 4.68417 20.4926 4.68417 20.0886 5.08812L0.302966 24.8657C-0.100989 25.2697 -0.100989 25.9241 0.302966 26.328L20.6542 46.6792C21.0581 47.0832 21.7125 47.0832 22.1165 46.6792L27.5295 41.2662L40.0197 28.8325Z" fill="#3B8DF0"/><path d="M40.928 5.08119L61.2873 25.4405C61.6913 25.8444 61.6913 26.4988 61.2873 26.9028L41.5016 46.6804C41.0977 47.0843 40.4433 47.0843 40.0393 46.6804L35.3292 41.9703C34.9253 41.5663 34.9253 40.9038 35.3373 40.4999L43.6022 32.3885C44.8302 31.1847 45.6947 29.8436 46.1875 28.3651C46.6884 26.8866 46.7934 25.4324 46.5026 23.9943C46.2117 22.5562 45.5169 21.2878 44.4101 20.181C43.3194 19.0903 42.0591 18.3874 40.6129 18.0885C39.1749 17.7815 37.7125 17.8785 36.226 18.3713C34.7394 18.856 33.3902 19.7043 32.1622 20.9081L25.7717 27.1856C24.8749 28.0662 23.9539 28.5752 23.0005 28.7044C22.0472 28.8418 21.2555 28.5913 20.6253 27.9611C20.0032 27.331 19.7527 26.5392 19.8901 25.5859C20.0194 24.6326 20.5364 23.7116 21.4332 22.8309L30.4333 13.9843L39.4657 5.08119C39.8777 4.67724 40.5241 4.68532 40.928 5.08119Z" fill="#FFD635"/></symbol>
+  <symbol id="logomark" viewBox="0 4.6 61.6 42.6"><path d="M40.0197 28.8325C40.9327 27.9358 41.4578 27.0147 41.5871 26.0533C41.7244 25.1 41.474 24.3083 40.8519 23.6781C40.2217 23.056 39.43 22.8055 38.4766 22.9348C37.5233 23.0722 36.6023 23.5731 35.7055 24.4537L29.3149 30.7311C28.0869 31.943 26.7377 32.7832 25.2512 33.276C23.7646 33.7689 22.3104 33.8577 20.8723 33.5426C19.4423 33.2276 18.182 32.5247 17.0913 31.434C15.9845 30.3272 15.2897 29.0588 14.9827 27.6368C14.6837 26.2068 14.7888 24.7607 15.2897 23.2822C15.7825 21.8037 16.6469 20.4626 17.875 19.2588L26.1237 11.1394C26.5357 10.7354 26.5357 10.081 26.1318 9.66896L21.5509 5.08812C21.147 4.68417 20.4926 4.68417 20.0886 5.08812L0.302966 24.8657C-0.100989 25.2697 -0.100989 25.9241 0.302966 26.328L20.6542 46.6792C21.0581 47.0832 21.7125 47.0832 22.1165 46.6792L27.5295 41.2662L40.0197 28.8325Z" fill="#3B8DF0"/><path d="M40.928 5.08119L61.2873 25.4405C61.6913 25.8444 61.6913 26.4988 61.2873 26.9028L41.5016 46.6804C41.0977 47.0843 40.4433 47.0843 40.0393 46.6804L35.3292 41.9703C34.9253 41.5663 34.9253 40.9038 35.3373 40.4999L43.6022 32.3885C44.8302 31.1847 45.6947 29.8436 46.1875 28.3651C46.6884 26.8866 46.7934 25.4324 46.5026 23.9943C46.2117 22.5562 45.5169 21.2878 44.4101 20.181C43.3194 19.0903 42.0591 18.3874 40.6129 18.0885C39.1749 17.7815 37.7125 17.8785 36.226 18.3713C34.7394 18.856 33.3902 19.7043 32.1622 20.9081L25.7717 27.1856C24.8749 28.0662 23.9539 28.5752 23.0005 28.7044C22.0472 28.8418 21.2555 28.5913 20.6253 27.9611C20.0032 27.331 19.7527 26.5392 19.8901 25.5859C20.0194 24.6326 20.5364 23.7116 21.4332 22.8309L30.4333 13.9843L39.4657 5.08119C39.8777 4.67724 40.5241 4.68532 40.928 5.08119Z" fill="#FFD635"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4Z"/><path d="M13 6v2M13 11v2M13 16v2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8Z"/></symbol>
+  <symbol id="i-cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6Z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M7 15h10"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+</svg>
+
+<!-- ======================= LANDING ======================= -->
+<div id="landing">
+  <header class="lnav"><div class="wrap">
+    <a class="brand" href="#home" aria-label="Softnear CRM home"><svg class="logo" role="img" aria-label="Softnear"><use href="#logo"/></svg><span class="prod">CRM</span></a>
+    <nav><a href="#features">Features</a><a href="#ai-section">AI responses</a><a href="#pricing">Pricing</a></nav>
+    <div class="sp"></div>
+    <button class="btn ghost" data-act="login">Log in</button>
+    <button class="btn dark" data-act="signup">Start free trial</button>
+  </div></header>
+
+  <section class="wrap hero">
+    <div>
+      <span class="chip-new"><b>NEW</b> AI-drafted customer response letters</span>
+      <h1>Every complaint traced, investigated and <em>answered.</em></h1>
+      <p class="lede">Softnear CRM is the complaints platform built for food manufacturers. Log tickets in seconds, track root cause and corrective actions, watch your CPMU against retailer targets, and send on-brand letters drafted by AI.</p>
+      <div class="ctas">
+        <button class="btn primary" data-act="signup">Start 14-day free trial <svg class="i"><use href="#i-arrow"/></svg></button>
+        <button class="btn" data-act="demo">Explore the live demo</button>
+      </div>
+      <div class="fine"><span><svg class="i"><use href="#i-check"/></svg>No card required</span><span><svg class="i"><use href="#i-check"/></svg>Import your Excel log</span><span><svg class="i"><use href="#i-check"/></svg>UK data hosting</span></div>
+    </div>
+    <div class="preview" aria-hidden="true">
+      <div class="pv-inner">
+        <div class="pv-row">
+          <div class="pv-k"><div class="eyebrow">Complaints · 12m</div><div class="n" id="pv-total">0</div></div>
+          <div class="pv-k"><div class="eyebrow">CPMU</div><div class="n" id="pv-cpmu">0<small>target 25</small></div></div>
+          <div class="pv-k"><div class="eyebrow">Open</div><div class="n" id="pv-open">0</div></div>
+        </div>
+        <div class="pv-chart"><div class="eyebrow">Complaints by month</div><div class="pv-bars" id="pv-bars"></div></div>
+      </div>
+      <div class="pv-float">
+        <div class="t"><svg class="i"><use href="#i-spark"/></svg>Draft ready · CMP-0084</div>
+        <p>“We write to you with reference to your email regarding the Cherry Mega Loaf…”</p>
+        <div class="ln" style="width:92%"></div><div class="ln" style="width:76%"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="stats">
+      <div><b>3 min</b><span>to log a full complaint, down from 15 in a spreadsheet</span></div>
+      <div><b>23</b><span>complaint fields captured, from MIX code to RCA</span></div>
+      <div><b>Live</b><span>CPMU tracked against each retailer's target</span></div>
+      <div><b>1 click</b><span>to draft a customer letter or email in your house style</span></div>
+    </div>
+  </section>
+
+  <section class="wrap section" id="features">
+    <div class="sec-head"><span class="eyebrow">Built for technical & customer care teams</span><h2>Replace the complaints spreadsheet without losing a single column.</h2><p>Everything your team tracks today, from batch traceability to goodwill, in one shared system with an audit trail.</p></div>
+    <div class="feat">
+      <div class="fcard wide"><div class="ic"><svg class="i"><use href="#i-ticket"/></svg></div><h3>Ticket management</h3><p>See every open, pending and closed complaint. Filter by brand, retailer, category or investigator and jump straight into the record.</p><div class="demo"><span class="pill Open">Open</span><span class="pill Pending">Pending</span><span class="pill Closed">Closed</span></div></div>
+      <div class="fcard wide"><div class="ic"><svg class="i"><use href="#i-chart"/></svg></div><h3>Dashboards that match your reports</h3><p>Complaints per customer, category and type each month, plus complaints per million units against targets such as 25 CPMU overall or 3 for Morrisons.</p><div class="demo"><span class="tag">Foreign body</span><span class="tag">Quality</span><span class="tag">Packaging</span><span class="tag">Labelling</span></div></div>
+      <div class="fcard"><div class="ic"><svg class="i"><use href="#i-flask"/></svg></div><h3>Investigation & RCA</h3><p>Capture MIX codes, finished product codes, BBE and traceability, root cause and corrective actions in one place.</p></div>
+      <div class="fcard"><div class="ic"><svg class="i"><use href="#i-spark"/></svg></div><h3>AI response writer</h3><p>Turn the investigation into a letter or email that follows your approved template and tone.</p></div>
+      <div class="fcard"><div class="ic"><svg class="i"><use href="#i-shield"/></svg></div><h3>Audit-ready</h3><p>Every status change and response is logged, ready for BRCGS audits and retailer reviews.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <div class="sec-head"><span class="eyebrow">How a complaint moves through Softnear CRM</span><h2>From first contact to closed, in four steps.</h2></div>
+    <div class="flow">
+      <div class="step"><span class="num">STEP 1</span><h4>Log</h4><p>Customer care records the complaint from phone, email, website, social or a store letter.</p></div>
+      <div class="step"><span class="num">STEP 2</span><h4>Investigate</h4><p>Technical checks GMP records, taste panels and traceability, then writes the RCA.</p></div>
+      <div class="step"><span class="num">STEP 3</span><h4>Respond</h4><p>AI drafts the letter or email. Your team edits, approves and records goodwill sent.</p></div>
+      <div class="step"><span class="num">STEP 4</span><h4>Report</h4><p>Dashboards update instantly so trends and CPMU breaches are spotted early.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap section" id="ai-section" style="padding-top:0">
+    <div class="ai-band">
+      <div>
+        <span class="eyebrow">AI response generator</span>
+        <h2>Your approved letter, written for each complaint.</h2>
+        <p>Softnear CRM reads the complaint, the investigation findings and your house template, then drafts a reply your customer care team can send as a letter or an email.</p>
+        <ul>
+          <li><svg class="i"><use href="#i-check"/></svg>Follows your structure: reference, findings, reassurance, apology, goodwill</li>
+          <li><svg class="i"><use href="#i-check"/></svg>Only uses facts recorded in the investigation</li>
+          <li><svg class="i"><use href="#i-check"/></svg>Formal, warm or concise tone, signed by the right person</li>
+        </ul>
+      </div>
+      <div class="letter-mini" aria-hidden="true">
+        <div class="lh"><b>Regal Bakery</b><span style="font-size:11px;color:#6B6D75">REF: RB260611</span></div>
+        <p>Dear Ms Walsh,</p><br>
+        <p>We write to you with reference to your email dated 11th June 2026 with images of a juice bottle showing what appears to be mould on the lid.</p><br>
+        <p class="typing">After our initial investigation we have concluded that the cap seal underneath the bottle top failed on this occasion</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section" id="pricing" style="padding-top:0">
+    <div class="sec-head" style="display:flex;justify-content:space-between;align-items:flex-end;max-width:none;gap:20px;flex-wrap:wrap">
+      <div style="max-width:620px"><span class="eyebrow">Pricing</span><h2>Simple plans that grow with your sites.</h2></div>
+      <div><div class="toggle" id="billtoggle"><button class="on" data-b="m">Monthly</button><button data-b="y">Annual</button></div><span class="save">Save 20% annually</span></div>
+    </div>
+    <div class="pricing">
+      <div class="plan"><h3>Starter</h3><p class="muted">One site, small QA team.</p><div class="price" data-m="49" data-y="39">£49<small> / month</small></div><ul><li><svg class="i"><use href="#i-check"/></svg>3 users</li><li><svg class="i"><use href="#i-check"/></svg>Unlimited tickets</li><li><svg class="i"><use href="#i-check"/></svg>Standard dashboards</li><li><svg class="i"><use href="#i-check"/></svg>Excel import</li></ul><button class="btn" data-act="signup" data-plan="Starter">Start trial</button></div>
+      <div class="plan pop"><span class="badge">MOST POPULAR</span><h3>Growth</h3><p class="muted">Multi-brand manufacturers.</p><div class="price" data-m="149" data-y="119">£149<small> / month</small></div><ul><li><svg class="i"><use href="#i-check"/></svg>15 users</li><li><svg class="i"><use href="#i-check"/></svg>CPMU targets per retailer</li><li><svg class="i"><use href="#i-check"/></svg>AI response generator</li><li><svg class="i"><use href="#i-check"/></svg>Custom fields & drop-downs</li></ul><button class="btn primary" data-act="signup" data-plan="Growth">Start trial</button></div>
+      <div class="plan"><h3>Enterprise</h3><p class="muted">Groups with several sites.</p><div class="price">Custom</div><ul><li><svg class="i"><use href="#i-check"/></svg>Unlimited users & sites</li><li><svg class="i"><use href="#i-check"/></svg>SSO & audit exports</li><li><svg class="i"><use href="#i-check"/></svg>Retailer portal integrations</li><li><svg class="i"><use href="#i-check"/></svg>Dedicated onboarding</li></ul><button class="btn" data-act="signup" data-plan="Enterprise">Talk to sales</button></div>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-bottom:24px">
+    <div class="cta-final"><h2>Retire the complaints spreadsheet this week.</h2><p>Import your existing log and see your dashboards in minutes.</p><button class="btn" data-act="signup">Start free trial</button></div>
+  </section>
+  <footer class="wrap lf"><div class="lf-l"><svg class="logo" role="img" aria-label="Softnear"><use href="#logo"/></svg><span>© 2026 Softnear CRM · Prototype for client review</span></div><div class="lf-r"><span>Privacy · Terms · Security</span><span class="credit"><svg class="cm" aria-hidden="true"><use href="#logomark"/></svg>Designed &amp; developed by <b>Softnear</b></span></div></footer>
+</div>
+
+<!-- ======================= APP ======================= -->
+<div id="app" hidden>
+  <aside class="side"><div class="side-in">
+    <a class="brand" href="#home" aria-label="Softnear CRM home"><svg class="logo full" role="img" aria-label="Softnear"><use href="#logo"/></svg><svg class="logo markonly" aria-hidden="true"><use href="#logomark"/></svg></a>
+    <div class="ws"><div class="av" id="ws-av">RB</div><div><b id="ws-name">Regal Bakery Group</b><small>Growth · trial</small></div></div>
+    <div class="navl">Workspace</div>
+    <a class="navi" href="#dashboard" data-v="dashboard"><svg class="i"><use href="#i-grid"/></svg><span class="lbl">Dashboard</span></a>
+    <a class="navi" href="#tickets" data-v="tickets"><svg class="i"><use href="#i-ticket"/></svg><span class="lbl">Tickets</span><span class="ct" id="nav-open">0</span></a>
+    <a class="navi" href="#new" data-v="new"><svg class="i"><use href="#i-plus"/></svg><span class="lbl">New ticket</span></a>
+    <a class="navi" href="#ai" data-v="ai"><svg class="i"><use href="#i-spark"/></svg><span class="lbl">AI responses</span></a>
+    <div class="navl">Account</div>
+    <a class="navi" href="#settings" data-v="settings"><svg class="i"><use href="#i-cog"/></svg><span class="lbl">Settings & billing</span></a>
+    <a class="navi" href="#home"><svg class="i"><use href="#i-out"/></svg><span class="lbl">Back to website</span></a>
+    <div class="side-credit"><svg class="cm" aria-hidden="true"><use href="#logomark"/></svg>Designed &amp; developed by Softnear</div>
+    <div class="upg"><b>Trial: 10 days left</b><p>You're on Growth with AI responses included.</p><div class="bar"><i></i></div><a class="btn" href="#settings">Choose plan</a></div>
+  </div></aside>
+
+  <main class="main">
+    <div class="top">
+      <div><h1 id="pg-title">Dashboard</h1></div>
+      <div class="sp"></div>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><input id="gsearch" placeholder="Search tickets, products, codes…" aria-label="Search tickets"></label>
+      <button class="iconbtn" id="themebtn" aria-label="Toggle dark mode"><svg class="i"><use href="#i-moon"/></svg></button>
+      <button class="iconbtn" aria-label="Notifications" data-go="tickets"><svg class="i"><use href="#i-bell"/></svg><span class="dot"></span></button>
+      <div class="me"><span class="av">LM</span><div><b>Lynda Morton</b><small>Customer Care</small></div></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section data-view="dashboard" hidden>
+      <div class="dash-intro">
+        <div><p class="eyebrow" id="d-range">Rolling 12 months</p><h2>Complaints overview</h2></div>
+        <div class="sp"></div>
+        <select class="sel" id="d-brand" aria-label="Brand filter"></select>
+        <a class="btn primary" href="#new"><svg class="i"><use href="#i-plus"/></svg>New ticket</a>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="grid-d">
+        <div class="card c8">
+          <div class="card-h"><h3>Complaints by category</h3><span class="muted" style="font-size:12.5px">per month</span><div class="sp"></div><div class="legend" id="lg-cat" style="margin:0"></div></div>
+          <div class="chart-box" style="height:330px"><canvas id="ch-cat"></canvas></div>
+        </div>
+        <div class="card c4">
+          <div class="card-h"><h3>Needs attention</h3><div class="sp"></div><a class="btn sm ghost" href="#tickets">View all</a></div>
+          <div class="att-list" id="attn"></div>
+        </div>
+        <div class="card c7">
+          <div class="card-h"><h3>Complaints per million units</h3><div class="sp"></div><div class="legend" style="margin:0"><span><i style="background:var(--accent)"></i>CPMU</span><span><i style="background:var(--coral)"></i>Target 25</span></div></div>
+          <div class="chart-box"><canvas id="ch-cpmu"></canvas></div>
+        </div>
+        <div class="card c5">
+          <div class="card-h"><h3>Complaint type</h3><div class="sp"></div><div class="seg" id="type-seg"></div></div>
+          <div class="chart-box"><canvas id="ch-type"></canvas></div>
+          <div class="legend" id="lg-type"></div>
+        </div>
+        <div class="card c6">
+          <div class="card-h"><h3>Complaints per customer</h3></div>
+          <div class="chart-box sm"><canvas id="ch-cust"></canvas></div>
+        </div>
+        <div class="card c6">
+          <div class="card-h"><h3>How complaints arrive</h3></div>
+          <div class="chart-box sm"><canvas id="ch-chan"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TICKETS -->
+    <section data-view="tickets" hidden>
+      <div class="card">
+        <div class="tabs" id="t-tabs"></div>
+        <div class="tb-bar">
+          <select class="sel" id="f-cat" aria-label="Category"></select>
+          <select class="sel" id="f-brand" aria-label="Brand"></select>
+          <select class="sel" id="f-via" aria-label="Channel"></select>
+          <select class="sel" id="f-inv" aria-label="Investigator"></select>
+          <div style="flex:1"></div>
+          <span class="muted" id="t-count" style="font-size:13px"></span>
+          <a class="btn primary sm" href="#new"><svg class="i"><use href="#i-plus"/></svg>New ticket</a>
+        </div>
+        <div class="tbl-wrap"><table class="tk"><thead><tr><th>Ticket</th><th>Received</th><th>Product & complaint</th><th>Category</th><th>Customer</th><th>Channel</th><th>Investigator</th><th>Status</th></tr></thead><tbody id="t-body"></tbody></table></div>
+        <div class="pager"><span id="pg-info"></span><button class="btn sm" id="pg-prev">Previous</button><button class="btn sm" id="pg-next">Next</button></div>
+      </div>
+    </section>
+
+    <!-- NEW TICKET -->
+    <section data-view="new" hidden>
+      <form id="tform" novalidate>
+        <div class="form-grid">
+          <div>
+            <div class="card fsec"><div class="card-h"><h3>Customer care</h3><span class="tag">Complaint details</span><p>Recorded by customer care when the complaint arrives.</p></div><div class="fields" id="fs-care"></div></div>
+            <div class="card fsec"><div class="card-h"><h3>Product & traceability</h3><p>Codes printed on the pack help the technical team trace the batch.</p></div><div class="fields" id="fs-trace"></div></div>
+            <div class="card fsec"><div class="card-h"><h3>Technical department</h3><span class="tag">Investigation</span><p>Completed by the technical team. Can be left blank and finished later.</p></div><div class="fields" id="fs-tech"></div></div>
+          </div>
+          <div class="aside-sticky">
+            <div class="card">
+              <div class="card-h"><h3 id="f-title">New complaint</h3><div class="sp"></div><span class="mono muted" id="f-no"></span></div>
+              <div class="progress"><i id="f-prog" style="width:0"></i></div>
+              <p class="muted" style="font-size:12.5px;margin:8px 0 14px" id="f-progtxt">0 of 0 required fields</p>
+              <div class="check-list" id="f-checks"></div>
+              <div style="display:grid;gap:8px;margin-top:18px">
+                <button class="btn primary" type="submit" id="f-submit">Create ticket</button>
+                <button class="btn" type="button" id="f-ai">Create & draft response</button>
+                <button class="btn ghost" type="button" id="f-sample">Fill with example</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- AI -->
+    <section data-view="ai" hidden>
+      <div class="ai-grid">
+        <div class="card">
+          <div class="card-h"><h3>Response settings</h3></div>
+          <div style="display:grid;gap:14px">
+            <div class="fld"><label for="ai-ticket">Ticket</label><select class="inp" id="ai-ticket"></select></div>
+            <div class="tk-sum" id="ai-sum"></div>
+            <div class="fld"><label>Send as</label><div class="seg" id="ai-format"><button class="on" data-v="Letter">Letter</button><button data-v="Email">Email</button></div></div>
+            <div class="fld"><label>Tone</label><div class="seg" id="ai-tone"><button class="on" data-v="Formal">Formal</button><button data-v="Warm">Warm</button><button data-v="Concise">Concise</button></div></div>
+            <div class="fld"><label for="ai-gw">Goodwill</label><select class="inp" id="ai-gw"><option value="Yes">Include goodwill products</option><option value="No">No goodwill</option></select></div>
+            <div class="fld"><label for="ai-sign">Signed by</label><select class="inp" id="ai-sign"></select></div>
+            <div class="fld"><label for="ai-note">Anything else to include <span class="hint">optional</span></label><textarea class="inp" id="ai-note" placeholder="e.g. Mention we have replaced the capping head on line 3"></textarea></div>
+            <button class="btn primary" id="ai-go"><svg class="i"><use href="#i-spark"/></svg>Generate response</button>
+            <p class="muted" style="font-size:12px" id="ai-help">Drafts with Claude using your approved Juice Mould letter as the house template. If AI isn't available in this view, a built-in template is used instead.</p>
+          </div>
+        </div>
+        <div>
+          <div class="out-bar">
+            <span class="ai-status tpl" id="ai-state">Ready</span>
+            <div style="flex:1"></div>
+            <button class="btn sm" id="ai-stop" hidden><svg class="i"><use href="#i-stop"/></svg>Stop</button>
+            <button class="btn sm" id="ai-copy"><svg class="i"><use href="#i-copy"/></svg>Copy</button>
+            <button class="btn sm dark" id="ai-sent"><svg class="i"><use href="#i-check"/></svg>Mark as sent</button>
+          </div>
+          <div class="desk">
+            <div class="paper" id="paper">
+              <div class="lh"><div><b id="lh-brand">Regal Bakery</b><span class="tagl">Customer Care Department</span></div><small>Unit 4, Canal Road Industrial Estate<br>Bradford BD1 4SJ<br>customercare@example.co.uk</small></div>
+              <div class="meta" id="mail-meta" hidden></div>
+              <div class="body" id="ai-out" contenteditable="true" spellcheck="true" data-ph="Choose a ticket and select Generate response. You can edit the draft here before sending."></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section data-view="settings" hidden>
+      <div class="set-grid">
+        <div class="card">
+          <div class="card-h"><h3>Plan & billing</h3><div class="sp"></div><span class="pill Pending">Trial · 10 days left</span></div>
+          <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--f-display);font-size:38px;font-weight:700;color:var(--ink)">£149</span><span class="muted">/ month after trial · Growth</span></div>
+          <div class="kv" style="margin-top:16px"><div><dt>Users</dt><dd>6 of 15</dd></div><div><dt>AI drafts this month</dt><dd id="ai-count">0 of 500</dd></div><div><dt>Payment method</dt><dd class="blank">Not added yet</dd></div><div><dt>Next invoice</dt><dd>17 Oct 2026</dd></div></div>
+          <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap"><button class="btn primary" data-toast="Billing checkout opens here (Stripe) in the full build">Add payment method</button><button class="btn" data-toast="Plan comparison opens here in the full build">Change plan</button></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>Team</h3><div class="sp"></div><button class="btn sm" data-toast="Invitation flow opens here in the full build"><svg class="i"><use href="#i-plus"/></svg>Invite</button></div>
+          <div class="team" id="team"></div>
+        </div>
+        <div class="card" style="grid-column:1/-1">
+          <div class="card-h"><h3>Drop-down lists</h3><p class="muted" style="font-size:13px;width:100%">These match the Drop Menu Info tab in your spreadsheet. Changes apply to the new ticket form straight away.</p></div>
+          <div class="set-grid" id="lists"></div>
+        </div>
+        <div class="card" style="grid-column:1/-1">
+          <div class="card-h"><h3>CPMU targets</h3></div>
+          <div class="kv"><div><dt>Overall target</dt><dd>25 complaints per million units</dd></div><div><dt>Morrisons</dt><dd>3 complaints per million units</dd></div></div>
+          <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap"><button class="btn" id="reset-demo">Reset demo data</button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Ticket details"></aside>
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal" hidden></div>
+
+<script>
+const SEED = [{"date": "2026-01-04", "via": "Letter", "cust": "Consumer", "addr": "Grace Patel, 103 Station Rd, Portsmouth", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Madeira Mega Loaf", "cat": "Quality", "type": "Flavour", "details": "Tasted like custard powder", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "A Younis", "comments": ""}, {"date": "2026-01-11", "via": "Letter", "cust": "Consumer", "addr": "Neil Walsh, 95 Moor View, Huddersfield", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Madeira Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Not enough Cherries", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-01-18", "via": "Store Letter", "cust": "Tesco", "addr": "Tesco Bolton Superstore", "ref": "Our Reference: 2487963, In-store Reference : 2297021610", "brand": "Regal Bakery", "product": "Original Cake Rusk 18Pcs", "cat": "Quality", "type": "Flavour", "details": "Product tasted different to usual", "mix": "", "fpc": "", "size": "", "bbe": "BEST_BEFORE: 2-NOV-2018", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-01-18", "via": "Letter", "cust": "Consumer", "addr": "Helen Bennett, 24 Church St, Sheffield", "ref": "", "brand": "Yorkshire Baking", "product": "Sultana Mega Loaf", "cat": "Foreign Body", "type": "Other FB", "details": "Customer found what seemed to be grit/small stone in the cake", "mix": "", "fpc": "", "size": "", "bbe": "07/02/2018", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Sample was received and it was a small sultana stalk piece", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-01-29", "via": "Letter", "cust": "Consumer", "addr": "Sadia Rahman, 25 Moor View, Sheffield", "ref": "", "brand": "Regal Bakery", "product": "Triple Pack", "cat": "Foreign Body", "type": "Intrinsic Matter", "details": "Wooden splinter piece found in product", "mix": "", "fpc": "", "size": "", "bbe": "BB 10/3/18 L2-MZF 13.59 16/12/17", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Sample requested however refused to post it and could not provide images, possibly fake complaint, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-01-30", "via": "Letter", "cust": "Consumer", "addr": "Nora Walsh, 59 Moor View, Huddersfield", "ref": "", "brand": "Yorkshire Baking", "product": "Triple Pack", "cat": "Foreign Body", "type": "Metal", "details": "Customer found what seemed to be metal in the cake", "mix": "", "fpc": "", "size": "", "bbe": "10/03/2018", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Piece was sent in and metal test was conducted which indicated that it is not a metal and we tried to melt it, cut it unsuccesfully. Type of FB unknown. Isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-02-04", "via": "Email", "cust": "Consumer", "addr": "Carol Moran, 14 Mill Lane, Huddersfield", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Appearance", "details": "Cherry mega loaf had only a few cherries in it", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-02-09", "via": "Phone", "cust": "Consumer", "addr": "Neil Patel, 76 Church St, Blackburn", "ref": "", "brand": "Regal Bakery", "product": "Crunchy Rusk", "cat": "Foreign Body", "type": "Hair", "details": "Customer found long blonde hair in product", "mix": "", "fpc": "", "size": "", "bbe": "20/12/2017", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Increased checks will be conducted and higher standard to be implemented", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-02-16", "via": "Phone", "cust": "Consumer", "addr": "Neil Walsh, 148 Park Ave, Bolton", "ref": "", "brand": "Yorkshire Baking", "product": "Sultana Mega Loaf", "cat": "Quality", "type": "Texture", "details": "product was dry", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-03-12", "via": "Phone", "cust": "Consumer", "addr": "Kieran Cooper, 28 Moor View, Preston", "ref": "", "brand": "Yorkshire Baking", "product": "Parkin Twin Pack", "cat": "Quality", "type": "Texture", "details": "cake is dry and too dark", "mix": "", "fpc": "", "size": "", "bbe": "15/05/2018", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Nature of Product, Personal Preference", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-03-13", "via": "Email", "cust": "Consumer", "addr": "Ruth Dobson, 97 Station Rd, Bolton", "ref": "", "brand": "Yorkshire Baking", "product": "Madeira Mega Loaf", "cat": "Quality", "type": "Texture", "details": "cake has been dry and/or overbaked on a number of occasions", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Taste Panel and GMP records checked, no signes of voerbaking noticed, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-03-22", "via": "Email", "cust": "Consumer", "addr": "Megan Khan, 146 Station Rd, Preston", "ref": "", "brand": "Yorkshire Baking", "product": "Tea Loaf", "cat": "Foreign Body", "type": "Other FB", "details": "tea loaf had lots of sultana stalks in it", "mix": "", "fpc": "", "size": "", "bbe": "23/05/2018\nL2MZF 11:17", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Possible given the nature of sultanas, no other complaint of this kind, alibi labelling in place on back of packaging", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-03-23", "via": "Email", "cust": "Consumer", "addr": "Helen Pearson, 176 Moor View, Sheffield", "ref": "", "brand": "Regal Bakery", "product": "Cream Rolls", "cat": "Foreign Body", "type": "Hair", "details": "found a hair in their cream rolls", "mix": "", "fpc": "", "size": "", "bbe": "14/03/2019\nL1ERK", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Increased checks will be conducted and higher standard to be implemented", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-03-23", "via": "Email", "cust": "Consumer", "addr": "Grace Gill, 151 Church St, Manchester", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Flavour", "details": "cherry mega loaf was dry, stale and tasteless", "mix": "", "fpc": "", "size": "", "bbe": "09/05/2018\nL2MZF 09:32", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-04-06", "via": "Phone", "cust": "Consumer", "addr": "Tom Rahman, 48 Mill Lane, Portsmouth", "ref": "", "brand": "Yorkshire Baking", "product": "Triple Pack", "cat": "Quality", "type": "Appearance", "details": "cherry loaf had only a few cherries on it", "mix": "", "fpc": "", "size": "", "bbe": "01/05/2018\nL2MZF", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "10g as per spec, which is approx 3 full cherries which should be broken in smaller pieces to cover whole cake", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-04-08", "via": "Email", "cust": "Tesco", "addr": "Tesco Preston Superstore", "ref": "Our Reference: 2633039\nIn-store Reference : 3016727610", "brand": "Regal Bakery", "product": "Egg Free Almond Cookies", "cat": "Quality", "type": "Texture", "details": "cookies were gritty", "mix": "", "fpc": "", "size": "", "bbe": "05/05/2019", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "Personal preferance,nature of product, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-04-12", "via": "Email", "cust": "Consumer", "addr": "Tom Ahmed, 128 Park Ave, Wakefield", "ref": "", "brand": "Regal Bakery", "product": "Original Cake Rusk 28Pcs", "cat": "Quality", "type": "Appearance", "details": "cake rusk was packed poorly. It is broken and burnt", "mix": "", "fpc": "", "size": "", "bbe": "28/03/2019\nL1 ERK 11:03", "fee": 0, "gw": "Yes", "resp": "L Morton", "rca": "No signs of overbaking from Taste Panel and traceability records, however, proken pieces possibly occurred from in-store/retailer handling", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-04-17", "via": "Letter", "cust": "Consumer", "addr": "Linda Firth, 157 Station Rd, Portsmouth", "ref": "", "brand": "Yorkshire Baking", "product": "Parkin Cake Slices", "cat": "Quality", "type": "Texture", "details": "Found nuts in cake", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Assumed to be oats and mixed spice pieces as consumer sonfirmed it was a bit spicy", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-04-23", "via": "Letter", "cust": "Consumer", "addr": "Fatima Lowe, 44 Park Ave, Blackburn", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Appearance", "details": "No cherries in cherry mega loaf", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-04-27", "via": "Website", "cust": "Consumer", "addr": "Owen Lowe, 12 Station Rd, Leicester", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Dry and only 3 cherries in cake", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-04-30", "via": "Website", "cust": "Consumer", "addr": "Neil Shaw, 89 Park Ave, Preston", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Only 2 broken cherries in it", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-01", "via": "Phone", "cust": "Consumer", "addr": "Owen Gill, 19 Station Rd, Bradford", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Not many cherries in it", "mix": "", "fpc": "", "size": "", "bbe": "BB 31/05/2018 L2MZF 06:26 05/04/18", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-01", "via": "Website", "cust": "Consumer", "addr": "Owen Khan, 17 Park Ave, Halifax", "ref": "", "brand": "Yorkshire Baking", "product": "Parkin Slices", "cat": "Quality", "type": "Texture", "details": "Slices were dry and not sticky on top", "mix": "", "fpc": "", "size": "", "bbe": "BB 01/05/2018 L1-MZF 17:42 06/02/2018", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Nature of Product, Personal Preference", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-03", "via": "Website", "cust": "Consumer", "addr": "Carol Gill, 74 Church St, Halifax", "ref": "", "brand": "Regal Bakery", "product": "French Toast", "cat": "Quality", "type": "Flavour", "details": "French toast tasted very oily", "mix": "", "fpc": "", "size": "", "bbe": "BB 28/10/2018", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Nature of Product, Personal Preference", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-04", "via": "Website", "cust": "Consumer", "addr": "Imran Hartley, 120 Park Ave, Blackburn", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Lack of Cherries", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-05", "via": "Letter", "cust": "Consumer", "addr": "Ben Walsh, 128 Station Rd, Leeds", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Foreign Body", "type": "Fruit Stone", "details": "Cherry Stone", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Nature of product and alibili labelling on back of pack", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-09", "via": "Phone", "cust": "Consumer", "addr": "Tom Patel, 65 Church St, Sheffield", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "No cherries in cherry mega loaf", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-11", "via": "Letter", "cust": "Consumer", "addr": "Owen Khan, 44 Church St, Sheffield", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Appearance", "details": "One cherry in corner of the mega loaf", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-12", "via": "Letter", "cust": "Consumer", "addr": "Neil Ellis, 37 Church St, Chester", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Appearance", "details": "More like a madeira as only 3 cherries in last loaf purchased", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-17", "via": "Phone", "cust": "Consumer", "addr": "Neil Ellis, 182 Church St, Manchester", "ref": "", "brand": "Regal Bakery", "product": "Coconut Cake Slices", "cat": "Quality", "type": "Flavour", "details": "Slices didn’t have jam on them", "mix": "", "fpc": "", "size": "", "bbe": "BB 01/05/2018 L1 MZF", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Product was out of BB", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-25", "via": "Letter", "cust": "Consumer", "addr": "Kieran Moran, 61 Mill Lane, Portsmouth", "ref": "", "brand": "Regal Bakery", "product": "Sultana Mega Loaf", "cat": "Quality", "type": "Appearance", "details": "Not enough sultanas cake", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-28", "via": "Email", "cust": "Consumer", "addr": "Mark Patel, 61 Mill Lane, Huddersfield", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Appearance", "details": "Only one cherry", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-26", "via": "Email", "cust": "Tesco", "addr": "Tesco York Superstore", "ref": "Our Reference 2726190 In-store Reference : 3056027610", "brand": "Regal Bakery", "product": "Regal Madeira Cakes Triple Value Pack", "cat": "Quality", "type": "Flavour", "details": "Product did not taste good", "mix": "", "fpc": "", "size": "", "bbe": "Usr by 19 June 2018", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-31", "via": "Letter", "cust": "Consumer", "addr": "Carol Cooper, 69 Park Ave, Huddersfield", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Appearance", "details": "Not many cherries in it", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-05-31", "via": "Website", "cust": "Consumer", "addr": "Aisha Lowe, 138 Park Ave, Preston", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Flavour", "details": "Not enough cherries and did not taste nice at all", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-06-01", "via": "Website", "cust": "Consumer", "addr": "Carol Shaw, 34 Moor View, Preston", "ref": "", "brand": "Yorkshire Baking", "product": "Madeira Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Cake too dry", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-06-06", "via": "Website", "cust": "Consumer", "addr": "Ruth Bennett, 118 Moor View, Sheffield", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Appearance", "details": "Only 2 cherries in cake", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-06-07", "via": "Website", "cust": "Consumer", "addr": "Sophie Moran, 102 Station Rd, York", "ref": "", "brand": "Yorkshire Baking", "product": "Angel Cake Slices", "cat": "Quality", "type": "Texture", "details": "Product was quite dry and bland", "mix": "", "fpc": "", "size": "", "bbe": "BB 10 Jul 2018 L1-MZF", "fee": 0, "gw": "Yes", "resp": "S Siraj", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-06-10", "via": "Website", "cust": "Consumer", "addr": "Ruth Moran, 17 Mill Lane, Portsmouth", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Foreign Body", "type": "Plastic", "details": "my wife found there was a hard piece of red plastic in her slice", "mix": "", "fpc": "", "size": "", "bbe": "BB 13/07/2018\nL2 MZF\n09:45 - 18/05/18", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Sample was received and it was a cherry stone", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-06-11", "via": "Email", "cust": "Consumer", "addr": "Helen Gill, 43 Station Rd, Manchester", "ref": "", "brand": "Regal Bakery", "product": "Cake Rusk 18Pc", "cat": "Quality", "type": "Flavour", "details": "Did not taste good", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-06-12", "via": "Email", "cust": "Tesco", "addr": "Tesco Preston Superstore", "ref": "Our Reference: 2752102\nIn-store Reference : 3066331610", "brand": "Regal Bakery", "product": "French Toast", "cat": "Quality", "type": "Flavour", "details": "The taste had gone off", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "No BB provided so investigation could not take place Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "S Siraj", "comments": ""}, {"date": "2026-06-13", "via": "Email", "cust": "Tesco", "addr": "Tesco Huddersfield Superstore", "ref": "Our Reference: 2753388\nIn-store Reference : 3066455410", "brand": "Regal Bakery", "product": "Regal Sweet Baqar Khani", "cat": "Quality", "type": "Flavour", "details": "Product had very dry taste", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-06-21", "via": "Website", "cust": "Consumer", "addr": "James Hartley, 147 Mill Lane, Bolton", "ref": "", "brand": "Regal Bakery", "product": "Angel Cake Slices", "cat": "Quality", "type": "Flavour", "details": "very stale and dry", "mix": "", "fpc": "", "size": "", "bbe": "BB 10/07/2018", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-06-22", "via": "Phone", "cust": "Consumer", "addr": "James Hussain, 159 Station Rd, Portsmouth", "ref": "", "brand": "Regal Bakery", "product": "Soonfi Cake Rusk", "cat": "Quality", "type": "Flavour", "details": "Didn't like the quality", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-06-25", "via": "Phone", "cust": "Consumer", "addr": "Helen Moran, 40 Park Ave, Manchester", "ref": "", "brand": "Regal Bakery", "product": "Original Cake Rusk", "cat": "Labelling", "type": "OTHER", "details": "No BB on film and tastes ouyt of date, very oily.", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "No date coding issues from traceability, taste panel and GMP records. Purchased from a small corner shop possibly out of date and repacked by retailer.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-06-25", "via": "Phone", "cust": "Consumer", "addr": "Ben Hussain, 123 Station Rd, Portsmouth", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Very little/No cherries", "mix": "", "fpc": "", "size": "", "bbe": "BB 1/8/18\n\nTraceability L2 MZF 1208", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-07-19", "via": "Phone", "cust": "Consumer", "addr": "Owen Gill, 124 Church St, Bradford", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Very little/No cherries", "mix": "", "fpc": "", "size": "", "bbe": "BB 28/08/2018\nL2 MZF\n9:00 03/07/2018", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-07-24", "via": "Phone", "cust": "Consumer", "addr": "Sadia Patel, 28 Park Ave, Wakefield", "ref": "", "brand": "Regal Bakery", "product": "18pc Original Cake Rusk", "cat": "Quality", "type": "Appearance", "details": "Many broken pieces", "mix": "", "fpc": "", "size": "", "bbe": "BB 13/11/2018\nL2 ERK\n11:23 13/11/2017", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Possibly from handling by store personnel", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-07-27", "via": "Phone", "cust": "Consumer", "addr": "Priya Pearson, 179 Mill Lane, Bolton", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Very little/No cherries", "mix": "", "fpc": "", "size": "", "bbe": "BB 28/08/2018\nL2 MZF\n08:49 03/07/2018", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Taste Panel and GMP records checked, no signes of lack of cherries, isolated incident, however looking into changing type of cherries to more broken pieces to ensure better distribution", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-07-30", "via": "Website", "cust": "Consumer", "addr": "Patricia Dobson, 137 Park Ave, Blackburn", "ref": "", "brand": "Yorkshire Baking", "product": "Sultana Mega Loaf", "cat": "Foreign Body", "type": "Fruit Stone", "details": "Small stone found in sultana.", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Nature of product and alibili labelling on back of pack", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-07-30", "via": "Phone", "cust": "Consumer", "addr": "Megan Turner, 8 Moor View, Bradford", "ref": "", "brand": "Yorkshire Baking", "product": "YBC Choc Chip Slab", "cat": "Quality", "type": "Texture", "details": "Very dry and crubmly.", "mix": "", "fpc": "", "size": "", "bbe": "BB 05/10/2018\nL2 MZF\n07:17 13/07/2018", "fee": 0, "gw": "Yes", "resp": "K Predjulais", "rca": "Personal preferance, isolated incident", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-01", "via": "Phone", "cust": "Consumer", "addr": "Ruth Khan, 180 Park Ave, Bolton", "ref": "", "brand": "Yorkshire Baking", "product": "Chocolate Chip Cake", "cat": "Quality", "type": "Flavour", "details": "Very very dry. Couldn’t serve it to her vistors, just crumbled", "mix": "", "fpc": "", "size": "", "bbe": "BB 5/10/18", "fee": 0, "gw": "Yes", "resp": "S Qayyum", "rca": "Product texture is ment to be crubly, [erspnal preferance", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-02", "via": "Phone", "cust": "Consumer", "addr": "Imran Cooper, 93 Mill Lane, Bolton", "ref": "", "brand": "Regal Bakery", "product": "Original Cake Rusks 18pc", "cat": "Quality", "type": "Flavour", "details": "Absolutely awful, tasted like stale oil. Could see the oil at the bottom of the box", "mix": "", "fpc": "", "size": "", "bbe": "BB 7/9/2018 A4 ERK 11:41 7/9/2017", "fee": 0, "gw": "Yes", "resp": "S Qayyum", "rca": "Product possibly stored in a hot place or in direct sunlight", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-09", "via": "Website", "cust": "Consumer", "addr": "Neil Ahmed, 86 Mill Lane, Preston", "ref": "", "brand": "Yorkshire Baking", "product": "Parkin Cake Slices", "cat": "Quality", "type": "Flavour", "details": "Really stale and dry parkin cake", "mix": "", "fpc": "", "size": "", "bbe": "BB 5/9/18 L1-MZF 13:25 13/06/18", "fee": 0, "gw": "No", "resp": "S Qayyum", "rca": "Checked production records, no issues. No issues with product around this manufacture date.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-10", "via": "Phone", "cust": "Consumer", "addr": "Helen Rahman, 104 Mill Lane, Leeds", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Loaf", "cat": "Quality", "type": "Texture", "details": "Not enough cherries", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Qayyum", "rca": "Subjective comment, no trace details provided.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-10", "via": "Phone", "cust": "Consumer", "addr": "Fatima Pearson, 93 Station Rd, Huddersfield", "ref": "", "brand": "Regal Bakery", "product": "Original Cake Rusks", "cat": "Quality", "type": "Aroma", "details": "Smelled really stale and was surprised as purchased previously and was fine", "mix": "", "fpc": "", "size": "", "bbe": "BB 14/9/2018 A4 ERK 15:22 14/9/2017", "fee": 0, "gw": "Yes", "resp": "S Qayyum", "rca": "Nature of the product is that they appear stale. Product records checked, no issues.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-13", "via": "Phone", "cust": "Consumer", "addr": "Priya Pearson, 68 Mill Lane, Wakefield", "ref": "", "brand": "Regal Bakery", "product": "Original Cake Rusk", "cat": "Quality", "type": "Flavour", "details": "Always buys cake rusk but after 2/3 days they become stale and soggy. Really enjoys them but this happens everytime once opened.", "mix": "", "fpc": "", "size": "", "bbe": "N/A", "fee": 0, "gw": "Yes", "resp": "S Qayyum", "rca": "Tested the senario and no change to cake rusk. No trace details so unable to fully investigate.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-17", "via": "Phone", "cust": "Consumer", "addr": "Ben Hussain, 116 Park Ave, Manchester", "ref": "", "brand": "Yorkshire Baking", "product": "Tea Loaf", "cat": "Quality", "type": "Mouldy", "details": "Mouldy inside the packing on top of the box.", "mix": "", "fpc": "", "size": "", "bbe": "BB 5/09/18", "fee": 0, "gw": "Yes", "resp": "S Qayyum", "rca": "No other complaints of mould received historically or around this date. Seal process checked, no issues.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-20", "via": "Website", "cust": "Consumer", "addr": "Sadia Rahman, 28 Mill Lane, York", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry/Sultana Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Not enough cherries/sultanas previous 3 times bought", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Qayyum", "rca": "No trace details provided, unable to fully investigate. Subjective comment.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-20", "via": "Website", "cust": "Consumer", "addr": "Helen Shaw, 54 Church St, Preston", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "No cherries in the loaf", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "S Qayyum", "rca": "No trace details provided. Cherry cake checked and all had cherries inside.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-08-24", "via": "Phone", "cust": "Consumer", "addr": "Ben Hartley, 124 Park Ave, Leicester", "ref": "", "brand": "Regal Bakery", "product": "Twin Pack Madeira", "cat": "Quality", "type": "Texture", "details": "Didn’t taste the same, tasted off and it didn’t look fresh from the previous times bought", "mix": "", "fpc": "", "size": "", "bbe": "BB 16/10/18 12:57 MZF 24/7/18", "fee": 0, "gw": "Yes", "resp": "S Qayyum", "rca": "Batch codes checked, no issues noted with paperwork.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-09-02", "via": "Letter", "cust": "Consumer", "addr": "Ruth Khan, 171 Station Rd, Sheffield", "ref": "", "brand": "Yorkshire Baking", "product": "Twin Pack Cherry Loaf", "cat": "Quality", "type": "Flavour", "details": "tasted very nice however thery were not a suffiecient amunt of cherries in the cakes alothough it being a cherry loaf", "mix": "", "fpc": "", "size": "", "bbe": "BB 11-OCT-18 L2-MZF 13:54 19/07/18", "fee": 0, "gw": "No", "resp": "L Morton", "rca": "Subjective comment.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-09-19", "via": "Email", "cust": "Consumer", "addr": "Megan Dobson, 124 Mill Lane, Sheffield", "ref": "", "brand": "Regal Bakery", "product": "Angel Cake Slices 5pc", "cat": "Quality", "type": "Appearance", "details": "poor quality of products", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "No", "resp": "L Morton", "rca": "No trace details provided, subjective comment.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-10-10", "via": "Email", "cust": "Tesco", "addr": "Tesco Leicester Superstore", "ref": "Bought from tesco: 3002646", "brand": "Regal Bakery", "product": "Regal Original Cake Rusks", "cat": "Quality", "type": "Aroma", "details": "Smelt bad", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "No", "resp": "C Mitchell", "rca": "Subjective comment, no trace details provided.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-10-12", "via": "Email", "cust": "Consumer", "addr": "Ruth Shaw, 24 Church St, York", "ref": "", "brand": "Yorkshire Baking", "product": "Bonfire Treacle Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Felt like eating grit", "mix": "", "fpc": "0", "size": "No", "bbe": "BB 11/10/18     L2MZF 130319", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Product traced, no issues with the paperwork, reference sample checked, tasted  as expected.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-10-12", "via": "Email", "cust": "Consumer", "addr": "Sophie Khan, 187 Mill Lane, Blackburn", "ref": "", "brand": "Regal Bakery", "product": "18 Pack Of Rusks", "cat": "Quality", "type": "Texture", "details": "Felt/Tasted like a soft soggy busicut", "mix": "", "fpc": "0", "size": "Yes", "bbe": "", "fee": 0, "gw": "No", "resp": "C Mitchell", "rca": "Subjective comment, no trace details provided.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-10-23", "via": "Phone", "cust": "Consumer", "addr": "Aisha Hartley, 40 Moor View, York", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Flavour", "details": "Very Dry", "mix": "", "fpc": "0", "size": "yes", "bbe": "", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Subjective comment, no trace details provided.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-10-25", "via": "Phone", "cust": "Consumer", "addr": "Ruth Patel, 158 Moor View, York", "ref": "", "brand": "Yorkshire Baking", "product": "Sultana Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Very dry sponge", "mix": "", "fpc": "0", "size": "yes", "bbe": "", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Subjective comment, no trace details provided.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-10-29", "via": "Letter", "cust": "Consumer", "addr": "Kieran Hussain, 41 Moor View, Bolton", "ref": "", "brand": "Yorkshire Baking", "product": "Parkin Slices", "cat": "Quality", "type": "Flavour", "details": "dry over cooked", "mix": "", "fpc": "", "size": "", "bbe": "L2-MZF 12:0210.2018", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Subjective comment, no trace details provided.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-11-12", "via": "Letter", "cust": "Consumer", "addr": "Aisha Hartley, 5 Station Rd, Bolton", "ref": "", "brand": "Yorkshire Baking", "product": "Bonfire Treacle Mega Loaf", "cat": "Quality", "type": "Flavour", "details": "dry and gritty pieces (oats)", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Subjective comment, no trace details provided.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-11-12", "via": "Phone", "cust": "Consumer", "addr": "Yusuf Patel, 113 Mill Lane, Chester", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Cherry pip chipped tooth", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Specification states that a small amount of pips may be present. Pacakging of product has a warning anout pips.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-11-20", "via": "Phone", "cust": "Consumer", "addr": "Helen Hartley, 66 Mill Lane, Bradford", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Texture", "details": "Cherry stone found in cake", "mix": "", "fpc": "", "size": "", "bbe": "05/01/2019 L2MZF101118", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Specification states that a small amount of pips may be present. Pacakging of product has a warning anout pips.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-11-20", "via": "Email", "cust": "Consumer", "addr": "Fatima Rahman, 152 Park Ave, Bradford", "ref": "", "brand": "Yorkshire Baking", "product": "Cherry Mega Loaf", "cat": "Quality", "type": "Flavour", "details": "unplatable", "mix": "", "fpc": "", "size": "", "bbe": "25/12/2018", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Subjective comment.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-11-22", "via": "Email", "cust": "Consumer", "addr": "Neil Lowe, 35 Station Rd, Wakefield", "ref": "", "brand": "Yorkshire Baking", "product": "Mincemeat Mega Loaf", "cat": "Quality", "type": "Appearance", "details": "Not packed with mincemeat like suggested", "mix": "", "fpc": "", "size": "", "bbe": "21/12/2018 L2ERJ9.23", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Customer perception. Product checked and is as expected.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-11-26", "via": "Phone", "cust": "Consumer", "addr": "Imran Gill, 171 Moor View, Chester", "ref": "", "brand": "Regal Bakery", "product": "28 Pc Cake Rusk", "cat": "Quality", "type": "Appearance", "details": "Burnt", "mix": "", "fpc": "", "size": "", "bbe": "05/10/19 LMZF2162018", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Appearance of the product can look burnt. Records checked, no issues.", "ca": "N/A", "status": "Closed", "inv": "K Predjulais", "comments": ""}, {"date": "2026-11-26", "via": "Phone", "cust": "Consumer", "addr": "Fatima Lowe, 130 Mill Lane, Bolton", "ref": "", "brand": "Yorkshire Baking", "product": "Twin Pack Parkin", "cat": "Quality", "type": "Texture", "details": "Unpalletable, not a very good texture", "mix": "", "fpc": "", "size": "", "bbe": "", "fee": 0, "gw": "Yes", "resp": "C Mitchell", "rca": "Subjective comment, no trace details provided.", "ca": "N/A", "status": "Open", "inv": "K Predjulais", "comments": ""}];
+
+/* ---------- reference lists (from Drop Menu Info tab) ---------- */
+const LISTS = {
+  customers:["Consumer","Independent","Regal Foods","Morrison's","Iceland","Tesco","Asda","Co-op","Best Way","Sainsbury's"],
+  brands:["Regal Bakery","Yorkshire Baking","KB Foods","Morrison's"],
+  channels:["Letter","Email","Phone","Website","Store Letter","Store Email","Social Media"],
+  staff:["L Morton","S Siraj","K Predjulais","A Younis","C Mitchell","S Qayyum"],
+  statuses:["Open","Pending","Closed"],
+};
+const CATS = {
+  "Quality":["Texture","Aroma","Mouldy","Flavour","Out of date","Appearance"],
+  "Foreign Body":["Metal","Plastic","Insect","Wood","Fruit Stone","Intrinsic Matter","Glass","String","Hair","Other FB"],
+  "Packaging":["Paper / Cardboard","Damaged","Poor Seal"],
+  "Labelling":["Wrong Labelling","Wrong BB Date"],
+};
+const STAFF_INFO = {"L Morton":["Lynda Morton","Customer Care Manager"],"S Siraj":["Sana Siraj","Technical Manager"],"K Predjulais":["Kasia Predjulais","QA Technologist"],"A Younis":["Adam Younis","Technical Director"],"C Mitchell":["Claire Mitchell","Customer Care"],"S Qayyum":["Saima Qayyum","Customer Care"]};
+const BRAND_ADDR = {"Regal Bakery":"RB","Yorkshire Baking":"YB","KB Foods":"KB","Morrison's":"MO"};
+/* units produced/sold per month (from the Summary tab sales figures) */
+const UNIT_SERIES=[410064,442389,621368,448781,600492,407329,539739,549419,563014,562663,561173,483496];
+const TARGET=25;
+const TODAY=new Date(2026,9,7);
+
+/* ---------- build demo data ---------- */
+function remap(d){ // seed months Jan..Nov -> Nov 2025..Sep 2026
+  const m=+d.slice(5,7), day=Math.min(+d.slice(8,10),28);
+  let y=2025, mo=10+m; if(mo>12){mo-=12;y=2026}
+  return `${y}-${String(mo).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+}
+function buildDemo(){
+  const t=SEED.map((s,i)=>({...s,date:remap(s.date),no:i+1,justified:s.rca&&/isolated|preferan|nature/i.test(s.rca)?"Unjustified":"Justified"}));
+  const extra=[
+    {date:"2026-09-26",via:"Letter",cust:"Consumer",addr:"Megan Firth, 14 Church St, Halifax",brand:"Yorkshire Baking",product:"Sultana Mega Loaf",cat:"Labelling",type:"Wrong BB Date",details:"Best before date on the pack reads 2025 even though bought this week",bbe:"BBE 12/10/2025 L2631",fee:0,gw:"Yes",resp:"",rca:"",ca:"",status:"Open",inv:"K Predjulais"},
+    {date:"2026-09-29",via:"Email",cust:"Consumer",addr:"Owen Pearson, 88 Park Ave, Preston",brand:"Regal Bakery",product:"Original Cake Rusk 18Pcs",cat:"Quality",type:"Texture",details:"Rusks were soft and stale as soon as the pack was opened",size:"18 pcs",bbe:"BEST_BEFORE: 02-MAR-2027",fee:0,gw:"Yes",resp:"",rca:"Checked retained samples from the same day: moisture within spec. Awaiting seal integrity results for the batch.",ca:"",status:"Pending",inv:"S Siraj"},
+    {date:"2026-09-30",via:"Store Letter",cust:"Iceland",addr:"Iceland Wakefield Superstore",ref:"ICE-558210",brand:"Regal Bakery",product:"French Toast",cat:"Quality",type:"Flavour",details:"Customer reports a burnt, bitter taste throughout the pack",bbe:"14/01/2027",fee:25,gw:"Yes",resp:"",rca:"Oven 2 temperature log shows a 6 minute spike on the production date. Batch on hold for review.",ca:"Recalibrate oven 2 probe",status:"Pending",inv:"A Younis"},
+    {date:"2026-10-02",via:"Phone",cust:"Consumer",addr:"Grace Shaw, 41 Mill Lane, Bolton",brand:"Yorkshire Baking",product:"Parkin Cake Slices",cat:"Foreign Body",type:"Plastic",details:"Small piece of hard blue plastic found inside a slice",mix:"MX-2209",fpc:"YB-PKS-06",size:"6 slices",bbe:"21/11/2026",fee:0,gw:"Yes",resp:"",rca:"",ca:"",status:"Open",inv:"S Siraj"},
+    {date:"2026-10-03",via:"Store Email",cust:"Tesco",addr:"Tesco Leeds Superstore",ref:"TRA-2291874",brand:"Regal Bakery",product:"Cake Rusk 18Pc",cat:"Packaging",type:"Poor Seal",details:"Three packs from the same case were not sealed along the top edge",size:"18 pcs",bbe:"BEST_BEFORE: 19-APR-2027",fee:0,gw:"No",resp:"",rca:"",ca:"",status:"Open",inv:"K Predjulais"},
+    {date:"2026-10-05",via:"Website",cust:"Consumer",addr:"Imran Hussain, 7 Station Rd, Bradford",brand:"Yorkshire Baking",product:"Cherry Mega Loaf",cat:"Quality",type:"Mouldy",details:"Green mould spots on top of the loaf two days before the best before date",bbe:"09/10/2026",fee:0,gw:"Yes",resp:"",rca:"",ca:"",status:"Open",inv:"K Predjulais"},
+    {date:"2026-10-06",via:"Social Media",cust:"Consumer",addr:"Sophie Ellis, 102 Moor View, York",brand:"Yorkshire Baking",product:"Angel Cake Slices",cat:"Quality",type:"Appearance",details:"Sponge layers collapsed and the colours had bled into each other",bbe:"30/10/2026",fee:0,gw:"Yes",resp:"",rca:"",ca:"",status:"Open",inv:"S Siraj"},
+  ];
+  extra.forEach(e=>t.push({ref:"",mix:"",fpc:"",size:"",comments:"",justified:"TBC",...e,no:t.length+1}));
+  return t;
+}
+const LS_KEY="tracewell.demo.v2";
+let tickets;
+try{ const s=localStorage.getItem(LS_KEY); tickets=s?JSON.parse(s):null }catch(e){ tickets=null }
+if(!Array.isArray(tickets)||!tickets.length) tickets=buildDemo();
+let aiCount=0;
+function save(){ try{localStorage.setItem(LS_KEY,JSON.stringify(tickets))}catch(e){} }
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const tid=n=>"CMP-"+String(n).padStart(4,"0");
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONL=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const pd=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const fmtD=s=>{if(!s)return"";const d=pd(s);return `${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}`};
+const ord=n=>n+(n%10==1&&n!=11?"st":n%10==2&&n!=12?"nd":n%10==3&&n!=13?"rd":"th");
+const longD=d=>`${ord(d.getDate())} ${MONL[d.getMonth()]} ${d.getFullYear()}`;
+const ageDays=s=>Math.max(0,Math.round((TODAY-pd(s))/864e5));
+const AVC=["#3B8DF0","#FF7452","#11A69A","#E9A23B","#7A68EE","#E25C9A"];
+const avatar=n=>{if(!n)return'<span class="muted">Unassigned</span>';const i=LISTS.staff.indexOf(n);const c=AVC[(i<0?n.length:i)%AVC.length];const ini=n.split(" ").map(w=>w[0]).join("");return `<span class="who"><span class="av" style="background:${c}">${esc(ini)}</span>${esc(n)}</span>`};
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("on"),2600)}
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const custName=t=>t.cust==="Consumer"?(t.addr||"").split(",")[0]:t.cust;
+
+/* months window: Nov 2025 .. Oct 2026 */
+const MONTHS=[];for(let i=0;i<12;i++){const d=new Date(2025,10+i,1);MONTHS.push({key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`,label:MON[d.getMonth()]+(d.getMonth()===0?" '"+String(d.getFullYear()).slice(2):""),units:i<11?UNIT_SERIES[i]:Math.round(UNIT_SERIES[11]*7/31)})}
+MONTHS[11].label+="*";
+
+/* ================= ROUTER ================= */
+const TITLES={dashboard:"Dashboard",tickets:"Tickets",new:"New ticket",ai:"AI responses",settings:"Settings & billing"};
+const LANDING_ANCHORS=["home","features","ai-section","pricing",""];
+function route(){
+  const h=location.hash.replace("#","");
+  const inApp=TITLES[h];
+  $("#landing").hidden=!!inApp; $("#app").hidden=!inApp;
+  if(!inApp){ if(h&&h!=="home"){const el=document.getElementById(h); el&&el.scrollIntoView({behavior:"smooth"})} else window.scrollTo(0,0); renderPreview(); return }
+  $$("[data-view]").forEach(s=>s.hidden=s.dataset.view!==h);
+  $$(".navi[data-v]").forEach(a=>a.classList.toggle("on",a.dataset.v===h));
+  $("#pg-title").textContent=TITLES[h];
+  updateNavCount();
+  if(h==="dashboard")renderDash();
+  if(h==="tickets")renderTickets();
+  if(h==="new"){ if(!editingNo) resetForm(); }
+  if(h==="ai")renderAiPicker();
+  if(h==="settings")renderSettings();
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+function go(v){ if(location.hash==="#"+v) route(); else location.hash=v }
+function updateNavCount(){ $("#nav-open").textContent=tickets.filter(t=>t.status!=="Closed").length }
+
+/* ================= LANDING ================= */
+function renderPreview(){
+  const inWin=tickets.filter(t=>t.date>=MONTHS[0].key);
+  $("#pv-total").textContent=inWin.length;
+  const units=MONTHS.slice(0,11).reduce((a,m)=>a+m.units,0);
+  const c11=inWin.filter(t=>t.date<MONTHS[11].key).length;
+  $("#pv-cpmu").innerHTML=(c11/units*1e6).toFixed(1)+'<small>target 25</small>';
+  $("#pv-open").textContent=tickets.filter(t=>t.status!=="Closed").length;
+  const counts=MONTHS.map(m=>inWin.filter(t=>t.date.startsWith(m.key)).length), mx=Math.max(...counts,1);
+  $("#pv-bars").innerHTML=counts.map((c,i)=>`<i class="${i===counts.indexOf(mx)?"c":""}" style="height:${Math.max(6,c/mx*100)}%"></i>`).join("");
+}
+$("#billtoggle").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$$("#billtoggle button").forEach(x=>x.classList.toggle("on",x===b));$$(".price[data-m]").forEach(p=>p.innerHTML=`£${p.dataset[b.dataset.b]}<small> / month${b.dataset.b==="y"?", billed yearly":""}</small>`)});
+
+function openSignup(plan="Growth",login=false){
+  const m=$("#modal");m.hidden=false;
+  m.innerHTML=login?`<div class="modal-c" role="dialog" aria-modal="true" aria-labelledby="mt"><h3 id="mt">Welcome back</h3><p class="muted">Log in to your Softnear CRM workspace.</p>
+  <form id="sf"><div class="fld"><label for="s-email">Work email</label><input class="inp" id="s-email" type="email" value="lynda.morton@regalbakery.example" required></div>
+  <div class="fld"><label for="s-pw">Password</label><input class="inp" id="s-pw" type="password" value="demo-password" required></div>
+  <button class="btn primary" type="submit">Log in</button><button class="btn ghost" type="button" data-close>Cancel</button></form></div>`
+  :`<div class="modal-c" role="dialog" aria-modal="true" aria-labelledby="mt"><h3 id="mt">Start your free trial</h3><p class="muted">14 days on any plan. No card needed.</p>
+  <form id="sf"><div class="fld"><label for="s-name">Your name</label><input class="inp" id="s-name" value="Lynda Morton" required></div>
+  <div class="fld"><label for="s-co">Company</label><input class="inp" id="s-co" value="Regal Bakery Group" required></div>
+  <div class="fld"><label for="s-email">Work email</label><input class="inp" id="s-email" type="email" value="lynda.morton@regalbakery.example" required></div>
+  <div class="fld"><label>Plan</label><div class="plan-pick">${["Starter","Growth","Enterprise"].map(p=>`<label><input type="radio" name="plan" value="${p}" ${p===plan?"checked":""}><span><b>${p}</b>${p==="Starter"?"£49/mo":p==="Growth"?"£149/mo":"Custom"}</span></label>`).join("")}</div></div>
+  <div class="fld"><label>Import your existing log <span class="hint">optional</span></label><div class="tag" style="height:auto;padding:10px 12px;border-style:dashed">Complaints.xlsx · 76 complaints ready to import</div></div>
+  <button class="btn primary" type="submit">Create workspace</button><button class="btn ghost" type="button" data-close>Cancel</button></form></div>`;
+  m.querySelector("#sf").addEventListener("submit",e=>{e.preventDefault();const co=m.querySelector("#s-co");if(co){$("#ws-name").textContent=co.value||"My workspace";$("#ws-av").textContent=(co.value||"MW").split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase()}m.hidden=true;go("dashboard");setTimeout(()=>toast(login?"Logged in":"Workspace created · 76 complaints imported"),300)});
+  m.querySelector("[data-close]").onclick=()=>m.hidden=true;
+  setTimeout(()=>m.querySelector("input")?.focus(),50);
+}
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")e.target.hidden=true});
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-act]");
+  if(a){ if(a.dataset.act==="signup")openSignup(a.dataset.plan||"Growth"); if(a.dataset.act==="login")openSignup("Growth",true); if(a.dataset.act==="demo")go("dashboard"); }
+  const g=e.target.closest("[data-go]"); if(g)go(g.dataset.go);
+  const t=e.target.closest("[data-toast]"); if(t)toast(t.dataset.toast);
+});
+
+/* ================= DASHBOARD ================= */
+const charts={};
+let typeCat="Quality";
+const CAT_COL=()=>({"Quality":css("--accent"),"Foreign Body":css("--coral"),"Packaging":css("--teal"),"Labelling":css("--amber")});
+const PAL=()=>[css("--accent"),css("--coral"),css("--teal"),css("--amber"),css("--violet"),css("--pink"),"#8A93A8","#3E4A6B","#B9C2FF","#FFC2B3"];
+function chartDefaults(){
+  if(!window.Chart)return false;
+  Chart.defaults.font.family=css("--f-body"); Chart.defaults.font.size=12;
+  Chart.defaults.color=css("--muted"); Chart.defaults.borderColor=css("--line");
+  Chart.defaults.plugins.legend.display=false;
+  Chart.defaults.plugins.tooltip.backgroundColor=css("--ink");
+  Chart.defaults.plugins.tooltip.titleColor=css("--bg");
+  Chart.defaults.plugins.tooltip.bodyColor=css("--bg");
+  Chart.defaults.plugins.tooltip.padding=10; Chart.defaults.plugins.tooltip.cornerRadius=10;
+  Chart.defaults.maintainAspectRatio=false;
+  return true;
+}
+function mk(id,cfg){ if(charts[id])charts[id].destroy(); charts[id]=new Chart(document.getElementById(id),cfg) }
+function dashData(){
+  const b=$("#d-brand").value;
+  return tickets.filter(t=>t.date>=MONTHS[0].key&&(!b||t.brand===b));
+}
+function renderDash(){
+  const sel=$("#d-brand"); if(!sel.options.length){ sel.innerHTML='<option value="">All brands</option>'+LISTS.brands.map(b=>`<option>${esc(b)}</option>`).join(""); sel.onchange=renderDash }
+  $("#d-range").textContent=`Rolling 12 months · Nov 2025 to Oct 2026 · *Oct month to date`;
+  const D=dashData();
+  const byM=MONTHS.map(m=>D.filter(t=>t.date.startsWith(m.key)));
+  const units11=MONTHS.slice(0,11).reduce((a,m)=>a+m.units,0);
+  const cpmu=(byM.slice(0,11).flat().length/units11*1e6);
+  const open=D.filter(t=>t.status==="Open").length, pend=D.filter(t=>t.status==="Pending").length;
+  const fb=D.filter(t=>t.cat==="Foreign Body").length;
+  const gw=D.filter(t=>t.gw==="Yes").length;
+  const last=byM[10].length, prev=byM[9].length;
+  const dl=last-prev;
+  const cp=cpmu/TARGET*100;
+  $("#kpis").innerHTML=`
+   <div class="card kpi hero-k"><span class="eyebrow">Complaints · 12 months</span><div class="v">${D.length}</div><div class="ft"><span class="delta">${dl>0?"+":""}${dl}</span> Sep vs Aug</div></div>
+   <div class="card kpi"><span class="eyebrow">Open & pending</span><div class="v">${open+pend}<small>${open} open</small></div><div class="ft">${pend} awaiting investigation</div></div>
+   <div class="card kpi"><span class="eyebrow">CPMU · 12 months</span><div class="v">${cpmu.toFixed(1)}<small>/ ${TARGET}</small></div><div class="meter"><i style="width:${Math.min(cp,100)}%;background:${cp>100?css("--bad"):cp>80?css("--amber"):css("--good")}"></i></div></div>
+   <div class="card kpi"><span class="eyebrow">Foreign body</span><div class="v">${fb}</div><div class="ft"><span class="delta ${fb?"up":"down"}">${(fb/Math.max(D.length,1)*100).toFixed(0)}%</span> of all complaints</div></div>
+   <div class="card kpi"><span class="eyebrow">Goodwill sent</span><div class="v">${(gw/Math.max(D.length,1)*100).toFixed(0)}<small>%</small></div><div class="ft">${gw} parcels sent</div></div>`;
+  // attention list
+  const att=tickets.filter(t=>t.status!=="Closed").sort((a,b)=>a.date.localeCompare(b.date)).slice(0,6);
+  $("#attn").innerHTML=att.length?att.map(t=>{const a=ageDays(t.date);const c=t.cat==="Foreign Body"?"--bad":a>7?"--amber":"--accent";return `<div class="att" data-open="${t.no}" tabindex="0"><span class="sev" style="background:var(${c})"></span><div style="min-width:0"><b>${esc(t.product)}</b><small>${tid(t.no)} · ${esc(t.cat)} · ${esc(t.type)}</small></div><div class="age"><b>${a}d</b>open</div></div>`}).join(""):'<div class="empty">Nothing open. Nice work.</div>';
+  if(!chartDefaults()){ $$(".chart-box").forEach(b=>b.innerHTML='<div class="empty">Charts need the chart library, which could not load.</div>'); return }
+  const labels=MONTHS.map(m=>m.label);
+  const cc=CAT_COL();
+  mk("ch-cat",{type:"bar",data:{labels,datasets:Object.keys(CATS).map(c=>({label:c,data:byM.map(a=>a.filter(t=>t.cat===c).length),backgroundColor:cc[c],borderRadius:6,borderSkipped:false,barPercentage:.62}))},options:{scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,beginAtZero:true,ticks:{precision:0},grid:{color:css("--line")},border:{display:false}}},plugins:{tooltip:{mode:"index",intersect:false}}}});
+  $("#lg-cat").innerHTML=Object.keys(CATS).map(c=>`<span><i style="background:${cc[c]}"></i>${c}</span>`).join("");
+  const cp12=byM.map((a,i)=>i===11?null:+(a.length/MONTHS[i].units*1e6).toFixed(2));
+  mk("ch-cpmu",{type:"line",data:{labels,datasets:[
+    {label:"CPMU",data:cp12,borderColor:css("--accent"),backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,260);g.addColorStop(0,css("--accent")+"40");g.addColorStop(1,css("--accent")+"00");return g},fill:true,tension:.35,borderWidth:2.5,pointRadius:ctx=>ctx.dataIndex===10?5:0,pointBackgroundColor:css("--accent"),pointHoverRadius:5},
+    {label:"Target",data:labels.map(()=>TARGET),borderColor:css("--coral"),borderDash:[6,5],borderWidth:2,pointRadius:0,fill:false}]},
+    options:{scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:css("--line")},border:{display:false}}},plugins:{tooltip:{mode:"index",intersect:false,callbacks:{label:c=>c.parsed.y==null?"":`${c.dataset.label}: ${c.parsed.y.toFixed(1)}`}}}}});
+  // type seg
+  $("#type-seg").innerHTML=Object.keys(CATS).map(c=>`<button class="${c===typeCat?"on":""}" data-c="${c}">${c==="Foreign Body"?"Foreign body":c}</button>`).join("");
+  $("#type-seg").onclick=e=>{const b=e.target.closest("button");if(!b)return;typeCat=b.dataset.c;renderDash()};
+  const types=CATS[typeCat], pal=PAL();
+  mk("ch-type",{type:"bar",data:{labels,datasets:types.map((ty,i)=>({label:ty,data:byM.map(a=>a.filter(t=>t.cat===typeCat&&t.type===ty).length),backgroundColor:pal[i%pal.length],borderRadius:4,borderSkipped:false,barPercentage:.6}))},options:{scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,beginAtZero:true,ticks:{precision:0},grid:{color:css("--line")},border:{display:false}}},plugins:{tooltip:{mode:"index",intersect:false,filter:i=>i.parsed.y>0}}}});
+  const used=types.map((ty,i)=>({ty,i,n:D.filter(t=>t.cat===typeCat&&t.type===ty).length}));
+  $("#lg-type").innerHTML=used.map(u=>`<span><i style="background:${pal[u.i%pal.length]}"></i>${esc(u.ty)} <b class="mono" style="color:var(--ink)">${u.n}</b></span>`).join("");
+  // customers
+  const cust={};D.forEach(t=>cust[t.cust]=(cust[t.cust]||0)+1);
+  const ce=Object.entries(cust).sort((a,b)=>b[1]-a[1]);
+  mk("ch-cust",{type:"bar",data:{labels:ce.map(e=>e[0]),datasets:[{data:ce.map(e=>e[1]),backgroundColor:ce.map((e,i)=>i===0?css("--accent"):css("--accent")+"66"),borderRadius:6,borderSkipped:false,barPercentage:.7}]},options:{indexAxis:"y",scales:{x:{beginAtZero:true,ticks:{precision:0},grid:{color:css("--line")},border:{display:false}},y:{grid:{display:false}}}}});
+  const ch={};D.forEach(t=>ch[t.via]=(ch[t.via]||0)+1);
+  const he=Object.entries(ch).sort((a,b)=>b[1]-a[1]);
+  mk("ch-chan",{type:"doughnut",data:{labels:he.map(e=>e[0]),datasets:[{data:he.map(e=>e[1]),backgroundColor:pal,borderColor:css("--surface"),borderWidth:3,hoverOffset:6}]},options:{cutout:"68%",plugins:{legend:{display:true,position:"right",labels:{usePointStyle:true,pointStyle:"rectRounded",boxWidth:10,padding:12,color:css("--fg")}}}}});
+}
+document.addEventListener("click",e=>{const r=e.target.closest("[data-open]");if(r)openDrawer(+r.dataset.open)});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"){const r=e.target.closest?.("[data-open]");if(r)openDrawer(+r.dataset.open)} if(e.key==="Escape"){closeDrawer();$("#modal").hidden=true}});
+
+/* ================= TICKETS ================= */
+const tf={status:"Open",cat:"",brand:"",via:"",inv:"",q:"",page:0};
+const PER=12;
+function fillSel(id,label,opts){const s=$(id);if(s.options.length)return;s.innerHTML=`<option value="">${label}</option>`+opts.map(o=>`<option>${esc(o)}</option>`).join("");s.onchange=()=>{tf[id.slice(3)]=s.value;tf.page=0;renderTickets()}}
+function renderTickets(){
+  fillSel("#f-cat","All categories",Object.keys(CATS));fillSel("#f-brand","All brands",LISTS.brands);fillSel("#f-via","All channels",LISTS.channels);fillSel("#f-inv","All investigators",LISTS.staff);
+  const q=tf.q.toLowerCase();
+  const base=tickets.filter(t=>(!tf.cat||t.cat===tf.cat)&&(!tf.brand||t.brand===tf.brand)&&(!tf.via||t.via===tf.via)&&(!tf.inv||t.inv===tf.inv)&&(!q||[tid(t.no),t.product,t.details,t.addr,t.cust,t.ref,t.bbe,t.mix,t.fpc,t.type,t.brand].join(" ").toLowerCase().includes(q)));
+  const cnt=s=>s==="All"?base.length:base.filter(t=>t.status===s).length;
+  $("#t-tabs").innerHTML=["Open","Pending","Closed","All"].map(s=>`<button class="${tf.status===s?"on":""}" data-s="${s}">${s==="All"?"All tickets":s}<span class="n">${cnt(s)}</span></button>`).join("");
+  $("#t-tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;tf.status=b.dataset.s;tf.page=0;renderTickets()};
+  const rows=base.filter(t=>tf.status==="All"||t.status===tf.status).sort((a,b)=>b.date.localeCompare(a.date)||b.no-a.no);
+  const pages=Math.max(1,Math.ceil(rows.length/PER)); tf.page=Math.min(tf.page,pages-1);
+  const sl=rows.slice(tf.page*PER,tf.page*PER+PER);
+  $("#t-body").innerHTML=sl.length?sl.map(t=>`<tr class="r" data-open="${t.no}" tabindex="0"><td class="id">${tid(t.no)}</td><td class="mono" style="white-space:nowrap">${fmtD(t.date)}</td><td class="pr"><b>${esc(t.product)}</b><small>${esc(t.details)}</small></td><td><span class="tag" style="border-color:transparent;background:color-mix(in srgb,${CAT_COL()[t.cat]||css("--muted")} 14%,transparent)">${esc(t.cat)}</span> <span class="muted" style="font-size:12.5px">${esc(t.type)}</span></td><td style="white-space:nowrap">${esc(t.cust)}</td><td>${esc(t.via)}</td><td>${avatar(t.inv)}</td><td><span class="pill ${t.status}">${t.status}</span></td></tr>`).join(""):`<tr><td colspan="8"><div class="empty">No tickets match these filters.</div></td></tr>`;
+  $("#t-count").textContent=`${rows.length} ticket${rows.length===1?"":"s"}`;
+  $("#pg-info").textContent=rows.length?`${tf.page*PER+1}–${Math.min(rows.length,(tf.page+1)*PER)} of ${rows.length}`:"";
+  $("#pg-prev").disabled=tf.page===0;$("#pg-next").disabled=tf.page>=pages-1;
+}
+$("#pg-prev").onclick=()=>{tf.page--;renderTickets()};$("#pg-next").onclick=()=>{tf.page++;renderTickets()};
+$("#gsearch").addEventListener("input",e=>{tf.q=e.target.value;tf.status="All";tf.page=0;if(location.hash!=="#tickets")go("tickets");else renderTickets()});
+
+/* ---------- drawer ---------- */
+function openDrawer(no){
+  const t=tickets.find(x=>x.no===no);if(!t)return;
+  const v=(x,full)=>`<div class="${full?"full":""}"><dt>${x[0]}</dt><dd class="${x[1]===""||x[1]==null?"blank":""}">${x[1]===""||x[1]==null?"Not recorded":esc(x[1])}</dd></div>`;
+  $("#drawer").innerHTML=`
+   <div class="dr-h"><div class="row"><span class="mono muted">${tid(t.no)}</span><span class="pill ${t.status}">${t.status}</span><div style="flex:1"></div><button class="iconbtn" id="dr-x" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+   <h2>${esc(t.product)}</h2><p>${esc(t.brand)} · ${esc(t.cat)} · ${esc(t.type)} · received ${fmtD(t.date)} (${ageDays(t.date)===1?"1 day":ageDays(t.date)+" days"} ago)</p></div>
+   <div class="dr-b">
+    <div class="quote">${esc(t.details)||'<span class="muted">No details recorded</span>'}</div>
+    <div class="dsec"><h4>Customer care</h4><dl class="kv">${[["Received via",t.via],["Customer",t.cust],["Store or consumer address",t.addr,1],["Customer reference no.",t.ref],["Brand",t.brand],["Product",t.product],["Complaint category",t.cat],["Complaint type",t.type],["Charge / fee",t.fee?`£${(+t.fee).toFixed(2)}`:"£0.00"],["Goodwill sent",t.gw],["Response sent by",t.resp]].map(x=>v(x,x[2])).join("")}</dl></div>
+    <div class="dsec"><h4>Traceability</h4><dl class="kv">${[["MIX code",t.mix],["Finished product code",t.fpc],["Size of the packaging",t.size],["BBE / traceability code",t.bbe]].map(x=>v(x)).join("")}</dl></div>
+    <div class="dsec"><h4>Technical department</h4><dl class="kv">${[["Details of investigation & RCA",t.rca,1],["Corrective actions required by BC",t.ca,1],["Justified",t.justified],["Investigated by",t.inv],["Comments",t.comments,1]].map(x=>v(x,x[2])).join("")}</dl></div>
+    <div class="dsec"><h4>Update status</h4><div class="seg" id="dr-status">${LISTS.statuses.map(s=>`<button class="${s===t.status?"on":""}" data-s="${s}">${s}</button>`).join("")}</div></div>
+   </div>
+   <div class="dr-f"><button class="btn primary" id="dr-ai"><svg class="i"><use href="#i-spark"/></svg>Draft response with AI</button><button class="btn" id="dr-edit">Edit ticket</button></div>`;
+  $("#drawer").classList.add("on");$("#scrim").classList.add("on");
+  $("#dr-x").onclick=closeDrawer;
+  $("#dr-status").onclick=e=>{const b=e.target.closest("button");if(!b)return;t.status=b.dataset.s;save();openDrawer(no);refreshCurrent();toast(`${tid(no)} marked ${t.status}`)};
+  $("#dr-ai").onclick=()=>{closeDrawer();aiTicket=no;go("ai")};
+  $("#dr-edit").onclick=()=>{closeDrawer();startEdit(no)};
+  setTimeout(()=>$("#dr-x")?.focus(),60);
+}
+function closeDrawer(){$("#drawer").classList.remove("on");$("#scrim").classList.remove("on")}
+$("#scrim").onclick=closeDrawer;
+function refreshCurrent(){const h=location.hash.slice(1);updateNavCount();if(h==="tickets")renderTickets();if(h==="dashboard")renderDash()}
+
+/* ================= NEW TICKET FORM ================= */
+const FIELDS=[
+  {k:"no",l:"No",t:"auto",g:"care"},
+  {k:"date",l:"Date complaint received",t:"date",req:1,g:"care"},
+  {k:"via",l:"Complaint received via",hint:"method of communication",t:"select",o:()=>LISTS.channels,req:1,g:"care"},
+  {k:"cust",l:"Customer",t:"select",o:()=>LISTS.customers,req:1,g:"care"},
+  {k:"ref",l:"Customer reference no.",hint:"if any",t:"text",g:"care"},
+  {k:"addr",l:"Store or consumer address",t:"textarea",req:1,g:"care",full:1,ph:"Name, address and postcode, or the store name and branch"},
+  {k:"brand",l:"Brand",t:"select",o:()=>LISTS.brands,req:1,g:"care"},
+  {k:"product",l:"Product",t:"text",list:1,req:1,g:"care",ph:"Start typing a product"},
+  {k:"cat",l:"Complaint category",t:"select",o:()=>Object.keys(CATS),req:1,g:"care"},
+  {k:"type",l:"Complaint type",t:"select",o:()=>CATS[val("cat")]||[],req:1,g:"care"},
+  {k:"details",l:"Complaint details",t:"textarea",req:1,g:"care",full:1,ph:"What did the customer report?"},
+  {k:"fee",l:"Charge / fee (£)",t:"number",g:"care"},
+  {k:"gw",l:"Goodwill sent",t:"seg",o:()=>["Yes","No"],g:"care"},
+  {k:"resp",l:"Response sent by",t:"select",o:()=>LISTS.staff,g:"care"},
+  {k:"mix",l:"MIX code",t:"text",g:"trace",ph:"e.g. MX-2209"},
+  {k:"fpc",l:"Finished product code",t:"text",g:"trace"},
+  {k:"size",l:"Size of the packaging",t:"text",g:"trace",ph:"e.g. 400g, 18 pcs"},
+  {k:"bbe",l:"BBE / traceability code",t:"text",g:"trace",ph:"As printed on the pack"},
+  {k:"rca",l:"Details of investigation & RCA",t:"textarea",g:"tech",full:1,ph:"GMP records checked, taste panel, metal detection logs…"},
+  {k:"ca",l:"Any corrective actions required by BC",t:"textarea",g:"tech",full:1,ph:"N/A if none"},
+  {k:"status",l:"Status",t:"seg",o:()=>LISTS.statuses,g:"tech"},
+  {k:"justified",l:"Justified",t:"seg",o:()=>["Justified","Unjustified","TBC"],g:"tech"},
+  {k:"inv",l:"Investigated by",t:"select",o:()=>LISTS.staff,g:"tech"},
+  {k:"comments",l:"Comments",t:"textarea",g:"tech",full:1},
+];
+let editingNo=null;
+const val=k=>{const el=document.querySelector(`[name="${k}"]:checked`)||document.getElementById("fld-"+k);return el?el.value:""};
+function fieldHTML(f){
+  const lab=`<label for="fld-${f.k}">${esc(f.l)}${f.req?'<span class="req">*</span>':""}${f.hint?`<span class="hint">${esc(f.hint)}</span>`:""}</label>`;
+  let inp="";
+  if(f.t==="auto")inp=`<input class="inp mono" id="fld-no" readonly>`;
+  else if(f.t==="select")inp=`<select class="inp" id="fld-${f.k}" name="${f.k}_s"><option value="">Select…</option>${f.o().map(o=>`<option>${esc(o)}</option>`).join("")}</select>`;
+  else if(f.t==="textarea")inp=`<textarea class="inp" id="fld-${f.k}" placeholder="${esc(f.ph||"")}"></textarea>`;
+  else if(f.t==="seg")return `<div class="fld ${f.full?"full":""}"><label>${esc(f.l)}</label><div class="segf">${f.o().map((o,i)=>`<label><input type="radio" name="${f.k}" value="${o}" id="fld-${f.k}-${i}"><span>${o}</span></label>`).join("")}</div></div>`;
+  else inp=`<input class="inp" id="fld-${f.k}" type="${f.t==="number"?"number":f.t}" ${f.t==="number"?'step="0.01" min="0"':""} ${f.list?'list="dl-products"':""} placeholder="${esc(f.ph||"")}">`;
+  return `<div class="fld ${f.full?"full":""}">${lab}${inp}</div>`;
+}
+function buildForm(){
+  ["care","trace","tech"].forEach(g=>$("#fs-"+g).innerHTML=FIELDS.filter(f=>f.g===g).map(fieldHTML).join(""));
+  const prods=[...new Set(tickets.map(t=>t.product).filter(Boolean))].sort();
+  $("#fs-care").insertAdjacentHTML("beforeend",`<datalist id="dl-products">${prods.map(p=>`<option value="${esc(p)}">`).join("")}</datalist>`);
+  $("#fld-cat").addEventListener("change",()=>{const s=$("#fld-type");s.innerHTML='<option value="">Select…</option>'+(CATS[val("cat")]||[]).map(o=>`<option>${esc(o)}</option>`).join("")});
+  $("#tform").addEventListener("input",updateChecks);$("#tform").addEventListener("change",updateChecks);
+}
+function setVal(k,v){
+  const f=FIELDS.find(x=>x.k===k);if(!f)return;
+  if(f.t==="seg"){$$(`[name="${k}"]`).forEach(r=>r.checked=r.value===v)}
+  else{const el=document.getElementById("fld-"+k);if(el){if(k==="type"){$("#fld-cat").dispatchEvent(new Event("change"))}el.value=v??""}}
+}
+function resetForm(){
+  editingNo=null;buildForm();
+  const next=Math.max(...tickets.map(t=>t.no))+1;
+  $("#fld-no").value=tid(next);$("#f-no").textContent=tid(next);
+  setVal("date","2026-10-07");setVal("gw","Yes");setVal("status","Open");setVal("justified","TBC");setVal("fee","0");
+  $("#f-title").textContent="New complaint";$("#f-submit").textContent="Create ticket";$("#f-ai").textContent="Create & draft response";
+  updateChecks();
+}
+function startEdit(no){
+  const t=tickets.find(x=>x.no===no);if(!t)return;
+  editingNo=no; location.hash="new"; buildForm();
+  $("#fld-no").value=tid(no);$("#f-no").textContent=tid(no);
+  ["date","via","cust","ref","addr","brand","product","cat"].forEach(k=>setVal(k,t[k]));
+  $("#fld-cat").dispatchEvent(new Event("change"));
+  FIELDS.forEach(f=>{if(!["no","cat"].includes(f.k))setVal(f.k,t[f.k])});
+  $("#f-title").textContent="Edit complaint";$("#f-submit").textContent="Save changes";$("#f-ai").textContent="Save & draft response";
+  updateChecks();
+}
+function updateChecks(){
+  const req=FIELDS.filter(f=>f.req);
+  const done=req.filter(f=>val(f.k).trim());
+  $("#f-prog").style.width=(done.length/req.length*100)+"%";
+  $("#f-progtxt").textContent=`${done.length} of ${req.length} required fields complete`;
+  const groups=[["Complaint received",["date","via"]],["Customer & address",["cust","addr"]],["Product & brand",["brand","product"]],["Category & type",["cat","type"]],["Complaint details",["details"]],["Investigation (optional)",["rca","inv"]]];
+  $("#f-checks").innerHTML=groups.map(([l,ks])=>`<div class="${ks.every(k=>val(k).trim())?"ok":""}"><i></i>${l}</div>`).join("");
+}
+function collect(){
+  const o={};FIELDS.forEach(f=>{if(f.k!=="no")o[f.k]=val(f.k).trim()});o.fee=+o.fee||0;return o;
+}
+function submitForm(thenAi){
+  const o=collect();
+  const missing=FIELDS.filter(f=>f.req&&!o[f.k]);
+  $$(".inp.err").forEach(e=>e.classList.remove("err"));
+  if(missing.length){missing.forEach(f=>document.getElementById("fld-"+f.k)?.classList.add("err"));document.getElementById("fld-"+missing[0].k)?.focus();toast(`Add ${missing.map(f=>f.l.toLowerCase()).slice(0,2).join(" and ")}${missing.length>2?` and ${missing.length-2} more`:""} to save`);return}
+  let no;
+  if(editingNo){no=editingNo;Object.assign(tickets.find(t=>t.no===no),o)}
+  else{no=Math.max(...tickets.map(t=>t.no))+1;tickets.push({...o,no})}
+  save();updateNavCount();const was=editingNo;editingNo=null;
+  toast(was?`${tid(no)} saved`:`${tid(no)} created`);
+  if(thenAi){aiTicket=no;go("ai")}else{tf.status="All";tf.q="";$("#gsearch").value="";go("tickets");setTimeout(()=>openDrawer(no),250)}
+}
+$("#tform").addEventListener("submit",e=>{e.preventDefault();submitForm(false)});
+$("#f-ai").onclick=()=>submitForm(true);
+$("#f-sample").onclick=()=>{
+  const ex={date:"2026-10-07",via:"Email",cust:"Consumer",ref:"",addr:"Helen Dobson, 23 Beaconsfield Avenue, Portsmouth, PO6 2PS",brand:"Regal Bakery",product:"Regal Siprus Juice 1L",cat:"Quality",details:"Customer sent photos of a juice bottle with what appears to be mould on the inside of the lid",fee:"0",gw:"Yes",resp:"L Morton",mix:"MX-1806",fpc:"RSJ-1000",size:"1 litre",bbe:"BBE 28/02/2027 L0613",rca:"Images reviewed and capping line records checked. The inner cap under the bottle top did not seat correctly, so the bottle was not fully sealed. Capping is automated and the fault was not picked up by QC checks on this occasion.",ca:"Engineer to inspect capping head torque settings on line 2; add hourly seal check.",status:"Pending",justified:"Justified",inv:"S Siraj",comments:""};
+  Object.entries(ex).forEach(([k,v])=>{if(k!=="type")setVal(k,v)});$("#fld-cat").dispatchEvent(new Event("change"));setVal("type","Mouldy");updateChecks();toast("Example complaint filled in");
+};
+
+/* ================= AI RESPONSES ================= */
+let aiTicket=null, aiFormat="Letter", aiTone="Formal", aiCtl=null, samplePromise=null;
+function getSample(){ if(!samplePromise) samplePromise=(window.claude?.use?window.claude.use("sample"):Promise.resolve(null)).catch(()=>null); return samplePromise }
+function renderAiPicker(){
+  const s=$("#ai-ticket");
+  const ord=[...tickets].sort((a,b)=>(a.status==="Closed")-(b.status==="Closed")||b.date.localeCompare(a.date));
+  s.innerHTML=`<optgroup label="Open & pending">${ord.filter(t=>t.status!=="Closed").map(o).join("")}</optgroup><optgroup label="Closed">${ord.filter(t=>t.status==="Closed").map(o).join("")}</optgroup>`;
+  function o(t){return `<option value="${t.no}">${tid(t.no)} · ${esc(t.product)} · ${esc(custName(t))}</option>`}
+  if(!aiTicket||!tickets.find(t=>t.no===aiTicket)) aiTicket=(ord.find(t=>t.status!=="Closed"&&t.rca)||ord[0]).no;
+  s.value=aiTicket;
+  $("#ai-sign").innerHTML=LISTS.staff.map(n=>`<option value="${n}">${STAFF_INFO[n]?STAFF_INFO[n][0]:n}</option>`).join("");
+  syncAiTicket();
+}
+function syncAiTicket(){
+  const t=tickets.find(x=>x.no===+$("#ai-ticket").value);if(!t)return;aiTicket=t.no;
+  $("#ai-sum").innerHTML=`<div style="display:flex;gap:8px;align-items:center"><span class="pill ${t.status}">${t.status}</span><span class="mono muted">${tid(t.no)}</span></div>
+   <div><b>${esc(t.brand)} · ${esc(t.product)}</b></div><div>${esc(t.cat)} / ${esc(t.type)} · via ${esc(t.via)} on ${fmtD(t.date)}</div>
+   <div class="muted">“${esc(t.details)}”</div>
+   <div><b>Investigation:</b> ${t.rca?esc(t.rca):'<span class="muted">Not yet recorded. The draft will say the investigation is under way.</span>'}</div>`;
+  $("#ai-gw").value=t.gw==="No"?"No":"Yes";
+  $("#ai-sign").value=LISTS.staff.includes(t.resp)?t.resp:"L Morton";
+  $("#lh-brand").textContent=t.brand||"Regal Bakery";
+}
+$("#ai-ticket").onchange=syncAiTicket;
+$("#ai-sign").onchange=()=>{};
+function segBind(id,cb){$(id).onclick=e=>{const b=e.target.closest("button");if(!b)return;$$(id+" button").forEach(x=>x.classList.toggle("on",x===b));cb(b.dataset.v)}}
+segBind("#ai-format",v=>{aiFormat=v;$("#paper").classList.toggle("email",v==="Email")});
+segBind("#ai-tone",v=>aiTone=v);
+
+function refCode(t){return (BRAND_ADDR[t.brand]||"TW")+t.date.slice(2).replace(/-/g,"")}
+function salutation(t){
+  if(t.cust!=="Consumer")return "Customer Services Team";
+  const n=(t.addr||"").split(",")[0].trim();return n||"Customer";
+}
+const HOUSE=`Ms ABC
+276 XYZ Rd
+WXYCNB
+
+13th June 2017
+
+REF: JYS170613
+
+Dear Ms XYZ,
+
+We write to you with reference to your email dated 11th June 2016 with images of a Regal Siprus Juice Bottle containing what appears to be mould on the lid.
+
+After our preliminary review of the images and an initial investigation we have concluded that the mould is due to a malfunction of the cap underneath the bottle top which keeps the bottle sealed and contents fresh, the process of the cap and bottle top application is fully automated and unfortunately seems to have failed on this occasion, regrettably this was not picked up by our numerous Quality Control checks either.
+
+We would like to take this opportunity to assure you that our manufacturing site is equipped with state of the art machinery using only the finest quality ingredients. We continuously strive to ensure that our products reach our customers in perfect condition, unfortunately we have not measured up to our high standards on this occasion and would like to apologize unreservedly for any inconvenience caused.
+
+As a gesture of goodwill kindly accept some of our products which we have enclosed, I hope you will not let this incident deter you from trying our products again in the future.
+
+Yours sincerely,
+
+Lynda Morton
+Customer Care Department`;
+
+function buildPrompt(t,opts){
+  const signer=STAFF_INFO[opts.sign]?STAFF_INFO[opts.sign][0]:opts.sign;
+  const facts={ticket:tid(t.no),received:longD(pd(t.date)),received_via:t.via,customer_type:t.cust,recipient:t.addr,customer_reference:t.ref||null,our_reference:refCode(t),brand:t.brand,product:t.product,pack_size:t.size||null,bbe_or_traceability:t.bbe||null,category:t.cat,type:t.type,complaint_details:t.details,investigation_and_root_cause:t.rca||"NOT YET COMPLETE",corrective_actions:t.ca&&t.ca!=="N/A"?t.ca:null,justified:t.justified||"TBC",goodwill:opts.gw==="Yes"};
+  return `You are drafting a reply to a customer complaint for the Customer Care Department of a UK bakery and food manufacturer (brand: ${t.brand}). Write in British English.
+
+Follow the structure and voice of the company's approved house letter below, adapting the content to this complaint:
+1. ${opts.format==="Letter"?`Recipient name and address, one line per part (split the address on commas), then a blank line, then today's date "${longD(TODAY)}", then a blank line, then "REF: ${refCode(t)}", then "Dear ${salutation(t)},".`:`First line "Subject: " followed by a short subject that includes our reference ${refCode(t)}. Then a blank line, then "Dear ${salutation(t)},". No postal address block.`}
+2. Opening paragraph: "We write to you with reference to your ${t.via.toLowerCase()} dated ..." and restate what was reported.
+3. Findings paragraph: explain what the investigation found in plain, customer-friendly language, using ONLY the facts given. If the investigation is "NOT YET COMPLETE", say our Technical team is investigating, ask them to keep the product and packaging (including the best before and batch code) if they still have it, and promise to write again with findings. If the complaint was unjustified or due to personal preference or the nature of the product, explain this gently and without blame, and do not admit a fault.
+4. Reassurance paragraph about the manufacturing site, quality standards and checks, with an apology for any inconvenience (an unreserved apology only if the complaint is justified).
+5. ${opts.gw==="Yes"?(opts.format==="Letter"?`Goodwill paragraph: "As a gesture of goodwill kindly accept some of our products which we have enclosed..." and hope it does not deter them from our products.`:`Goodwill paragraph: say a selection of our products is on its way to them by post as a gesture of goodwill, and hope it does not deter them from our products.`):"No goodwill gesture is being sent, so do not mention one."}
+6. Sign-off: "${opts.format==="Letter"?"Yours sincerely,":"Kind regards,"}" then a blank line, then "${signer}" then "Customer Care Department".
+
+Tone: ${opts.tone==="Formal"?"formal and courteous, like the house letter":opts.tone==="Warm"?"warm, empathetic and personal while staying professional":"concise: keep each paragraph to one or two sentences"}.
+Rules: plain text only, no markdown, no bullet points, no placeholders in square brackets. Do not invent test results, dates or facts that are not given. Do not name internal staff other than the signatory. Do not offer refunds or compensation beyond any goodwill stated. Fix any spelling mistakes in the facts.${opts.note?`\nAlso include: ${opts.note}`:""}
+
+Approved house letter (template, anonymised):
+"""
+${HOUSE}
+"""
+
+Complaint facts (JSON):
+${JSON.stringify(facts,null,1)}
+
+Output only the ${opts.format.toLowerCase()} text.`;
+}
+
+function templateLetter(t,opts){
+  const signer=STAFF_INFO[opts.sign]?STAFF_INFO[opts.sign][0]:opts.sign;
+  const via=t.via.toLowerCase().replace("store ","");
+  const rec=longD(pd(t.date));
+  const L=[];
+  if(opts.format==="Letter"){L.push(...(t.addr||"").split(",").map(s=>s.trim()).filter(Boolean),"",longD(TODAY),"",`REF: ${refCode(t)}`,"")}
+  else L.push(`Subject: Your ${t.product} complaint (ref ${refCode(t)})`,"");
+  L.push(`Dear ${salutation(t)},`,"");
+  const prodName=t.product.toLowerCase().startsWith((t.brand||"").split(" ")[0].toLowerCase())?t.product:`${t.brand} ${t.product}`;
+  L.push(`We write to you with reference to your ${via} dated ${rec} regarding our ${prodName}. You told us: "${t.details.replace(/\.$/,"")}". Thank you for taking the time to let us know.`,"");
+  const unj=t.justified==="Unjustified"||/preferan|preferen|nature of product|isolated/i.test(t.rca||"");
+  if(!t.rca){L.push(`Our Technical team have begun a full investigation into this matter, including a review of our production and traceability records for the date your product was made. If you still have the product and its packaging, we would be grateful if you could keep it, together with the best before date and batch code, as this greatly helps our investigation. We will write to you again as soon as our findings are complete.`)}
+  else if(unj){L.push(`Our Technical team have reviewed the production records and retained samples for this batch, and found the product to be within our specification. ${opts.tone==="Concise"?"":"We understand that taste and texture can be a matter of personal preference, and we are sorry that this product was not to your liking on this occasion."}`)}
+  else{L.push(`Following our investigation, our Technical team have found the following: ${t.rca.replace(/\.$/,"")}.${/QC|quality control/i.test(t.rca)?"":" Regrettably this was not picked up by our Quality Control checks on this occasion."}${t.ca&&t.ca!=="N/A"?" We have since taken corrective action to prevent this from happening again.":""}`)}
+  L.push("");
+  if(opts.tone!=="Concise")L.push(`We would like to take this opportunity to assure you that our manufacturing site is equipped with modern machinery and uses only the finest quality ingredients. We continuously strive to ensure that our products reach our customers in perfect condition${unj?", and we value your feedback.":", unfortunately we have not measured up to our high standards on this occasion and would like to apologise unreservedly for any inconvenience caused."}`);
+  else L.push(unj?"Thank you for taking the time to share your feedback.":"We apologise unreservedly for any inconvenience caused.");
+  L.push("");
+  if(opts.gw==="Yes")L.push(opts.format==="Letter"?"As a gesture of goodwill kindly accept some of our products which we have enclosed. I hope you will not let this incident deter you from trying our products again in the future.":"As a gesture of goodwill, a selection of our products is on its way to you by post. I hope you will not let this incident deter you from trying our products again in the future.","");
+  if(opts.note)L.push(opts.note,"");
+  L.push(opts.format==="Letter"?"Yours sincerely,":"Kind regards,","",signer,"Customer Care Department");
+  return L.join("\n");
+}
+
+function setState(txt,mode){const s=$("#ai-state");s.className="ai-status"+(mode==="tpl"?" tpl":"");s.innerHTML=(mode==="busy"?'<span class="spin"></span>':mode==="ai"?'<svg class="i" style="width:14px;height:14px"><use href="#i-spark"/></svg>':"")+esc(txt)}
+function showMeta(t){
+  const m=$("#mail-meta");
+  if(aiFormat==="Email"){m.hidden=false;m.innerHTML=`<div><b>To:</b> ${esc(t.cust==="Consumer"?custName(t):t.cust+" customer services")}</div><div><b>From:</b> customercare@example.co.uk</div>`}
+  else m.hidden=true;
+}
+async function generate(){
+  const t=tickets.find(x=>x.no===aiTicket);if(!t)return;
+  const opts={format:aiFormat,tone:aiTone,gw:$("#ai-gw").value,sign:$("#ai-sign").value,note:$("#ai-note").value.trim()};
+  const out=$("#ai-out");showMeta(t);
+  $("#ai-go").disabled=true;
+  setState("Connecting to AI…","busy");
+  const sample=await getSample();
+  if(!sample){
+    out.textContent=templateLetter(t,opts);setState("Template draft · AI not available in this view","tpl");$("#ai-go").disabled=false;aiCount++;return;
+  }
+  aiCtl=new AbortController();$("#ai-stop").hidden=false;
+  out.textContent="";setState("Claude is writing…","busy");
+  try{
+    const {text,truncated}=await sample(buildPrompt(t,opts),{signal:aiCtl.signal,cache:false,onText:({text})=>{out.textContent=text;setState("Claude is writing…","busy")}});
+    out.textContent=text;setState(truncated?"Draft cut short · try Concise":"Drafted by Claude · review before sending","ai");aiCount++;
+  }catch(e){
+    if(e&&e.code==="cancelled"){out.textContent=e.text||out.textContent;setState("Stopped","tpl")}
+    else{
+      const why={not_granted:"AI not allowed in this view",sampling_disabled:"AI not enabled for this account",rate_limited:"AI busy right now, try again shortly",refused:"AI declined this draft"}[e?.code]||"AI unavailable";
+      out.textContent=templateLetter(t,opts);setState(`Template draft · ${why}`,"tpl");
+    }
+  }finally{$("#ai-stop").hidden=true;$("#ai-go").disabled=false;aiCtl=null}
+}
+$("#ai-go").onclick=generate;
+$("#ai-stop").onclick=()=>aiCtl?.abort();
+$("#ai-copy").onclick=async()=>{const txt=$("#ai-out").innerText.trim();if(!txt){toast("Generate a draft first");return}try{await navigator.clipboard.writeText(txt);toast("Draft copied")}catch(e){const r=document.createRange();r.selectNodeContents($("#ai-out"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Text selected · press Ctrl+C to copy")}};
+$("#ai-sent").onclick=()=>{const t=tickets.find(x=>x.no===aiTicket);if(!t)return;if(!$("#ai-out").innerText.trim()){toast("Generate a draft first");return}t.resp=$("#ai-sign").value;t.gw=$("#ai-gw").value;const note=`${aiFormat} response sent ${fmtD("2026-10-07")}`;t.comments=t.comments?t.comments+" · "+note:note;if(t.rca&&t.status!=="Closed")t.status="Closed";save();updateNavCount();syncAiTicket();toast(`${tid(t.no)} updated · ${aiFormat.toLowerCase()} logged as sent${t.status==="Closed"?" and ticket closed":""}`)};
+
+/* ================= SETTINGS ================= */
+function renderSettings(){
+  $("#ai-count").textContent=`${aiCount} of 500`;
+  $("#team").innerHTML=LISTS.staff.map((n,i)=>`<div class="tm">${avatar(n).replace(esc(n),"")}<div><b style="color:var(--ink)">${STAFF_INFO[n]?.[0]||n}</b><div class="muted" style="font-size:12.5px">${STAFF_INFO[n]?.[1]||""}</div></div><span class="tag">${i===0?"Owner":i===3?"Admin":"Member"}</span></div>`).join("");
+  const L=[["Customers","customers"],["Brands","brands"],["Communication methods","channels"],["Investigators & responders","staff"]];
+  $("#lists").innerHTML=L.map(([lab,k])=>`<div><div class="eyebrow" style="margin-bottom:8px">${lab}</div><div class="list-chips">${LISTS[k].map((v,i)=>`<span class="tag">${esc(v)}<button data-rm="${k}:${i}" aria-label="Remove ${esc(v)}">×</button></span>`).join("")}</div><form class="addchip" data-add="${k}"><input placeholder="Add ${lab.toLowerCase().replace(/s$/,"")}" aria-label="Add to ${lab}"><button class="btn sm" type="submit">Add</button></form></div>`).join("")+
+   `<div style="grid-column:1/-1"><div class="eyebrow" style="margin-bottom:8px">Complaint categories and types</div><div style="display:grid;gap:10px">${Object.entries(CATS).map(([c,ts])=>`<div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap"><b style="min-width:110px;color:var(--ink)">${c}</b><div class="list-chips">${ts.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>`).join("")}</div></div>`;
+}
+$("#lists").addEventListener("click",e=>{const b=e.target.closest("[data-rm]");if(!b)return;const [k,i]=b.dataset.rm.split(":");const v=LISTS[k].splice(+i,1);renderSettings();toast(`Removed ${v}`)});
+$("#lists").addEventListener("submit",e=>{e.preventDefault();const f=e.target.closest("[data-add]");const inp=f.querySelector("input");const v=inp.value.trim();if(!v)return;LISTS[f.dataset.add].push(v);renderSettings();toast(`Added ${v}`)});
+$("#reset-demo").onclick=()=>{tickets=buildDemo();try{localStorage.removeItem(LS_KEY)}catch(e){}updateNavCount();toast("Demo data reset")};
+
+/* ================= THEME ================= */
+$("#themebtn").onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark";};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(location.hash==="#dashboard")setTimeout(renderDash,30)});
+new MutationObserver(()=>{if(location.hash==="#dashboard")setTimeout(renderDash,30)}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+route();
+</script>
+</body></html>
