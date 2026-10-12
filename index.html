@@ -244,6 +244,24 @@ footer.lf{padding-block:40px 56px;color:var(--muted);font-size:13px;display:flex
 .kpi .v small{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0;margin-left:4px}
 .kpi.hero-k .v small{color:inherit;opacity:.75}
 .kpi .ft{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.kpis2{margin-bottom:14px}
+@media (max-width:640px){.kpis2 .kpi:last-child{grid-column:1/-1}}
+.kpi .v.bad{color:var(--bad)}
+.kpi.k-bad{border-color:color-mix(in srgb,var(--bad) 45%,var(--line));background:color-mix(in srgb,var(--bad-soft) 55%,var(--surface))}
+.kpi.k-bad .eyebrow{color:var(--bad)}
+.kpi.k-good{border-color:color-mix(in srgb,var(--good) 45%,var(--line));background:color-mix(in srgb,var(--good-soft) 55%,var(--surface))}
+.kpi.k-good .v,.kpi.k-good .eyebrow{color:var(--good)}
+.kpi.k-amber{border-color:color-mix(in srgb,var(--warn) 45%,var(--line));background:color-mix(in srgb,var(--warn-soft) 70%,var(--surface))}
+.kpi.k-amber .v,.kpi.k-amber .eyebrow{color:var(--warn)}
+.kpi.k-red .v,.kpi.k-red .eyebrow{color:var(--bad)}
+.kpi.k-red{border-color:color-mix(in srgb,var(--bad) 45%,var(--line));background:color-mix(in srgb,var(--bad-soft) 55%,var(--surface))}
+.agents{display:grid;gap:7px;margin-top:8px}
+.agents div{display:grid;grid-template-columns:76px minmax(0,1fr) 22px;gap:8px;align-items:center;font-size:12px;color:var(--fg)}
+.agents span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.agents i{display:block;height:7px;border-radius:4px;background:var(--accent)}
+.agents b{font-family:var(--f-mono);font-size:12px;color:var(--ink);text-align:right;font-weight:500}
+.kpi.clickable{cursor:pointer}
+.kpi.clickable:hover{border-color:var(--muted)}
 .delta{font-weight:600;border-radius:6px;padding:0 6px;font-size:12px}
 .delta.up{background:var(--bad-soft);color:var(--bad)}
 .delta.down{background:var(--good-soft);color:var(--good)}
@@ -618,6 +636,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
         <select class="sel" id="d-brand" aria-label="Brand filter"></select>
         <a class="btn primary" href="#new"><svg class="i"><use href="#i-plus"/></svg>New ticket</a>
       </div>
+      <div class="kpis kpis2" id="kpis2"></div>
       <div class="kpis" id="kpis"></div>
       <div class="grid-d">
         <div class="card c8">
@@ -747,7 +766,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
         </div>
         <div class="card" style="grid-column:1/-1">
           <div class="card-h"><h3>CPMU targets</h3></div>
-          <div class="kv"><div><dt>Overall target</dt><dd>25 complaints per million units</dd></div><div><dt>Morrisons</dt><dd>3 complaints per million units</dd></div></div>
+          <div class="kv"><div><dt>Response SLA</dt><dd>Reply to the customer within 10 days</dd></div><div><dt>Compliance score</dt><dd>Green 98%+, amber 90–97%, red below 90%</dd></div><div><dt>Overall target</dt><dd>25 complaints per million units</dd></div><div><dt>Morrisons</dt><dd>3 complaints per million units</dd></div></div>
           <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap"><button class="btn" id="reset-demo">Reset demo data</button></div>
         </div>
       </div>
@@ -782,6 +801,7 @@ const BRAND_ADDR = {"Regal Bakery":"RB","Yorkshire Baking":"YB","KB Foods":"KB",
 /* units produced/sold per month (from the Summary tab sales figures) */
 const UNIT_SERIES=[410064,442389,621368,448781,600492,407329,539739,549419,563014,562663,561173,483496];
 const TARGET=25;
+const SLA_DAYS=10; // reply to the customer within 10 days of receiving the complaint
 const TODAY=new Date(2026,9,7);
 
 /* ---------- build demo data ---------- */
@@ -861,6 +881,16 @@ const MONTHS=[];for(let i=0;i<12;i++){const d=new Date(2025,10+i,1);MONTHS.push(
 MONTHS[11].label+="*";
 
 
+
+/* ---------- SLA ---------- */
+function respondedOn(t){
+  if(t.respondedOn)return t.respondedOn;
+  if(t.status!=="Closed")return null;
+  const h=(t.no*37+11)%100, days=h<7?11+(h%5):1+(h%9);  // demo: closed tickets without a recorded reply date
+  const d=addDaysISO(t.date,days);return d>todayISO()?todayISO():d;
+}
+const daysBetween=(a,b)=>Math.round((pd(b)-pd(a))/864e5);
+function slaOf(t){const r=respondedOn(t);if(r){const d=daysBetween(t.date,r);return {answered:true,days:d,met:d<=SLA_DAYS}}const age=ageDays(t.date);return {answered:false,days:age,met:age<=SLA_DAYS}}
 /* ---------- follow-ups ---------- */
 
 const todayISO=()=>{const d=TODAY;return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
@@ -897,7 +927,7 @@ function requestClose(t,onDone,editOnly,lead){
       addLog(t,"Follow-up changed",ch.join("\n"));
     }else{addLog(t,"Status changed",`${t.status} → Closed`);addLog(t,"Follow-up set",`“${note}” · due ${fmtDate(date)}`)}
     t.fuNote=note;t.fuDate=date;t.fuDone=false;
-    if(!editOnly){t.status="Closed";t.closedOn=todayISO()}
+    if(!editOnly){t.status="Closed";t.closedOn=todayISO();if(!t.respondedOn)t.respondedOn=todayISO()}
     save();m.hidden=true;onDone&&onDone()});
   setTimeout(()=>m.querySelector("#fu-note")?.focus(),50);
 }
@@ -997,6 +1027,18 @@ function renderDash(){
   const last=byM[10].length, prev=byM[9].length;
   const dl=last-prev;
   const cp=cpmu/TARGET*100;
+  const S=D.map(t=>({t,...slaOf(t)}));
+  const ans=S.filter(x=>x.answered), met=ans.filter(x=>x.met).length, breached=ans.length-met;
+  const avg=ans.length?ans.reduce((a,x)=>a+x.days,0)/ans.length:0;
+  const pastSla=S.filter(x=>!x.answered&&!x.met).length, fuLate=D.filter(t=>fuState(t)==="late").length, overdue=pastSla+fuLate;
+  const comp=D.length?S.filter(x=>x.met).length/D.length*100:100, cls=comp>=98?"k-good":comp>=90?"k-amber":"k-red", word=comp>=98?"Green":comp>=90?"Amber":"Red";
+  const ag={};D.forEach(t=>{const k=t.inv||"Unassigned";ag[k]=(ag[k]||0)+1});const age=Object.entries(ag).sort((a,b)=>b[1]-a[1]).slice(0,4),amax=Math.max(1,...age.map(e=>e[1]));
+  $("#kpis2").innerHTML=`
+   <div class="card kpi"><span class="eyebrow">Total SLA</span><div class="v">${met}<small>/ ${ans.length} met</small></div><div class="ft"><span class="delta ${breached?"up":"down"}" style="white-space:nowrap">${breached} breached</span> ${SLA_DAYS}-day target</div></div>
+   <div class="card kpi"><span class="eyebrow">Avg response time</span><div class="v">${avg.toFixed(1)}<small>days</small></div><div class="meter"><i style="width:${Math.min(avg/SLA_DAYS*100,100)}%;background:${avg>SLA_DAYS?css("--bad"):avg>SLA_DAYS*.8?css("--amber"):css("--good")}"></i></div><div class="ft" style="margin-top:6px">per ticket, against ${SLA_DAYS}-day SLA</div></div>
+   <div class="card kpi"><span class="eyebrow">Tickets by agent</span><div class="agents">${age.map(([n,c])=>`<div><span>${esc(n)}</span><i style="width:${c/amax*100}%"></i><b>${c}</b></div>`).join("")}</div></div>
+   <div class="card kpi k-bad clickable" data-go="tickets" title="Open the ticket list"><span class="eyebrow">Overdue tickets</span><div class="v bad">${overdue}</div><div class="ft">${pastSla} past SLA · ${fuLate} follow-up${fuLate===1?"":"s"} late</div></div>
+   <div class="card kpi ${cls}"><span class="eyebrow">Compliance score</span><div class="v">${comp.toFixed(1)}<small>%</small></div><div class="ft">${word} (98% target)</div></div>`;
   $("#kpis").innerHTML=`
    <div class="card kpi hero-k"><span class="eyebrow">Complaints · 12 months</span><div class="v">${D.length}</div><div class="ft"><span class="delta">${dl>0?"+":""}${dl}</span> Sep vs Aug</div></div>
    <div class="card kpi"><span class="eyebrow">Open & pending</span><div class="v">${open+pend}<small>${open} open</small></div><div class="ft">${pend} awaiting investigation</div></div>
@@ -1345,7 +1387,7 @@ async function generate(){
 $("#ai-go").onclick=generate;
 $("#ai-stop").onclick=()=>aiCtl?.abort();
 $("#ai-copy").onclick=async()=>{const txt=$("#ai-out").innerText.trim();if(!txt){toast("Generate a draft first");return}try{await navigator.clipboard.writeText(txt);toast("Draft copied")}catch(e){const r=document.createRange();r.selectNodeContents($("#ai-out"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Text selected · press Ctrl+C to copy")}};
-$("#ai-sent").onclick=()=>{const t=tickets.find(x=>x.no===aiTicket);if(!t)return;if(!$("#ai-out").innerText.trim()){toast("Generate a draft first");return}t.resp=$("#ai-sign").value;t.gw=$("#ai-gw").value;const note=`${aiFormat} response sent ${fmtD("2026-10-07")}`;addLog(t,`${aiFormat} response sent`,`Signed by ${STAFF_INFO[t.resp]?STAFF_INFO[t.resp][0]:t.resp} · goodwill ${t.gw==="Yes"?"included":"not included"}`);t.comments=t.comments?t.comments+" · "+note:note;save();updateNavCount();syncAiTicket();
+$("#ai-sent").onclick=()=>{const t=tickets.find(x=>x.no===aiTicket);if(!t)return;if(!$("#ai-out").innerText.trim()){toast("Generate a draft first");return}t.resp=$("#ai-sign").value;t.gw=$("#ai-gw").value;t.respondedOn=todayISO();const note=`${aiFormat} response sent ${fmtD("2026-10-07")}`;addLog(t,`${aiFormat} response sent`,`Signed by ${STAFF_INFO[t.resp]?STAFF_INFO[t.resp][0]:t.resp} · goodwill ${t.gw==="Yes"?"included":"not included"}`);t.comments=t.comments?t.comments+" · "+note:note;save();updateNavCount();syncAiTicket();
   if(t.rca&&t.status!=="Closed"){requestClose(t,()=>{updateNavCount();syncAiTicket();toast(`${tid(t.no)} closed · follow-up due ${fmtD(t.fuDate)}`)},false,`${aiFormat} logged as sent. Add a follow-up to close the ticket, or cancel to keep it ${t.status.toLowerCase()}.`)}
   else toast(`${tid(t.no)} updated · ${aiFormat.toLowerCase()} logged as sent`)};
 
