@@ -77,6 +77,17 @@ svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .fu-quick button{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--muted)}
 .fu-quick button:hover{border-color:var(--accent);color:var(--accent)}
 .fu-err{color:var(--bad);font-size:12.5px;font-weight:500}
+.alog{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.alog li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;position:relative;padding-bottom:14px}
+.alog li:not(:last-child)::before{content:"";position:absolute;left:10px;top:20px;bottom:0;width:2px;background:var(--line)}
+.alog .dot{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.alog .dot svg{width:12px;height:12px}
+.alog .dot.fu{background:color-mix(in srgb,var(--brand-yellow) 30%,var(--surface));border-color:transparent;color:var(--ink)}
+.alog .dot.st{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.alog .dot.ok{background:var(--good-soft);border-color:transparent;color:var(--good)}
+.alog b{color:var(--ink);font-size:13.5px;font-weight:600}
+.alog .d{color:var(--fg);font-size:13px;white-space:pre-line;overflow-wrap:anywhere;margin-top:2px}
+.alog .w{color:var(--muted);font-size:12px;margin-top:2px}
 .modal-c .warnline{display:flex;gap:10px;align-items:flex-start;background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:500;margin-top:14px}
 .tag{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);font-size:12px;color:var(--fg);white-space:nowrap}
 
@@ -799,10 +810,29 @@ function buildDemo(){
     ["Check the line 2 seal checks have been added to the QC sheet","2026-10-16",false],
     ["Confirm goodwill parcel was delivered","2026-09-28",true],
   ];
-  t.filter(x=>x.status==="Closed").sort((a,b)=>b.date.localeCompare(a.date)).slice(0,fus.length).forEach((x,i)=>{x.fuNote=fus[i][0];x.fuDate=fus[i][1];x.fuDone=fus[i][2]});
+  t.filter(x=>x.status==="Closed").sort((a,b)=>b.date.localeCompare(a.date)).slice(0,fus.length).forEach((x,i)=>{x.fuNote=fus[i][0];x.fuDate=fus[i][1];x.fuDone=fus[i][2];
+    const closed=addDaysISO(x.date,3);x.closedOn=closed;const by=STAFF_INFO[x.resp]?STAFF_INFO[x.resp][0]:"Lynda Morton";
+    x.log=[{at:x.date+"T09:20",by:"Lynda Morton",action:"Ticket created",detail:`Logged from ${x.via.toLowerCase()} · ${x.cat} / ${x.type}`},
+      {at:closed+"T15:05",by,action:"Status changed",detail:"Open → Closed"},
+      {at:closed+"T15:05",by,action:"Follow-up set",detail:`“${i===1?"Check for repeat complaints on this batch":x.fuNote}” · due ${fmtDate(i===1?addDaysISO(x.fuDate,-4):x.fuDate)}`}];
+    if(i===1)x.log.push({at:addDaysISO(closed,2)+"T11:40",by:"Sana Siraj",action:"Follow-up changed",detail:`Note: “Check for repeat complaints on this batch” → “${x.fuNote}”\nDate: ${fmtDate(addDaysISO(x.fuDate,-4))} → ${fmtDate(x.fuDate)}`});
+    if(fus[i][2])x.log.push({at:x.fuDate+"T10:15",by,action:"Follow-up marked done",detail:`“${x.fuNote}”`});
+  });
   return t;
 }
-const LS_KEY="softnear.demo.v3";
+const ME="Lynda Morton";
+const addDaysISO=(iso,n)=>{const [y,m,d]=iso.split("-").map(Number);const x=new Date(y,m-1,d+n);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`};
+const fmtDate=iso=>{if(!iso)return"—";const [y,m,d]=iso.split("-").map(Number);return `${d} ${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m-1]} ${y}`};
+function nowStamp(){const n=new Date();const d=TODAY;return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}T${String(n.getHours()).padStart(2,"0")}:${String(n.getMinutes()).padStart(2,"0")}`}
+function fmtStamp(at){const [dt,tm]=at.split("T");return `${fmtDate(dt)}, ${tm||"00:00"}`}
+function addLog(t,action,detail){(t.log||(t.log=[])).push({at:nowStamp(),by:ME,action,detail:detail||""})}
+const lastFuChange=t=>(t.log||[]).filter(e=>e.action==="Follow-up changed").slice(-1)[0];
+function activityHTML(t){
+  const ev=(t.log&&t.log.length?t.log:[{at:t.date+"T09:00",by:STAFF_INFO[t.resp]?STAFF_INFO[t.resp][0]:"Customer Care",action:"Ticket created",detail:`Logged from ${(t.via||"").toLowerCase()} · ${t.cat} / ${t.type}`}]).map((e,i)=>({...e,i})).sort((a,b)=>b.at.localeCompare(a.at)||b.i-a.i);
+  const ic=a=>/Follow-up marked done/.test(a)?["ok","#i-check"]:/Follow-up/.test(a)?["fu","#i-bell"]:/Status/.test(a)?["st","#i-arrow"]:/response sent/.test(a)?["st","#i-mail"]:/created/.test(a)?["","#i-plus"]:["","#i-cog"];
+  return `<ol class="alog">${ev.map(e=>{const [c,h]=ic(e.action);return `<li><span class="dot ${c}"><svg class="i"><use href="${h}"/></svg></span><div><b>${esc(e.action)}</b>${e.detail?`<div class="d">${esc(e.detail)}</div>`:""}<div class="w">${fmtStamp(e.at)} · ${esc(e.by)}</div></div></li>`}).join("")}</ol>`;
+}
+const LS_KEY="softnear.demo.v4";
 let tickets;
 try{ const s=localStorage.getItem(LS_KEY); tickets=s?JSON.parse(s):null }catch(e){ tickets=null }
 if(!Array.isArray(tickets)||!tickets.length) tickets=buildDemo();
@@ -832,6 +862,7 @@ MONTHS[11].label+="*";
 
 
 /* ---------- follow-ups ---------- */
+
 const todayISO=()=>{const d=TODAY;return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
 const addDays=(iso,n)=>{const d=pd(iso);d.setDate(d.getDate()+n);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
 const needsFU=t=>t.status==="Closed"&&t.fuDate&&!t.fuDone;
@@ -860,6 +891,11 @@ function requestClose(t,onDone,editOnly,lead){
     if(!date){probs.push("a follow-up date");m.querySelector("#fu-date").classList.add("err")}
     else if(date<todayISO()){probs.push("a date from today onwards");m.querySelector("#fu-date").classList.add("err")}
     if(probs.length){err.hidden=false;err.textContent=`Add ${probs.join(" and ")} to ${editOnly?"save":"close this ticket"}.`;return}
+    if(editOnly){
+      const ch=[];if(note!==t.fuNote)ch.push(`Note: “${t.fuNote||"—"}” → “${note}”`);if(date!==t.fuDate)ch.push(`Date: ${fmtDate(t.fuDate)} → ${fmtDate(date)}`);
+      if(!ch.length){m.hidden=true;toast("No changes to the follow-up");return}
+      addLog(t,"Follow-up changed",ch.join("\n"));
+    }else{addLog(t,"Status changed",`${t.status} → Closed`);addLog(t,"Follow-up set",`“${note}” · due ${fmtDate(date)}`)}
     t.fuNote=note;t.fuDate=date;t.fuDone=false;
     if(!editOnly){t.status="Closed";t.closedOn=todayISO()}
     save();m.hidden=true;onDone&&onDone()});
@@ -1033,19 +1069,20 @@ function openDrawer(no){
    <h2>${esc(t.product)}</h2><p>${esc(t.brand)} · ${esc(t.cat)} · ${esc(t.type)} · received ${fmtD(t.date)} (${ageDays(t.date)===1?"1 day":ageDays(t.date)+" days"} ago)</p></div>
    <div class="dr-b">
     <div class="quote">${esc(t.details)||'<span class="muted">No details recorded</span>'}</div>
-    ${t.fuDate?`<div class="dsec"><h4>Follow-up</h4><div class="fu-box"><div class="row">${fuPill(t)}<span class="muted" style="font-size:12.5px">Set when the ticket was closed${t.closedOn?" on "+fmtD(t.closedOn):""}</span></div><p>${esc(t.fuNote)}</p>${t.fuDone?"":`<div class="row"><button class="btn sm primary" id="dr-fudone"><svg class="i"><use href="#i-check"/></svg>Mark follow-up done</button><button class="btn sm" id="dr-fuedit">Change note or date</button></div>`}</div></div>`:""}
+    ${t.fuDate?`<div class="dsec"><h4>Follow-up</h4><div class="fu-box"><div class="row">${fuPill(t)}<span class="muted" style="font-size:12.5px">${lastFuChange(t)?`Last changed ${fmtStamp(lastFuChange(t).at)} by ${esc(lastFuChange(t).by)}`:`Set when the ticket was closed${t.closedOn?" on "+fmtD(t.closedOn):""}`}</span></div><p>${esc(t.fuNote)}</p>${t.fuDone?"":`<div class="row"><button class="btn sm primary" id="dr-fudone"><svg class="i"><use href="#i-check"/></svg>Mark follow-up done</button><button class="btn sm" id="dr-fuedit">Change note or date</button></div>`}</div></div>`:""}
     <div class="dsec"><h4>Customer care</h4><dl class="kv">${[["Received via",t.via],["Customer",t.cust],["Store or consumer address",t.addr,1],["Customer reference no.",t.ref],["Brand",t.brand],["Product",t.product],["Complaint category",t.cat],["Complaint type",t.type],["Charge / fee",t.fee?`£${(+t.fee).toFixed(2)}`:"£0.00"],["Goodwill sent",t.gw],["Response sent by",t.resp]].map(x=>v(x,x[2])).join("")}</dl></div>
     <div class="dsec"><h4>Traceability</h4><dl class="kv">${[["MIX code",t.mix],["Finished product code",t.fpc],["Size of the packaging",t.size],["BBE / traceability code",t.bbe]].map(x=>v(x)).join("")}</dl></div>
     <div class="dsec"><h4>Technical department</h4><dl class="kv">${[["Details of investigation & RCA",t.rca,1],["Corrective actions required by BC",t.ca,1],["Justified",t.justified],["Investigated by",t.inv],["Comments",t.comments,1]].map(x=>v(x,x[2])).join("")}</dl></div>
     <div class="dsec"><h4>Update status</h4><div class="seg" id="dr-status">${LISTS.statuses.map(s=>`<button class="${s===t.status?"on":""}" data-s="${s}">${s}</button>`).join("")}</div></div>
+    <div class="dsec"><h4>Activity log</h4>${activityHTML(t)}</div>
    </div>
    <div class="dr-f"><button class="btn primary" id="dr-ai"><svg class="i"><use href="#i-spark"/></svg>Draft response with AI</button><button class="btn" id="dr-edit">Edit ticket</button></div>`;
   $("#drawer").classList.add("on");$("#scrim").classList.add("on");
   $("#dr-x").onclick=closeDrawer;
   $("#dr-status").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.s===t.status)return;
     if(b.dataset.s==="Closed"){requestClose(t,()=>{openDrawer(no);refreshCurrent();toast(`${tid(no)} closed · follow-up due ${fmtD(t.fuDate)}`)});return}
-    t.status=b.dataset.s;save();openDrawer(no);refreshCurrent();toast(`${tid(no)} marked ${t.status}`)};
-  $("#dr-fudone")&&($("#dr-fudone").onclick=()=>{t.fuDone=true;t.fuDoneOn=todayISO();save();openDrawer(no);refreshCurrent();toast(`${tid(no)} follow-up marked done`)});
+    addLog(t,"Status changed",`${t.status} → ${b.dataset.s}`);t.status=b.dataset.s;save();openDrawer(no);refreshCurrent();toast(`${tid(no)} marked ${t.status}`)};
+  $("#dr-fudone")&&($("#dr-fudone").onclick=()=>{t.fuDone=true;t.fuDoneOn=todayISO();addLog(t,"Follow-up marked done",`“${t.fuNote}”`);save();openDrawer(no);refreshCurrent();toast(`${tid(no)} follow-up marked done`)});
   $("#dr-fuedit")&&($("#dr-fuedit").onclick=()=>requestClose(t,()=>{openDrawer(no);refreshCurrent();toast(`${tid(no)} follow-up updated`)},true));
   $("#dr-ai").onclick=()=>{closeDrawer();aiTicket=no;go("ai")};
   $("#dr-edit").onclick=()=>{closeDrawer();startEdit(no)};
@@ -1149,8 +1186,14 @@ function submitForm(thenAi){
   if(missing.length){missing.forEach(f=>document.getElementById("fld-"+f.k)?.classList.add("err"));document.getElementById("fld-"+missing[0].k)?.focus();toast(`Add ${missing.map(f=>f.l.toLowerCase()).slice(0,2).join(" and ")}${missing.length>2?` and ${missing.length-2} more`:""} to save`);return}
   let no;
   if(o.status==="Closed"){const prev=editingNo&&tickets.find(t=>t.no===editingNo);const changed=!prev||prev.status!=="Closed"||prev.fuNote!==o.fuNote||prev.fuDate!==o.fuDate;if(changed){o.fuDone=false;o.closedOn=prev&&prev.status==="Closed"?prev.closedOn:todayISO()}}
-  if(editingNo){no=editingNo;Object.assign(tickets.find(t=>t.no===no),o)}
-  else{no=Math.max(...tickets.map(t=>t.no))+1;tickets.push({...o,no})}
+  if(editingNo){no=editingNo;const prev=tickets.find(t=>t.no===no);
+    const skip=["status","fuNote","fuDate"];const changedF=FIELDS.filter(f=>f.k!=="no"&&!skip.includes(f.k)&&String(prev[f.k]??"")!==String(o[f.k]??"")).map(f=>f.l);
+    if(changedF.length)addLog(prev,"Ticket edited",`Changed: ${changedF.join(", ")}`);
+    if(prev.status!==o.status)addLog(prev,"Status changed",`${prev.status} → ${o.status}`);
+    if(o.status==="Closed"){if(prev.status!=="Closed"||!prev.fuDate)addLog(prev,"Follow-up set",`“${o.fuNote}” · due ${fmtDate(o.fuDate)}`);
+      else{const ch=[];if(prev.fuNote!==o.fuNote)ch.push(`Note: “${prev.fuNote}” → “${o.fuNote}”`);if(prev.fuDate!==o.fuDate)ch.push(`Date: ${fmtDate(prev.fuDate)} → ${fmtDate(o.fuDate)}`);if(ch.length)addLog(prev,"Follow-up changed",ch.join("\n"))}}
+    Object.assign(prev,o)}
+  else{no=Math.max(...tickets.map(t=>t.no))+1;const nt={...o,no,log:[]};addLog(nt,"Ticket created",`Logged from ${o.via.toLowerCase()} · ${o.cat} / ${o.type}`);if(o.status==="Closed")addLog(nt,"Follow-up set",`“${o.fuNote}” · due ${fmtDate(o.fuDate)}`);tickets.push(nt)}
   save();updateNavCount();const was=editingNo;editingNo=null;
   toast(was?`${tid(no)} saved`:`${tid(no)} created`);
   if(thenAi){aiTicket=no;go("ai")}else{tf.status="All";tf.q="";$("#gsearch").value="";go("tickets");setTimeout(()=>openDrawer(no),250)}
@@ -1302,7 +1345,7 @@ async function generate(){
 $("#ai-go").onclick=generate;
 $("#ai-stop").onclick=()=>aiCtl?.abort();
 $("#ai-copy").onclick=async()=>{const txt=$("#ai-out").innerText.trim();if(!txt){toast("Generate a draft first");return}try{await navigator.clipboard.writeText(txt);toast("Draft copied")}catch(e){const r=document.createRange();r.selectNodeContents($("#ai-out"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Text selected · press Ctrl+C to copy")}};
-$("#ai-sent").onclick=()=>{const t=tickets.find(x=>x.no===aiTicket);if(!t)return;if(!$("#ai-out").innerText.trim()){toast("Generate a draft first");return}t.resp=$("#ai-sign").value;t.gw=$("#ai-gw").value;const note=`${aiFormat} response sent ${fmtD("2026-10-07")}`;t.comments=t.comments?t.comments+" · "+note:note;save();updateNavCount();syncAiTicket();
+$("#ai-sent").onclick=()=>{const t=tickets.find(x=>x.no===aiTicket);if(!t)return;if(!$("#ai-out").innerText.trim()){toast("Generate a draft first");return}t.resp=$("#ai-sign").value;t.gw=$("#ai-gw").value;const note=`${aiFormat} response sent ${fmtD("2026-10-07")}`;addLog(t,`${aiFormat} response sent`,`Signed by ${STAFF_INFO[t.resp]?STAFF_INFO[t.resp][0]:t.resp} · goodwill ${t.gw==="Yes"?"included":"not included"}`);t.comments=t.comments?t.comments+" · "+note:note;save();updateNavCount();syncAiTicket();
   if(t.rca&&t.status!=="Closed"){requestClose(t,()=>{updateNavCount();syncAiTicket();toast(`${tid(t.no)} closed · follow-up due ${fmtD(t.fuDate)}`)},false,`${aiFormat} logged as sent. Add a follow-up to close the ticket, or cancel to keep it ${t.status.toLowerCase()}.`)}
   else toast(`${tid(t.no)} updated · ${aiFormat.toLowerCase()} logged as sent`)};
 
