@@ -388,6 +388,19 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .team{display:grid;gap:2px}
 .team .tm{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
 .team .tm:last-child{border-bottom:0}
+.team .tm{grid-template-columns:auto minmax(0,1fr) auto}
+.team .tm .em2{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.team .tm .r{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.team .rsel{height:30px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);font-size:12.5px;font-weight:600;padding:0 26px 0 8px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236A6F84' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.team .lk{border:0;background:none;color:var(--accent);font-size:12px;font-weight:600;padding:2px 4px;cursor:pointer}
+.team .lk.del{color:var(--bad)}
+.team .av.pending{background:var(--surface-2)!important;color:var(--muted)!important;border:1px dashed var(--muted)}
+.roles-help{margin-top:12px;font-size:12.5px}
+.roles-help summary{cursor:pointer;color:var(--accent);font-weight:600}
+.roles-help dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:10px 0 0}
+.roles-help dt{font-weight:700;color:var(--ink)}
+.roles-help dd{margin:0;color:var(--muted)}
+.role-desc{font-size:12.5px;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 
 /* modal & toast */
 .modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(10,12,20,.5);backdrop-filter:blur(4px)}
@@ -835,12 +848,14 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
         <div class="card">
           <div class="card-h"><h3>Plan & billing</h3><div class="sp"></div><span class="pill Pending">Trial · 10 days left</span></div>
           <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--f-display);font-size:38px;font-weight:700;color:var(--ink)">£149</span><span class="muted">/ month after trial · Growth</span></div>
-          <div class="kv" style="margin-top:16px"><div><dt>Users</dt><dd>6 of 15</dd></div><div><dt>AI drafts this month</dt><dd id="ai-count">0 of 500</dd></div><div><dt>Payment method</dt><dd class="blank">Not added yet</dd></div><div><dt>Next invoice</dt><dd>17 Oct 2026</dd></div></div>
+          <div class="kv" style="margin-top:16px"><div><dt>Users</dt><dd id="seat-count">6 of 15</dd></div><div><dt>AI drafts this month</dt><dd id="ai-count">0 of 500</dd></div><div><dt>Payment method</dt><dd class="blank">Not added yet</dd></div><div><dt>Next invoice</dt><dd>17 Oct 2026</dd></div></div>
           <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap"><button class="btn primary" data-toast="Billing checkout opens here (Stripe) in the full build">Add payment method</button><button class="btn" data-toast="Plan comparison opens here in the full build">Change plan</button></div>
         </div>
         <div class="card">
-          <div class="card-h"><h3>Team</h3><div class="sp"></div><button class="btn sm" data-toast="Invitation flow opens here in the full build"><svg class="i"><use href="#i-plus"/></svg>Invite</button></div>
+          <div class="card-h"><h3>Team</h3><span class="muted" id="seat-txt" style="font-size:12.5px"></span><div class="sp"></div><button class="btn sm primary" data-act="team-invite"><svg class="i"><use href="#i-plus"/></svg>Invite</button></div>
+          <p class="muted" style="font-size:12.5px;margin:-6px 0 10px">Your company's staff who log in to this workspace. Complainants never log in; they are recorded on tickets.</p>
           <div class="team" id="team"></div>
+          <details class="roles-help"><summary>What each role can do</summary><dl id="role-help"></dl></details>
         </div>
         <div class="card" style="grid-column:1/-1">
           <div class="card-h"><h3>Drop-down lists</h3><p class="muted" style="font-size:13px;width:100%">These match the Drop Menu Info tab in your spreadsheet. Changes apply to the new ticket form straight away.</p></div>
@@ -1563,7 +1578,7 @@ $("#ai-sent").onclick=()=>{const t=tickets.find(x=>x.no===aiTicket);if(!t)return
 /* ================= SETTINGS ================= */
 function renderSettings(){
   $("#ai-count").textContent=`${aiCount} of 500`;
-  $("#team").innerHTML=LISTS.staff.map((n,i)=>`<div class="tm">${avatar(n).replace(esc(n),"")}<div><b style="color:var(--ink)">${STAFF_INFO[n]?.[0]||n}</b><div class="muted" style="font-size:12.5px">${STAFF_INFO[n]?.[1]||""}</div></div><span class="tag">${i===0?"Owner":i===3?"Admin":"Member"}</span></div>`).join("");
+  renderTeam();
   const L=[["Customers","customers"],["Brands","brands"],["Communication methods","channels"],["Investigators & responders","staff"]];
   $("#lists").innerHTML=L.map(([lab,k])=>`<div><div class="eyebrow" style="margin-bottom:8px">${lab}</div><div class="list-chips">${LISTS[k].map((v,i)=>`<span class="tag">${esc(v)}<button data-rm="${k}:${i}" aria-label="Remove ${esc(v)}">×</button></span>`).join("")}</div><form class="addchip" data-add="${k}"><input placeholder="Add ${lab.toLowerCase().replace(/s$/,"")}" aria-label="Add to ${lab}"><button class="btn sm" type="submit">Add</button></form></div>`).join("")+
    `<div style="grid-column:1/-1"><div class="eyebrow" style="margin-bottom:8px">Complaint categories and types</div><div style="display:grid;gap:10px">${Object.entries(CATS).map(([c,ts])=>`<div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap"><b style="min-width:110px;color:var(--ink)">${c}</b><div class="list-chips">${ts.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>`).join("")}</div></div>`;
@@ -1960,6 +1975,70 @@ document.addEventListener("click",e=>{
 });
 document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const r=e.target.closest?.("[data-co],[data-inq]");if(r)r.click()});
 applyPlans();
+
+
+/* ---------- Team & invitations ---------- */
+const SEAT_LIMIT=15;
+const ROLES={Owner:"Everything, including billing, plan changes and cancelling the subscription.",Admin:"Manage team members, drop-down lists and settings. Work on all tickets. No billing.",Member:"Log and work on tickets, update status and follow-ups, draft and send responses.","Read-only":"View tickets and dashboards only. Cannot create or change anything."};
+const TEAM_KEY="softnear.team.v1";
+let TEAM;
+try{const s=localStorage.getItem(TEAM_KEY);TEAM=s?JSON.parse(s):null}catch(e){TEAM=null}
+if(!Array.isArray(TEAM))TEAM=LISTS.staff.map((k,i)=>{const [name,job]=STAFF_INFO[k]||[k,""];return {id:"u"+(i+1),key:k,name,job,email:name.toLowerCase().replace(/\s+/g,".")+"@regalbakery.example",role:k==="L Morton"?"Owner":k==="A Younis"?"Admin":"Member",status:"Active",joined:"2026-09-27"}});
+const teamSave=()=>{try{localStorage.setItem(TEAM_KEY,JSON.stringify(TEAM))}catch(e){}};
+function syncSeats(){
+  const n=TEAM.length;$("#seat-count").textContent=`${n} of ${SEAT_LIMIT}`;
+  const inv=TEAM.filter(m=>m.status==="Invited").length;$("#seat-txt").textContent=`${n} of ${SEAT_LIMIT} seats${inv?` · ${inv} pending`:""}`;
+  try{const c=ADM.companies.find(x=>x.name==="Regal Bakery Group");if(c){c.users=TEAM.filter(m=>m.status==="Active").length;admSave()}}catch(e){}
+}
+function renderTeam(){
+  const ini=n=>n.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();
+  $("#team").innerHTML=TEAM.map(m=>{const i=hash(m.name)%COL.length;const me=m.role==="Owner";
+    return `<div class="tm" data-mid="${m.id}"><span class="who"><span class="av ${m.status==="Invited"?"pending":""}" style="background:${COL[i]}">${esc(ini(m.name))}</span></span>
+     <div style="min-width:0"><b style="color:var(--ink)">${esc(m.name)}</b>${m.status==="Invited"?` <span class="sx a" style="height:20px;font-size:11px">Invitation sent ${fmtDate(m.lastSent||m.invitedOn).slice(0,-5)}</span>`:""}<div class="em2">${esc(m.job||"")}${m.job?" · ":""}${esc(m.email)}</div></div>
+     <div class="r">${me?'<span class="tag">Owner</span>':`<select class="rsel" data-role="${m.id}" aria-label="Role for ${esc(m.name)}">${Object.keys(ROLES).filter(r=>r!=="Owner").map(r=>`<option ${r===m.role?"selected":""}>${r}</option>`).join("")}</select>`}
+      ${m.status==="Invited"?`<button class="lk" data-tm="resend" title="Send the invitation email again">Resend</button><button class="lk" data-tm="accept" title="Demo only: pretend they clicked the link">Simulate join</button><button class="lk del" data-tm="cancel">Cancel</button>`:me?"":`<button class="lk del" data-tm="remove">Remove</button>`}</div></div>`}).join("");
+  $("#role-help").innerHTML=Object.entries(ROLES).map(([r,d])=>`<dt>${r}</dt><dd>${d}</dd>`).join("");
+  syncSeats();
+}
+function inviteForm(){
+  if(TEAM.length>=SEAT_LIMIT){confirmModal("All seats are in use",`Your Growth plan includes ${SEAT_LIMIT} users and all of them are taken. Remove someone or upgrade to Enterprise for unlimited users.`,"View plans",()=>toast("Plan comparison opens here in the full build"));return}
+  const m=$("#modal");m.hidden=false;
+  m.innerHTML=`<div class="modal-c" role="dialog" aria-modal="true" aria-labelledby="ti-t"><h3 id="ti-t">Invite a team member</h3><p class="muted">They'll get an email with a link to join <b>${esc($("#ws-name").textContent)}</b> and set their own password. ${TEAM.length} of ${SEAT_LIMIT} seats used.</p>
+   <form id="ti-f" novalidate>
+    <div class="inline-fld"><div class="fld"><label for="ti-name">Full name<span class="req">*</span></label><input class="inp" id="ti-name" placeholder="e.g. Tom Harris"></div><div class="fld"><label for="ti-job">Job title</label><input class="inp" id="ti-job" placeholder="e.g. QA Technologist"></div></div>
+    <div class="fld"><label for="ti-email">Work email<span class="req">*</span></label><input class="inp" id="ti-email" type="email" placeholder="name@regalbakery.co.uk"></div>
+    <div class="fld"><label for="ti-role">Role</label><select class="inp" id="ti-role">${Object.keys(ROLES).filter(r=>r!=="Owner").map(r=>`<option ${r==="Member"?"selected":""}>${r}</option>`).join("")}</select><div class="role-desc" id="ti-desc">${ROLES.Member}</div></div>
+    <div class="fu-err" id="ti-err" hidden></div>
+    <button class="btn primary" type="submit"><svg class="i"><use href="#i-mail"/></svg>Send invitation</button><button class="btn ghost" type="button" data-close>Cancel</button>
+   </form></div>`;
+  m.querySelector("#ti-role").onchange=e=>m.querySelector("#ti-desc").textContent=ROLES[e.target.value];
+  m.querySelector("[data-close]").onclick=()=>m.hidden=true;
+  m.querySelector("#ti-f").addEventListener("submit",e=>{e.preventDefault();
+    const g=k=>m.querySelector("#ti-"+k).value.trim(), err=m.querySelector("#ti-err");
+    m.querySelectorAll(".inp.err").forEach(x=>x.classList.remove("err"));
+    let msg="";
+    if(!g("name")){m.querySelector("#ti-name").classList.add("err");msg="Add their full name."}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(g("email"))){m.querySelector("#ti-email").classList.add("err");msg=msg||"Enter a valid work email, like name@company.co.uk."}
+    else if(TEAM.some(t=>t.email.toLowerCase()===g("email").toLowerCase())){m.querySelector("#ti-email").classList.add("err");msg="Someone with this email is already on the team or invited."}
+    if(msg){err.hidden=false;err.textContent=msg;return}
+    const d=todayISO();TEAM.push({id:"u"+Date.now(),name:g("name"),job:g("job"),email:g("email"),role:g("role"),status:"Invited",invitedOn:d,lastSent:d});
+    teamSave();m.hidden=true;renderTeam();toast(`Invitation sent to ${g("email")}`)});
+  setTimeout(()=>m.querySelector("#ti-name").focus(),50);
+}
+document.addEventListener("click",e=>{
+  if(e.target.closest('[data-act="team-invite"]')){inviteForm();return}
+  const b=e.target.closest("[data-tm]");if(!b)return;
+  const row=b.closest("[data-mid]"),mem=TEAM.find(t=>t.id===row.dataset.mid);if(!mem)return;
+  const a=b.dataset.tm;
+  if(a==="resend"){mem.lastSent=todayISO();teamSave();renderTeam();toast(`Invitation resent to ${mem.email}`)}
+  if(a==="accept"){mem.status="Active";mem.joined=todayISO();
+    const short=(()=>{const p=mem.name.split(/\s+/);return p.length>1?p[0][0]+" "+p.slice(-1)[0]:mem.name})();
+    if(mem.role!=="Read-only"&&!LISTS.staff.includes(short)){LISTS.staff.push(short);STAFF_INFO[short]=[mem.name,mem.job||mem.role]}mem.key=short;
+    teamSave();renderTeam();renderSettings();toast(`${mem.name} joined the workspace${mem.role!=="Read-only"?" and can now be assigned tickets":""}`)}
+  if(a==="cancel"){confirmModal("Cancel this invitation?",`The link sent to ${esc(mem.email)} will stop working.`,"Cancel invitation",()=>{TEAM=TEAM.filter(t=>t!==mem);teamSave();renderTeam();toast("Invitation cancelled")},true)}
+  if(a==="remove"){confirmModal(`Remove ${esc(mem.name)}?`,`They will lose access to this workspace straight away and their seat will be freed. Tickets and activity they recorded stay in the system.`,"Remove from team",()=>{TEAM=TEAM.filter(t=>t!==mem);teamSave();renderTeam();toast(`${mem.name} removed · seat freed`)},true)}
+});
+document.addEventListener("change",e=>{const s=e.target.closest("[data-role]");if(!s)return;const mem=TEAM.find(t=>t.id===s.dataset.role);if(!mem)return;const old=mem.role;mem.role=s.value;teamSave();renderTeam();toast(`${mem.name}: ${old} → ${mem.role}`)});
 
 route();
 </script>
