@@ -419,6 +419,85 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .credit{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--fg)}
 .credit b{color:var(--ink)}
 @media (max-width:960px){.side .brand .logo.full{display:none}.side .brand .logo.markonly{display:block}.side-credit{display:none}}
+
+/* ================= SUPER ADMIN ================= */
+#admin{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100%}
+.side-in.adm{background:linear-gradient(180deg,#0A1B33 0%,#0E1726 60%)}
+.adm-badge{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin:0 8px 14px;background:var(--brand-yellow);color:#1A1A1A;font-size:10.5px;font-weight:800;letter-spacing:.09em;padding:4px 9px;border-radius:7px}
+.adm-badge svg{width:12px;height:12px;stroke:#1A1A1A}
+.kpis6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.kpi .v.sm{font-size:28px}
+.sx{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.sx::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.sx.g{background:var(--good-soft);color:var(--good)}
+.sx.b{background:var(--accent-soft);color:var(--accent)}
+.sx.r{background:var(--bad-soft);color:var(--bad)}
+.sx.a{background:var(--warn-soft);color:var(--warn)}
+.sx.v{background:color-mix(in srgb,var(--violet) 16%,var(--surface));color:var(--violet)}
+.sx.m{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.ptag{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:6px;font-size:12px;font-weight:700;white-space:nowrap}
+.ptag.Starter{background:color-mix(in srgb,var(--teal) 15%,var(--surface));color:var(--teal)}
+.ptag.Growth{background:var(--accent-soft);color:var(--accent)}
+.ptag.Enterprise{background:color-mix(in srgb,var(--violet) 16%,var(--surface));color:var(--violet)}
+.co-cell{display:flex;align-items:center;gap:10px;min-width:0}
+.co-av{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex:none}
+.co-cell b{display:block;color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.co-cell small{display:block;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.tk.tight th,.tk.tight td{padding:10px 8px}
+.tk.tight th{font-size:10.5px;letter-spacing:.05em}
+.tk.tight .co-cell b,.tk.tight .co-cell small{max-width:170px}
+.tk.tight .mono-s{font-size:11.5px}
+.tk .src{font-size:12px;max-width:120px;line-height:1.35}
+.tk .em{font-size:12px;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk td.num,.tk th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tk .mono-s{font-family:var(--f-mono);font-size:12px;color:var(--muted);white-space:nowrap}
+.act{display:flex;gap:6px;justify-content:flex-end;flex-wrap:nowrap}
+.act .btn{height:30px;padding:0 10px;font-size:12px}
+.gw{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-weight:500}
+.gw i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.feed{display:grid;gap:2px}
+.feed div{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 4px;border-bottom:1px solid var(--line);font-size:13px}
+.feed div:last-child{border-bottom:0}
+.feed .fi{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--surface-2);color:var(--muted)}
+.feed .fi svg{width:14px;height:14px}
+.feed b{color:var(--ink);font-weight:600}
+.feed span.t{color:var(--muted);font-size:12px;white-space:nowrap}
+.contact-card{display:grid;gap:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.contact-card .ln{display:flex;align-items:center;gap:10px;min-width:0}
+.contact-card .ln span{flex:1;min-width:0;overflow-wrap:anywhere;color:var(--ink);font-weight:500;user-select:all}
+.contact-card svg{color:var(--muted)}
+.copyb{border:1px solid var(--line);background:var(--surface);border-radius:8px;height:28px;padding:0 9px;font-size:12px;font-weight:600;color:var(--muted)}
+.copyb:hover{color:var(--accent);border-color:var(--accent)}
+.drow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.inline-fld{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.note-add{display:grid;gap:8px}
+.invoice{background:#fff;color:#1B1D24;border-radius:10px;padding:26px;border:1px solid #E6E8EF;font-size:13px}
+.invoice .ih{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:2px solid #1B1D24;padding-bottom:14px;margin-bottom:16px}
+.invoice .ih svg{width:130px;height:32px;color:#10131F}
+.invoice .ih div{text-align:right;font-size:12px;color:#55575F}
+.invoice .ih b{display:block;font-family:var(--f-display);font-size:20px;color:#1B1D24}
+.invoice table{width:100%;border-collapse:collapse;margin-top:14px}
+.invoice th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#6B6D75;border-bottom:1px solid #E6E8EF;padding:8px 0}
+.invoice td{padding:10px 0;border-bottom:1px solid #F0F1F5}
+.invoice .tot td{border:0;font-weight:700;font-size:15px}
+.invoice .meta2{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12.5px;color:#55575F}
+.invoice .meta2 b{color:#1B1D24;display:block;font-size:13px}
+.invoice .foot{margin-top:16px;font-size:11px;color:#6B6D75;text-align:center}
+.modal-c.wide{width:min(620px,100%)}
+.pkg-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.pkg .card-h{margin-bottom:10px}
+.pkg .subs{font-size:12.5px;color:var(--muted)}
+.pkg form{display:grid;gap:12px}
+.switch{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:var(--ink);cursor:pointer}
+.switch input{width:36px;height:20px;appearance:none;background:var(--line);border-radius:999px;position:relative;cursor:pointer;transition:background .15s;flex:none}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.switch input:checked{background:var(--accent)}
+.switch input:checked::after{left:18px}
+.lf .adm-link{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+@media (max-width:1180px){.kpis6{grid-template-columns:repeat(3,minmax(0,1fr))}.pkg-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:960px){#admin{grid-template-columns:minmax(0,1fr)}.adm-badge{display:none}}
+@media (max-width:640px){.kpis6{grid-template-columns:repeat(2,minmax(0,1fr))}.inline-fld{grid-template-columns:minmax(0,1fr)}}
+
 /* responsive */
 @media (max-width:1180px){
   .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -492,6 +571,9 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
   <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6.5 15h4"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13l2.6-7.2A2 2 0 0 1 7.5 4.5h9a2 2 0 0 1 1.9 1.3L21 13v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 21v-4h6v4M8.5 7h1M14.5 7h1M8.5 11h1M14.5 11h1"/></symbol>
 </svg>
 
 <!-- ======================= LANDING ======================= -->
@@ -596,9 +678,9 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   </section>
 
   <section class="wrap" style="padding-bottom:24px">
-    <div class="cta-final"><h2>Retire the complaints spreadsheet this week.</h2><p>Import your existing log and see your dashboards in minutes.</p><button class="btn" data-act="signup">Start free trial</button></div>
+    <div class="cta-final"><h2>Retire the complaints spreadsheet this week.</h2><p>Import your existing log and see your dashboards in minutes.</p><div class="drow" style="justify-content:center;gap:10px"><button class="btn" data-act="signup">Start free trial</button><button class="btn" data-act="demo-req" style="background:transparent;color:inherit;border:1px solid rgba(255,255,255,.55)">Book a demo</button></div></div>
   </section>
-  <footer class="wrap lf"><div class="lf-l"><svg class="logo" role="img" aria-label="Softnear"><use href="#logo"/></svg><span>© 2026 Softnear CRM · Prototype for client review</span></div><div class="lf-r"><span>Privacy · Terms · Security</span><span class="credit"><svg class="cm" aria-hidden="true"><use href="#logomark"/></svg>Designed &amp; developed by <b>Softnear</b></span></div></footer>
+  <footer class="wrap lf"><div class="lf-l"><svg class="logo" role="img" aria-label="Softnear"><use href="#logo"/></svg><span>© 2026 Softnear CRM · Prototype for client review · <a class="adm-link" href="#admin">Super admin</a></span></div><div class="lf-r"><span>Privacy · Terms · Security</span><span class="credit"><svg class="cm" aria-hidden="true"><use href="#logomark"/></svg>Designed &amp; developed by <b>Softnear</b></span></div></footer>
 </div>
 
 <!-- ======================= APP ======================= -->
@@ -774,6 +856,92 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   </main>
 </div>
 
+
+<!-- ======================= SUPER ADMIN ======================= -->
+<div id="admin" hidden>
+  <aside class="side"><div class="side-in adm">
+    <a class="brand" href="#admin" aria-label="Softnear super admin home"><svg class="logo full" role="img" aria-label="Softnear"><use href="#logo"/></svg><svg class="logo markonly" aria-hidden="true"><use href="#logomark"/></svg></a>
+    <span class="adm-badge"><svg class="i"><use href="#i-shield"/></svg>SUPER ADMIN</span>
+    <div class="navl">Platform</div>
+    <a class="navi" href="#admin" data-av="admin"><svg class="i"><use href="#i-grid"/></svg><span class="lbl">SaaS dashboard</span></a>
+    <a class="navi" href="#admin-billing" data-av="admin-billing"><svg class="i"><use href="#i-card"/></svg><span class="lbl">Billing</span><span class="ct" id="adm-failed" hidden>0</span></a>
+    <a class="navi" href="#admin-inquiries" data-av="admin-inquiries"><svg class="i"><use href="#i-inbox"/></svg><span class="lbl">Company inquiries</span><span class="ct" id="adm-new" hidden>0</span></a>
+    <a class="navi" href="#admin-packages" data-av="admin-packages"><svg class="i"><use href="#i-cog"/></svg><span class="lbl">Packages & pricing</span></a>
+    <div class="navl">Switch to</div>
+    <a class="navi" href="#dashboard"><svg class="i"><use href="#i-ticket"/></svg><span class="lbl">Client portal</span></a>
+    <a class="navi" href="#home"><svg class="i"><use href="#i-out"/></svg><span class="lbl">Website</span></a>
+    <div class="side-credit"><svg class="cm" aria-hidden="true"><use href="#logomark"/></svg>Designed &amp; developed by Softnear</div>
+  </div></aside>
+
+  <main class="main">
+    <div class="top">
+      <div><h1 id="adm-title">SaaS dashboard</h1></div>
+      <div class="sp"></div>
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><input id="adm-search" placeholder="Search companies, transactions, inquiries…" aria-label="Search"></label>
+      <button class="iconbtn" data-themebtn aria-label="Toggle dark mode"><svg class="i"><use href="#i-moon"/></svg></button>
+      <div class="me"><span class="av" style="background:var(--brand-yellow);color:#1A1A1A">SA</span><div><b>Softnear Admin</b><small>Super admin</small></div></div>
+    </div>
+
+    <!-- SaaS dashboard -->
+    <section data-aview="admin" hidden>
+      <div class="dash-intro">
+        <div><p class="eyebrow">Platform overview · as of 7 Oct 2026</p><h2>Softnear CRM platform</h2></div>
+        <div class="sp"></div>
+        <button class="btn" data-act="adm-addco"><svg class="i"><use href="#i-plus"/></svg>Add company</button>
+      </div>
+      <div class="kpis6" id="adm-kpis"></div>
+      <div class="grid-d">
+        <div class="card c8"><div class="card-h"><h3>Monthly recurring revenue</h3><span class="muted" style="font-size:12.5px">last 12 months, £</span></div><div class="chart-box"><canvas id="ach-mrr"></canvas></div></div>
+        <div class="card c4"><div class="card-h"><h3>Companies by package</h3></div><div class="chart-box"><canvas id="ach-plan"></canvas></div></div>
+        <div class="card c7"><div class="card-h"><h3>New sign-ups</h3><span class="muted" style="font-size:12.5px">companies per month</span></div><div class="chart-box sm"><canvas id="ach-signups"></canvas></div></div>
+        <div class="card c5"><div class="card-h"><h3>Recent activity</h3></div><div class="feed" id="adm-feed"></div></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="card-h"><h3>Registered companies</h3><div class="sp"></div><select class="sel" id="aco-plan" aria-label="Package"><option value="">All packages</option><option>Starter</option><option>Growth</option><option>Enterprise</option></select></div>
+        <div class="tabs" id="aco-tabs"></div>
+        <div class="tbl-wrap"><table class="tk"><thead><tr><th>Company</th><th>Package</th><th>Status</th><th class="num">Users</th><th>Joined</th><th>Next renewal</th><th class="num">MRR</th><th class="num">Action</th></tr></thead><tbody id="aco-body"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- Billing -->
+    <section data-aview="admin-billing" hidden>
+      <div class="kpis" id="abl-kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
+      <div class="card" style="margin-top:14px">
+        <div class="tabs" id="abl-tabs"></div>
+        <div class="tb-bar">
+          <select class="sel" id="abl-gw" aria-label="Payment gateway"><option value="">All gateways</option></select>
+          <select class="sel" id="abl-pkg" aria-label="Package"><option value="">All packages</option><option>Starter</option><option>Growth</option><option>Enterprise</option></select>
+          <select class="sel" id="abl-month" aria-label="Month"></select>
+          <div style="flex:1"></div><span class="muted" id="abl-count" style="font-size:13px"></span>
+          <button class="btn sm" data-toast="CSV export downloads here in the full build"><svg class="i"><use href="#i-out"/></svg>Export CSV</button>
+        </div>
+        <div class="tbl-wrap"><table class="tk tight" style="min-width:980px"><thead><tr><th>Company name</th><th>Package</th><th>Payment date</th><th>Next payment date</th><th>Transaction ID</th><th class="num">Amount</th><th>Payment gateway</th><th class="num">Action</th></tr></thead><tbody id="abl-body"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- Inquiries -->
+    <section data-aview="admin-inquiries" hidden>
+      <div class="kpis" id="ainq-kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
+      <div class="card" style="margin-top:14px">
+        <div class="tabs" id="ainq-tabs"></div>
+        <div class="tb-bar">
+          <select class="sel" id="ainq-src" aria-label="Source"><option value="">All sources</option></select>
+          <select class="sel" id="ainq-owner" aria-label="Owner"><option value="">All owners</option></select>
+          <div style="flex:1"></div><span class="muted" id="ainq-count" style="font-size:13px"></span>
+          <button class="btn primary sm" data-act="adm-addinq"><svg class="i"><use href="#i-plus"/></svg>Add inquiry</button>
+        </div>
+        <div class="tbl-wrap"><table class="tk tight" style="min-width:980px"><thead><tr><th>Received</th><th>Contact & company</th><th>Email / phone</th><th>Interested in</th><th>Source</th><th>Status</th><th>Next follow-up</th><th>Owner</th></tr></thead><tbody id="ainq-body"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- Packages -->
+    <section data-aview="admin-packages" hidden>
+      <p class="muted" style="margin:4px 0 16px">These packages control the pricing section on the website and the plans on the sign-up form. Saving updates the website straight away.</p>
+      <div class="pkg-grid" id="apkg"></div>
+    </section>
+  </main>
+</div>
+
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" aria-label="Ticket details"></aside>
 <div class="toast" id="toast"></div>
@@ -936,8 +1104,9 @@ const TITLES={dashboard:"Dashboard",tickets:"Tickets",new:"New ticket",ai:"AI re
 const LANDING_ANCHORS=["home","features","ai-section","pricing",""];
 function route(){
   const h=location.hash.replace("#","");
-  const inApp=TITLES[h];
-  $("#landing").hidden=!!inApp; $("#app").hidden=!inApp;
+  const inApp=TITLES[h], inAdmin=ADMIN_T[h];
+  $("#landing").hidden=!!inApp||!!inAdmin; $("#app").hidden=!inApp; $("#admin").hidden=!inAdmin;
+  if(inAdmin){closeDrawer();renderAdmin(h);window.scrollTo(0,0);return}
   if(!inApp){ if(h&&h!=="home"){const el=document.getElementById(h); el&&el.scrollIntoView({behavior:"smooth"})} else window.scrollTo(0,0); renderPreview(); return }
   $$("[data-view]").forEach(s=>s.hidden=s.dataset.view!==h);
   $$(".navi[data-v]").forEach(a=>a.classList.toggle("on",a.dataset.v===h));
@@ -969,7 +1138,7 @@ $("#billtoggle").addEventListener("click",e=>{const b=e.target.closest("button")
 
 function openSignup(plan="Growth",login=false){
   const m=$("#modal");m.hidden=false;
-  m.innerHTML=login?`<div class="modal-c" role="dialog" aria-modal="true" aria-labelledby="mt"><h3 id="mt">Welcome back</h3><p class="muted">Log in to your Softnear CRM workspace.</p>
+  m.innerHTML=login?`<div class="modal-c" role="dialog" aria-modal="true" aria-labelledby="mt"><h3 id="mt">Welcome back</h3><p class="muted">Log in to your Softnear CRM workspace. <a href="#admin" data-act="adm-login" style="color:var(--accent);font-weight:600">Softnear team? Super admin login</a></p>
   <form id="sf"><div class="fld"><label for="s-email">Work email</label><input class="inp" id="s-email" type="email" value="lynda.morton@regalbakery.example" required></div>
   <div class="fld"><label for="s-pw">Password</label><input class="inp" id="s-pw" type="password" value="demo-password" required></div>
   <button class="btn primary" type="submit">Log in</button><button class="btn ghost" type="button" data-close>Cancel</button></form></div>`
@@ -977,10 +1146,10 @@ function openSignup(plan="Growth",login=false){
   <form id="sf"><div class="fld"><label for="s-name">Your name</label><input class="inp" id="s-name" value="Lynda Morton" required></div>
   <div class="fld"><label for="s-co">Company</label><input class="inp" id="s-co" value="Regal Bakery Group" required></div>
   <div class="fld"><label for="s-email">Work email</label><input class="inp" id="s-email" type="email" value="lynda.morton@regalbakery.example" required></div>
-  <div class="fld"><label>Plan</label><div class="plan-pick">${["Starter","Growth","Enterprise"].map(p=>`<label><input type="radio" name="plan" value="${p}" ${p===plan?"checked":""}><span><b>${p}</b>${p==="Starter"?"£49/mo":p==="Growth"?"£149/mo":"Custom"}</span></label>`).join("")}</div></div>
+  <div class="fld"><label>Plan</label><div class="plan-pick">${["Starter","Growth","Enterprise"].map(p=>`<label><input type="radio" name="plan" value="${p}" ${p===plan?"checked":""}><span><b>${p}</b>${priceLabel(p)}</span></label>`).join("")}</div></div>
   <div class="fld"><label>Import your existing log <span class="hint">optional</span></label><div class="tag" style="height:auto;padding:10px 12px;border-style:dashed">Complaints.xlsx · 76 complaints ready to import</div></div>
   <button class="btn primary" type="submit">Create workspace</button><button class="btn ghost" type="button" data-close>Cancel</button></form></div>`;
-  m.querySelector("#sf").addEventListener("submit",e=>{e.preventDefault();const co=m.querySelector("#s-co");if(co){$("#ws-name").textContent=co.value||"My workspace";$("#ws-av").textContent=(co.value||"MW").split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase()}m.hidden=true;go("dashboard");setTimeout(()=>toast(login?"Logged in":"Workspace created · 76 complaints imported"),300)});
+  m.querySelector("#sf").addEventListener("submit",e=>{e.preventDefault();const co=m.querySelector("#s-co");if(co){const pk=m.querySelector('input[name="plan"]:checked');adminAddCompany({name:co.value||"New company",contact:m.querySelector("#s-name").value,email:m.querySelector("#s-email").value,plan:pk?pk.value:"Growth"},"signed up on the website")}if(co){$("#ws-name").textContent=co.value||"My workspace";$("#ws-av").textContent=(co.value||"MW").split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase()}m.hidden=true;go("dashboard");setTimeout(()=>toast(login?"Logged in":"Workspace created · 76 complaints imported"),300)});
   m.querySelector("[data-close]").onclick=()=>m.hidden=true;
   setTimeout(()=>m.querySelector("input")?.focus(),50);
 }
@@ -1406,7 +1575,391 @@ $("#reset-demo").onclick=()=>{tickets=buildDemo();try{localStorage.removeItem(LS
 /* ================= THEME ================= */
 $("#themebtn").onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark";};
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(location.hash==="#dashboard")setTimeout(renderDash,30)});
-new MutationObserver(()=>{if(location.hash==="#dashboard")setTimeout(renderDash,30)}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+new MutationObserver(()=>{if(location.hash==="#dashboard")setTimeout(renderDash,30);if(location.hash==="#admin")setTimeout(renderAdmDash,30)}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+
+/* ======================= SUPER ADMIN ======================= */
+const ADMIN_T={"admin":"SaaS dashboard","admin-billing":"Billing","admin-inquiries":"Company inquiries","admin-packages":"Packages & pricing"};
+const ADM_KEY="softnear.admin.v1";
+const GATEWAYS={"Stripe":"#635BFF","GoCardless":"#1C9C7E","PayPal":"#F2A900","Razorpay":"#2B6CE0"};
+const SALES=["Rohan Mehta","Priya Nair","Arjun Shah"];
+const DEFAULT_PLANS=[
+  {name:"Starter",price:49,custom:false,tag:"One site, small QA team.",users:"3 users",features:["Unlimited tickets","Standard dashboards","Excel import"],popular:false,visible:true},
+  {name:"Growth",price:149,custom:false,tag:"Multi-brand manufacturers.",users:"15 users",features:["CPMU targets per retailer","AI response generator","Custom fields & drop-downs"],popular:true,visible:true},
+  {name:"Enterprise",price:null,custom:true,tag:"Groups with several sites.",users:"Unlimited users & sites",features:["SSO & audit exports","Retailer portal integrations","Dedicated onboarding"],popular:false,visible:true},
+];
+const isoOf=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const addMonths=(iso,n)=>{const [y,m,d]=iso.split("-").map(Number);const x=new Date(y,m-1+n,Math.min(d,28));return isoOf(x)};
+const money=(n,dp=0)=>"£"+Number(n||0).toLocaleString("en-GB",{minimumFractionDigits:dp,maximumFractionDigits:dp});
+const hash=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0};
+const txnId=(gw,seed)=>{const r=hash(seed).toString(36).toUpperCase().padStart(7,"0"),r2=hash(seed+"x").toString(36).toUpperCase().padStart(7,"0");return gw==="Stripe"?"ch_3Q"+r+r2.slice(0,6):gw==="Razorpay"?"pay_N"+r+r2.slice(0,4):gw==="PayPal"?"PAYID-M"+r2+r.slice(0,4):"PM00"+r.slice(0,6)+r2.slice(0,4)};
+const COL=["#3B8DF0","#FF7452","#11A69A","#7A68EE","#E25C9A","#F2B705","#2B6CE0","#14935F"];
+const coAv=n=>{const i=hash(n)%COL.length;return `<span class="co-av" style="background:${COL[i]}">${esc(n.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase())}</span>`};
+
+function buildAdminDemo(){
+  const C=[
+    ["Regal Bakery Group","Lynda Morton","lynda.morton@regalbakery.example","+44 1274 555 010","United Kingdom","Bakery","Growth","Trial",6,"2026-09-27","Stripe"],
+    ["Hartwell Foods Ltd","James Carter","j.carter@hartwellfoods.co.uk","+44 113 496 0120","United Kingdom","Ready meals","Enterprise","Active",42,"2025-11-04","GoCardless",690],
+    ["Northgate Dairies","Fiona Blake","fiona.blake@northgatedairies.co.uk","+44 191 498 0233","United Kingdom","Dairy","Growth","Active",12,"2025-12-12","Stripe"],
+    ["Pennine Pies Co.","Martin Hughes","martin@penninepies.co.uk","+44 1422 555 761","United Kingdom","Bakery","Starter","Active",3,"2026-01-08","Stripe"],
+    ["Ashby Confectionery","Hannah Wells","h.wells@ashbyconfectionery.com","+44 1530 555 214","United Kingdom","Confectionery","Growth","Active",9,"2026-01-21","GoCardless"],
+    ["Greenvale Juices","Tom Fletcher","tom.fletcher@greenvalejuices.co.uk","+44 1932 555 908","United Kingdom","Beverages","Starter","Past due",3,"2026-02-03","Stripe"],
+    ["Kingsmead Bakery","Aisha Rahman","aisha@kingsmeadbakery.co.uk","+44 121 496 0457","United Kingdom","Bakery","Growth","Active",14,"2026-02-17","Stripe"],
+    ["Oakridge Meats","Craig Donnelly","c.donnelly@oakridgemeats.ie","+353 1 555 0182","Ireland","Meat","Enterprise","Active",58,"2026-03-02","PayPal",1150],
+    ["Brambleton Preserves","Sophie Turner","sophie@brambletonpreserves.co.uk","+44 1584 555 330","United Kingdom","Preserves","Starter","Active",2,"2026-03-19","Stripe"],
+    ["Solway Seafoods","Euan Campbell","e.campbell@solwayseafoods.co.uk","+44 1387 555 612","United Kingdom","Seafood","Growth","Suspended",11,"2026-04-06","GoCardless"],
+    ["Thornbury Snacks","Rachel Moore","r.moore@thornburysnacks.co.uk","+44 1454 555 871","United Kingdom","Snacks","Growth","Active",13,"2026-04-22","Stripe"],
+    ["Caledon Mills","Neil Robertson","neil@caledonmills.co.uk","+44 131 496 0702","United Kingdom","Milling","Starter","Cancelled",3,"2026-05-05","Stripe"],
+    ["Spice Route Foods","Kavita Iyer","kavita.iyer@spiceroutefoods.in","+91 22 5550 1934","India","Spices & sauces","Growth","Active",10,"2026-05-28","Razorpay"],
+    ["Lindale Frozen Foods","Gareth Price","g.price@lindalefrozen.co.uk","+44 29 2055 0915","United Kingdom","Frozen","Growth","Active",15,"2026-06-15","Stripe"],
+    ["Morland Beverages","Chloe Adams","chloe.adams@morlandbev.com","+44 1793 555 460","United Kingdom","Beverages","Starter","Active",3,"2026-07-09","PayPal"],
+    ["Highfield Organics","Ben Clarke","ben@highfieldorganics.co.uk","+44 1603 555 207","United Kingdom","Organic produce","Growth","Past due",8,"2026-07-30","GoCardless"],
+    ["Annapurna Snacks","Rahul Verma","rahul@annapurnasnacks.in","+91 80 5550 7712","India","Snacks","Starter","Active",3,"2026-08-18","Razorpay"],
+    ["Riverside Sauces","Laura Bennett","laura.bennett@riversidesauces.co.uk","+44 117 496 0388","United Kingdom","Sauces","Growth","Trial",5,"2026-09-29","Stripe"],
+    ["Copperleaf Tea Co.","Daniel Shaw","daniel@copperleaftea.co.uk","+44 1904 555 145","United Kingdom","Tea","Starter","Trial",2,"2026-10-03","Stripe"],
+  ];
+  const plans=JSON.parse(JSON.stringify(DEFAULT_PLANS));
+  const price=(p,c)=>p==="Enterprise"?c:plans.find(x=>x.name===p).price;
+  const companies=C.map((r,i)=>{const [name,contact,email,phone,country,industry,plan,status,users,started,gateway,custom]=r;
+    const mrr=status==="Trial"||status==="Cancelled"?0:price(plan,custom);
+    return {id:"co"+(i+1),name,contact,email,phone,country,industry,plan,status,users,started,gateway,customPrice:custom||null,mrr,
+      trialEnds:status==="Trial"?addDaysISO(started,14):null,cancelledOn:status==="Cancelled"?"2026-08-05":null,
+      tickets:status==="Trial"?Math.max(4,users*3):12+((i*7)%40),log:[{at:started+"T10:00",by:"System",action:status==="Trial"?"Started free trial":"Subscribed",detail:`${plan} package`}]};
+  });
+  const payments=[];
+  companies.forEach((c,ci)=>{ if(c.status==="Trial")return;
+    let d=addDaysISO(c.started,14); const amount=price(c.plan,c.customPrice);
+    const stop=c.cancelledOn||isoOf(TODAY);
+    let k=0;
+    while(d<=stop){
+      const next=addMonths(d,1); const last=next>stop;
+      let st="Paid";
+      if(last&&c.status==="Past due")st="Failed";
+      if(c.name==="Pennine Pies Co."&&k===2)st="Refunded";
+      payments.push({id:txnId(c.gateway,c.id+d),coId:c.id,plan:c.plan,date:d,next:(c.status==="Cancelled"&&last)?null:next,amount,gateway:c.gateway,status:st});
+      d=next;k++;
+    }
+    if(c.status==="Suspended"){const lp=payments.filter(p=>p.coId===c.id).slice(-1)[0];if(lp)lp.status="Failed"}
+  });
+  companies.forEach(c=>{const ps=payments.filter(p=>p.coId===c.id);const lp=ps.slice(-1)[0];c.renews=c.status==="Trial"?c.trialEnds:c.status==="Cancelled"?null:(lp?lp.next:null)});
+  const I=[
+    ["Megan Price","Westbury Bakeries","Quality Manager","megan.price@westburybakeries.co.uk","+44 1373 555 284","United Kingdom","51–200","Growth","Website · demo request","We log around 40 complaints a month in Excel across two sites. Interested in the dashboards and the AI letters.","2026-10-06","New",null,""],
+    ["Vikram Desai","Desai Namkeen Pvt Ltd","Director","vikram@desainamkeen.in","+91 79 5550 4471","India","201–500","Enterprise","Website · contact sales","Need multi-site complaint tracking for 4 factories and export retailers. Please share Enterprise pricing.","2026-10-05","New",null,""],
+    ["Oliver Grant","Grant & Sons Butchers","Operations Lead","oliver@grantandsons.co.uk","+44 1904 555 619","United Kingdom","11–50","Starter","Pricing page","Is there a discount for annual billing on Starter?","2026-10-04","Contacted","Priya Nair","2026-10-08"],
+    ["Isabel Moreno","Mediterra Olive Oils","Head of QA","i.moreno@mediterra.es","+34 91 555 0732","Spain","51–200","Growth","Website · demo request","Looking to replace our ticketing tool; we need Spanish and English letters.","2026-10-02","Demo scheduled","Rohan Mehta","2026-10-09"],
+    ["Sam Whitaker","Peak District Cheese","Technical Manager","sam.whitaker@peakcheese.co.uk","+44 1629 555 145","United Kingdom","11–50","Growth","Referral · Northgate Dairies","Northgate recommended you. Can we import 3 years of complaints?","2026-09-30","Contacted","Arjun Shah","2026-10-07"],
+    ["Hannah Lee","Lee's Dim Sum Kitchen","Founder","hannah@leesdimsum.co.uk","+44 161 496 0921","United Kingdom","1–10","Starter","Website · contact form","Small team, mainly need a simple log and reply templates.","2026-09-27","Demo scheduled","Priya Nair","2026-10-10"],
+    ["Patrick O'Neill","Atlantic Smokehouse","QA Supervisor","p.oneill@atlanticsmoke.ie","+353 91 555 304","Ireland","51–200","Growth","LinkedIn ad","Interested in BRCGS audit trail features.","2026-09-22","Converted","Rohan Mehta",null],
+    ["Deepa Krishnan","Kerala Coconut Co.","Export Manager","deepa@keralacoconut.in","+91 484 555 2290","India","51–200","Growth","Website · demo request","We supply UK retailers and need CPMU reporting per retailer.","2026-09-18","Contacted","Arjun Shah","2026-10-03"],
+    ["George Ellis","Ellis Family Farms","Owner","george@ellisfarms.co.uk","+44 1522 555 712","United Kingdom","1–10","Starter","Pricing page","Just exploring for now.","2026-09-10","Lost","Priya Nair",null],
+    ["Nadia Haddad","Cedar Bakehouse","Customer Care Lead","nadia@cedarbakehouse.co.uk","+44 20 7946 0581","United Kingdom","11–50","Growth","Website · contact sales","Can the AI draft replies in our brand voice? Would like a call next week.","2026-10-06","New",null,""],
+  ];
+  const inquiries=I.map((r,i)=>{const [name,company,role,email,phone,country,size,plan,source,message,received,status,owner,next]=r;
+    const notes=[{at:received+"T09:"+String(10+i).padStart(2,"0"),by:"Website",text:"Inquiry received"}];
+    if(status!=="New")notes.push({at:addDaysISO(received,1)+"T11:30",by:owner||"Priya Nair",text:status==="Lost"?"Followed up twice, no reply. Marked as lost.":status==="Converted"?"Signed up for Growth after demo.":status==="Demo scheduled"?"Demo booked over Teams.":"Called and sent the product overview."});
+    return {id:"inq"+(i+1),name,company,role,email,phone,country,size,plan,source,message,received,status,owner,next:next||null,notes};
+  });
+  return {companies,payments,inquiries,plans};
+}
+let ADM;
+try{const s=localStorage.getItem(ADM_KEY);ADM=s?JSON.parse(s):null}catch(e){ADM=null}
+if(!ADM||!ADM.companies)ADM=buildAdminDemo();
+const admSave=()=>{try{localStorage.setItem(ADM_KEY,JSON.stringify(ADM))}catch(e){}};
+const coById=id=>ADM.companies.find(c=>c.id===id);
+const planPrice=name=>{const p=ADM.plans.find(x=>x.name===name);return p&&!p.custom?p.price:null};
+const priceLabel=name=>{const p=ADM.plans.find(x=>x.name===name);return !p?"":p.custom?"Custom":`£${p.price}/mo`};
+const coLog=(c,action,detail)=>{(c.log||(c.log=[])).push({at:nowStamp(),by:"Softnear Admin",action,detail:detail||""})};
+const admQ=()=>($("#adm-search").value||"").trim().toLowerCase();
+
+const coStatus={Active:"g",Trial:"b","Past due":"r",Suspended:"a",Cancelled:"m"};
+const payStatus={Paid:"g",Failed:"r",Refunded:"m",Pending:"a"};
+const inqStatus={New:"b",Contacted:"a","Demo scheduled":"v",Converted:"g",Lost:"m"};
+const sx=(map,s)=>`<span class="sx ${map[s]||"m"}">${esc(s)}</span>`;
+
+function admBadges(){
+  const nf=ADM.payments.filter(p=>p.status==="Failed").length, ni=ADM.inquiries.filter(i=>i.status==="New").length;
+  const a=$("#adm-failed"),b=$("#adm-new");a.textContent=nf;a.hidden=!nf;b.textContent=ni;b.hidden=!ni;
+}
+function renderAdmin(h){
+  $$("[data-aview]").forEach(s=>s.hidden=s.dataset.aview!==h);
+  $$(".navi[data-av]").forEach(a=>a.classList.toggle("on",a.dataset.av===h));
+  $("#adm-title").textContent=ADMIN_T[h];
+  admBadges();
+  if(h==="admin")renderAdmDash();
+  if(h==="admin-billing")renderBilling();
+  if(h==="admin-inquiries")renderInquiries();
+  if(h==="admin-packages")renderPackages();
+}
+$("#adm-search").addEventListener("input",()=>{const h=location.hash.slice(1);if(ADMIN_T[h])renderAdmin(h)});
+
+/* ---------- SaaS dashboard ---------- */
+const aco={status:"All",plan:""};
+function renderAdmDash(){
+  const cs=ADM.companies, live=cs.filter(c=>["Active","Past due"].includes(c.status));
+  const mrr=live.reduce((a,c)=>a+(c.mrr||0),0), trials=cs.filter(c=>c.status==="Trial").length, pd_=cs.filter(c=>c.status==="Past due").length;
+  const mk=isoOf(TODAY).slice(0,7), coll=ADM.payments.filter(p=>p.status==="Paid"&&p.date.startsWith(mk)).reduce((a,p)=>a+p.amount,0);
+  const newInq=ADM.inquiries.filter(i=>i.status==="New").length;
+  $("#adm-kpis").innerHTML=`
+   <div class="card kpi hero-k"><span class="eyebrow">MRR</span><div class="v sm">${money(mrr)}</div><div class="ft">ARR ${money(mrr*12)}</div></div>
+   <div class="card kpi"><span class="eyebrow">Companies</span><div class="v sm">${cs.length}</div><div class="ft">${live.length} paying</div></div>
+   <div class="card kpi"><span class="eyebrow">On free trial</span><div class="v sm">${trials}</div><div class="ft">14-day trials</div></div>
+   <div class="card kpi ${pd_?"k-bad":""} clickable" data-go="admin-billing"><span class="eyebrow">Past due</span><div class="v sm ${pd_?"bad":""}">${pd_}</div><div class="ft">failed payments to chase</div></div>
+   <div class="card kpi"><span class="eyebrow">Collected · Oct</span><div class="v sm">${money(coll)}</div><div class="ft">month to date</div></div>
+   <div class="card kpi clickable" data-go="admin-inquiries"><span class="eyebrow">New inquiries</span><div class="v sm">${newInq}</div><div class="ft">waiting for first contact</div></div>`;
+  // feed
+  const ev=[];
+  cs.forEach(c=>(c.log||[]).forEach(e=>ev.push({at:e.at,ic:"#i-building",t:`<b>${esc(c.name)}</b> · ${esc(e.action)}`})));
+  ADM.payments.slice(-40).forEach(p=>{const c=coById(p.coId);ev.push({at:p.date+"T08:00",ic:"#i-card",t:`<b>${esc(c?c.name:"")}</b> · payment ${p.status.toLowerCase()} ${money(p.amount)}`})});
+  ADM.inquiries.forEach(i=>ev.push({at:i.notes[0].at,ic:"#i-inbox",t:`<b>${esc(i.company)}</b> · new inquiry (${esc(i.plan)})`}));
+  ev.sort((a,b)=>b.at.localeCompare(a.at));
+  $("#adm-feed").innerHTML=ev.slice(0,7).map(e=>`<div><span class="fi"><svg class="i"><use href="${e.ic}"/></svg></span><span>${e.t}</span><span class="t">${fmtDate(e.at.slice(0,10)).slice(0,-5)}</span></div>`).join("");
+  // table
+  const q=admQ();
+  const base=cs.filter(c=>(!aco.plan||c.plan===aco.plan)&&(!q||[c.name,c.contact,c.email,c.country,c.industry,c.plan,c.status].join(" ").toLowerCase().includes(q)));
+  const tabs=["All","Active","Trial","Past due","Suspended","Cancelled"];
+  $("#aco-tabs").innerHTML=tabs.map(s=>`<button class="${aco.status===s?"on":""}" data-s="${s}">${s==="All"?"All companies":s}<span class="n">${s==="All"?base.length:base.filter(c=>c.status===s).length}</span></button>`).join("");
+  $("#aco-tabs").onclick=e=>{const b=e.target.closest("button");if(b){aco.status=b.dataset.s;renderAdmDash()}};
+  $("#aco-plan").onchange=e=>{aco.plan=e.target.value;renderAdmDash()};
+  const rows=base.filter(c=>aco.status==="All"||c.status===aco.status).sort((a,b)=>b.started.localeCompare(a.started));
+  $("#aco-body").innerHTML=rows.length?rows.map(c=>`<tr class="r" data-co="${c.id}" tabindex="0"><td><div class="co-cell">${coAv(c.name)}<div style="min-width:0"><b>${esc(c.name)}</b><small>${esc(c.contact)} · ${esc(c.country)}</small></div></div></td><td><span class="ptag ${c.plan}">${c.plan}</span></td><td>${sx(coStatus,c.status)}</td><td class="num">${c.users}</td><td class="mono-s">${fmtDate(c.started)}</td><td class="mono-s">${c.renews?(c.status==="Trial"?"Trial ends "+fmtDate(c.renews).slice(0,-5):fmtDate(c.renews)):"—"}</td><td class="num">${c.mrr?money(c.mrr):"—"}</td><td><div class="act"><button class="btn" data-co="${c.id}">Manage</button></div></td></tr>`).join(""):`<tr><td colspan="8"><div class="empty">No companies match.</div></td></tr>`;
+  // charts
+  if(!chartDefaults())return;
+  const months=[];for(let i=11;i>=0;i--){const d=new Date(TODAY.getFullYear(),TODAY.getMonth()-i,1);months.push({k:isoOf(d).slice(0,7),end:isoOf(new Date(d.getFullYear(),d.getMonth()+1,0)),l:MON[d.getMonth()]})}
+  const mrrAt=m=>cs.reduce((a,c)=>{if(c.started>m.end)return a;if(c.cancelledOn&&c.cancelledOn<=m.end)return a;if(c.status==="Trial")return a;const firstPay=addDaysISO(c.started,14);if(firstPay>m.end)return a;return a+(c.status==="Cancelled"?planPrice(c.plan)||0:(c.mrr||0))},0);
+  mk2("ach-mrr",{type:"line",data:{labels:months.map(m=>m.l),datasets:[{data:months.map(mrrAt),borderColor:css("--accent"),backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,260);g.addColorStop(0,css("--accent")+"40");g.addColorStop(1,css("--accent")+"00");return g},fill:true,tension:.35,borderWidth:2.5,pointRadius:ctx=>ctx.dataIndex===11?5:0,pointBackgroundColor:css("--accent")}]},options:{scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:css("--line")},border:{display:false},ticks:{callback:v=>"£"+v.toLocaleString("en-GB")}}},plugins:{tooltip:{callbacks:{label:c=>money(c.parsed.y)}}}}});
+  const byPlan=["Starter","Growth","Enterprise"].map(p=>cs.filter(c=>c.plan===p&&c.status!=="Cancelled").length);
+  mk2("ach-plan",{type:"doughnut",data:{labels:["Starter","Growth","Enterprise"],datasets:[{data:byPlan,backgroundColor:[css("--teal"),css("--accent"),css("--violet")],borderColor:css("--surface"),borderWidth:3}]},options:{cutout:"66%",plugins:{legend:{display:true,position:"bottom",labels:{usePointStyle:true,pointStyle:"rectRounded",boxWidth:10,padding:14,color:css("--fg")}}}}});
+  mk2("ach-signups",{type:"bar",data:{labels:months.map(m=>m.l),datasets:[{data:months.map(m=>cs.filter(c=>c.started.startsWith(m.k)).length),backgroundColor:css("--brand-yellow"),borderRadius:6,borderSkipped:false,barPercentage:.6}]},options:{scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{precision:0},grid:{color:css("--line")},border:{display:false}}}}});
+}
+function mk2(id,cfg){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),cfg)}
+
+function openCompany(id){
+  const c=coById(id);if(!c)return;
+  const ps=ADM.payments.filter(p=>p.coId===id).sort((a,b)=>b.date.localeCompare(a.date));
+  const paid=ps.filter(p=>p.status==="Paid").reduce((a,p)=>a+p.amount,0);
+  const v=(k,val,full)=>`<div class="${full?"full":""}"><dt>${k}</dt><dd class="${val?"":"blank"}">${val?esc(val):"Not recorded"}</dd></div>`;
+  $("#drawer").innerHTML=`
+   <div class="dr-h"><div class="row">${sx(coStatus,c.status)}<span class="ptag ${c.plan}">${c.plan}</span><div style="flex:1"></div><button class="iconbtn" id="dr-x" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+   <h2>${esc(c.name)}</h2><p>${esc(c.industry)} · ${esc(c.country)} · joined ${fmtDate(c.started)}</p></div>
+   <div class="dr-b">
+    <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="card kpi" style="padding:12px"><span class="eyebrow">MRR</span><div class="v" style="font-size:22px">${c.mrr?money(c.mrr):"—"}</div></div><div class="card kpi" style="padding:12px"><span class="eyebrow">Users</span><div class="v" style="font-size:22px">${c.users}</div></div><div class="card kpi" style="padding:12px"><span class="eyebrow">Lifetime paid</span><div class="v" style="font-size:22px">${money(paid)}</div></div></div>
+    <div class="dsec"><h4>Primary contact</h4><div class="contact-card">
+      <div class="ln"><svg class="i"><use href="#i-users"/></svg><span>${esc(c.contact)}</span></div>
+      <div class="ln"><svg class="i"><use href="#i-mail"/></svg><span>${esc(c.email)}</span><button class="copyb" data-copy="${esc(c.email)}">Copy</button></div>
+      <div class="ln"><svg class="i"><use href="#i-bell"/></svg><span>${esc(c.phone)}</span><button class="copyb" data-copy="${esc(c.phone)}">Copy</button></div></div></div>
+    <div class="dsec"><h4>Subscription</h4><dl class="kv">${v("Package",c.plan+(c.plan==="Enterprise"&&c.customPrice?` (${money(c.customPrice)}/mo)`:""))}${v("Status",c.status)}${v(c.status==="Trial"?"Trial ends":"Next renewal",c.renews?fmtDate(c.renews):"")}${v("Payment gateway",c.status==="Trial"?"":c.gateway)}${v("Tickets logged",String(c.tickets))}${v("Industry",c.industry)}</dl>
+      <div class="drow" style="margin-top:12px"><label class="fld" style="min-width:160px"><span class="eyebrow" style="font-size:11px">Change package</span><select class="inp" id="co-plan">${["Starter","Growth","Enterprise"].map(p=>`<option ${p===c.plan?"selected":""}>${p}</option>`).join("")}</select></label></div>
+      <div class="drow" style="margin-top:10px">${c.status==="Trial"?`<button class="btn sm primary" data-coact="activate">Convert to paid</button><button class="btn sm" data-coact="extend">Extend trial 7 days</button>`:""}${["Active","Past due"].includes(c.status)?`<button class="btn sm" data-coact="suspend">Suspend access</button>`:""}${c.status==="Suspended"||c.status==="Cancelled"?`<button class="btn sm primary" data-coact="reactivate">Reactivate</button>`:""}${c.status!=="Cancelled"?`<button class="btn sm ghost" data-coact="cancel" style="color:var(--bad)">Cancel subscription</button>`:""}</div></div>
+    <div class="dsec"><h4>Billing history</h4>${ps.length?`<div class="tbl-wrap" style="margin:0"><table class="tk" style="min-width:0"><tbody>${ps.slice(0,6).map(p=>`<tr><td class="mono-s">${fmtDate(p.date)}</td><td class="mono-s">${esc(p.id)}</td><td class="num">${money(p.amount)}</td><td>${sx(payStatus,p.status)}</td><td><button class="btn sm" data-inv="${p.id}">Invoice</button></td></tr>`).join("")}</tbody></table></div>`:'<p class="muted">No payments yet. Company is on a free trial.</p>'}</div>
+    <div class="dsec"><h4>Activity log</h4>${activityHTML({log:c.log&&c.log.length?c.log:[{at:c.started+"T10:00",by:"System",action:"Subscribed",detail:c.plan}]})}</div>
+   </div>
+   <div class="dr-f"><button class="btn primary" id="co-open"><svg class="i"><use href="#i-out"/></svg>Open company portal</button><button class="btn" data-toast="A password-reset email goes to ${esc(c.email)} in the full build">Send password reset</button></div>`;
+  $("#drawer").classList.add("on");$("#scrim").classList.add("on");
+  $("#dr-x").onclick=closeDrawer;
+  $("#co-open").onclick=()=>{closeDrawer();if(c.name!=="Regal Bakery Group")toast(`Opening ${c.name}'s portal (demo shows Regal Bakery data)`);go("dashboard")};
+  $("#co-plan").onchange=e=>{const np=e.target.value;if(np===c.plan)return;const old=c.plan;c.plan=np;if(np!=="Enterprise")c.customPrice=null;else if(!c.customPrice)c.customPrice=600;if(c.mrr)c.mrr=np==="Enterprise"?c.customPrice:planPrice(np);coLog(c,"Package changed",`${old} → ${np}`);admSave();openCompany(id);refreshAdmin();toast(`${c.name} moved to ${np}`)};
+  $("#drawer").querySelectorAll("[data-coact]").forEach(b=>b.onclick=()=>{
+    const a=b.dataset.coact,old=c.status;
+    if(a==="extend"){c.trialEnds=addDaysISO(c.trialEnds||isoOf(TODAY),7);c.renews=c.trialEnds;coLog(c,"Trial extended",`Now ends ${fmtDate(c.trialEnds)}`)}
+    if(a==="activate"||a==="reactivate"){c.status="Active";c.cancelledOn=null;c.mrr=c.plan==="Enterprise"?(c.customPrice||600):planPrice(c.plan);if(!c.gateway)c.gateway="Stripe";const d=isoOf(TODAY);const p={id:txnId(c.gateway,c.id+d+Math.random()),coId:c.id,plan:c.plan,date:d,next:addMonths(d,1),amount:c.mrr,gateway:c.gateway,status:"Paid"};ADM.payments.push(p);c.renews=p.next;coLog(c,"Status changed",`${old} → Active`)}
+    if(a==="suspend"){c.status="Suspended";coLog(c,"Status changed",`${old} → Suspended (access blocked)`)}
+    if(a==="cancel"){c.status="Cancelled";c.cancelledOn=isoOf(TODAY);c.mrr=0;c.renews=null;coLog(c,"Subscription cancelled",`Was ${old}`)}
+    admSave();openCompany(id);refreshAdmin();toast(`${c.name}: ${a==="extend"?"trial extended":"now "+c.status.toLowerCase()}`)});
+}
+function refreshAdmin(){const h=location.hash.slice(1);if(ADMIN_T[h])renderAdmin(h)}
+
+/* ---------- Billing ---------- */
+const abl={status:"All",gw:"",pkg:"",month:""};
+function renderBilling(){
+  const ps=ADM.payments;
+  const gsel=$("#abl-gw");if(gsel.options.length<2){gsel.innerHTML='<option value="">All gateways</option>'+Object.keys(GATEWAYS).map(g=>`<option>${g}</option>`).join("");gsel.onchange=e=>{abl.gw=e.target.value;renderBilling()}}
+  $("#abl-pkg").onchange=e=>{abl.pkg=e.target.value;renderBilling()};
+  const msel=$("#abl-month");if(!msel.options.length){const ms=[...new Set(ps.map(p=>p.date.slice(0,7)))].sort().reverse();msel.innerHTML='<option value="">All months</option>'+ms.map(m=>`<option value="${m}">${MONL[+m.slice(5)-1]} ${m.slice(0,4)}</option>`).join("");msel.onchange=e=>{abl.month=e.target.value;renderBilling()}}
+  const mk=isoOf(TODAY).slice(0,7);
+  const coll=ps.filter(p=>p.status==="Paid"&&p.date.startsWith(mk)).reduce((a,p)=>a+p.amount,0);
+  const failed=ps.filter(p=>p.status==="Failed");
+  const up=ADM.companies.filter(c=>["Active"].includes(c.status)&&c.renews&&c.renews>=isoOf(TODAY)&&c.renews<=addDaysISO(isoOf(TODAY),7));
+  const ref=ps.filter(p=>p.status==="Refunded").reduce((a,p)=>a+p.amount,0);
+  $("#abl-kpis").innerHTML=`
+   <div class="card kpi hero-k"><span class="eyebrow">Collected · Oct 2026</span><div class="v">${money(coll)}</div><div class="ft">${ps.filter(p=>p.status==="Paid"&&p.date.startsWith(mk)).length} payments</div></div>
+   <div class="card kpi ${failed.length?"k-bad":""}"><span class="eyebrow">Failed payments</span><div class="v ${failed.length?"bad":""}">${failed.length}</div><div class="ft">${money(failed.reduce((a,p)=>a+p.amount,0))} to recover</div></div>
+   <div class="card kpi"><span class="eyebrow">Renewals next 7 days</span><div class="v">${up.length}</div><div class="ft">${money(up.reduce((a,c)=>a+c.mrr,0))} expected</div></div>
+   <div class="card kpi"><span class="eyebrow">Refunded</span><div class="v">${money(ref)}</div><div class="ft">all time</div></div>`;
+  const q=admQ();
+  const base=ps.filter(p=>{const c=coById(p.coId);return (!abl.gw||p.gateway===abl.gw)&&(!abl.pkg||p.plan===abl.pkg)&&(!abl.month||p.date.startsWith(abl.month))&&(!q||[c?c.name:"",p.id,p.gateway,p.plan,p.status].join(" ").toLowerCase().includes(q))});
+  const tabs=["All","Paid","Failed","Refunded"];
+  $("#abl-tabs").innerHTML=tabs.map(s=>`<button class="${abl.status===s?"on":""}" data-s="${s}">${s==="All"?"All transactions":s}<span class="n ${s==="Failed"&&failed.length?"late":""}">${s==="All"?base.length:base.filter(p=>p.status===s).length}</span></button>`).join("");
+  $("#abl-tabs").onclick=e=>{const b=e.target.closest("button");if(b){abl.status=b.dataset.s;renderBilling()}};
+  const rows=base.filter(p=>abl.status==="All"||p.status===abl.status).sort((a,b)=>b.date.localeCompare(a.date));
+  $("#abl-count").textContent=`${rows.length} transaction${rows.length===1?"":"s"} · ${money(rows.filter(p=>p.status==="Paid").reduce((a,p)=>a+p.amount,0))} paid`;
+  $("#abl-body").innerHTML=rows.length?rows.slice(0,60).map(p=>{const c=coById(p.coId)||{name:"Deleted company"};return `<tr><td><div class="co-cell">${coAv(c.name)}<div style="min-width:0"><b>${esc(c.name)}</b><small>${sx(payStatus,p.status)}</small></div></div></td><td><span class="ptag ${p.plan}">${p.plan}</span></td><td class="mono-s">${fmtDate(p.date)}</td><td class="mono-s">${p.next?fmtDate(p.next):"—"}</td><td class="mono-s" style="color:var(--fg)">${esc(p.id)}</td><td class="num" style="font-weight:600;color:var(--ink)">${money(p.amount,2)}</td><td><span class="gw"><i style="background:${GATEWAYS[p.gateway]}"></i>${p.gateway}</span></td><td><div class="act"><button class="btn" data-inv="${p.id}">Invoice</button>${p.status==="Paid"?`<button class="btn" data-refund="${p.id}">Refund</button>`:""}${p.status==="Failed"?`<button class="btn primary" data-retry="${p.id}">Retry</button>`:""}</div></td></tr>`}).join(""):`<tr><td colspan="8"><div class="empty">No transactions match these filters.</div></td></tr>`;
+}
+function invoiceModal(pid){
+  const p=ADM.payments.find(x=>x.id===pid);if(!p)return;const c=coById(p.coId)||{};
+  const no="SN-INV-"+p.date.replace(/-/g,"").slice(2)+"-"+String(hash(p.id)%1000).padStart(3,"0");
+  const m=$("#modal");m.hidden=false;
+  m.innerHTML=`<div class="modal-c wide" role="dialog" aria-modal="true" aria-labelledby="inv-t"><div class="drow" style="justify-content:space-between;margin-bottom:14px"><h3 id="inv-t" style="font-size:22px">Invoice ${no}</h3>${sx(payStatus,p.status)}</div>
+   <div class="invoice"><div class="ih"><svg role="img" aria-label="Softnear"><use href="#logo"/></svg><div><b>INVOICE</b>${no}<br>Issued ${fmtDate(p.date)}</div></div>
+    <div class="meta2"><div><b>Billed to</b>${esc(c.name||"")}<br>${esc(c.contact||"")}<br>${esc(c.email||"")}</div><div><b>From</b>Softnear Technologies Pvt. Ltd.<br>projectdesk@softnear.com<br>www.softnear.com</div></div>
+    <table><thead><tr><th>Description</th><th style="text-align:right">Amount</th></tr></thead><tbody><tr><td>Softnear CRM · ${p.plan} package<br><span style="color:#6B6D75;font-size:12px">${fmtDate(p.date)} to ${p.next?fmtDate(addDaysISO(p.next,-1)):"end of term"}</span></td><td style="text-align:right">${money(p.amount,2)}</td></tr><tr class="tot"><td>Total ${p.status==="Refunded"?"(refunded)":p.status==="Failed"?"(payment failed)":"paid"}</td><td style="text-align:right">${money(p.amount,2)}</td></tr></tbody></table>
+    <div class="meta2" style="margin-top:14px"><div><b>Transaction ID</b>${esc(p.id)}</div><div><b>Payment gateway</b>${p.gateway}</div></div>
+    <div class="foot">www.softnear.com | +91 7400858050 | projectdesk@softnear.com</div></div>
+   <div class="drow" style="margin-top:16px;justify-content:flex-end"><button class="btn ghost" data-close>Close</button><button class="btn primary" id="inv-send"><svg class="i"><use href="#i-mail"/></svg>Email to ${esc(c.contact||"customer")}</button></div></div>`;
+  m.querySelector("[data-close]").onclick=()=>m.hidden=true;
+  m.querySelector("#inv-send").onclick=()=>{m.hidden=true;toast(`Invoice ${no} queued for ${c.email} (sent by email in the full build)`)};
+}
+function confirmModal(title,body,okLabel,onOk,danger){
+  const m=$("#modal");m.hidden=false;
+  m.innerHTML=`<div class="modal-c" role="dialog" aria-modal="true" aria-labelledby="cf-t"><h3 id="cf-t" style="font-size:22px">${title}</h3><p class="muted" style="margin-top:8px">${body}</p><div class="drow" style="margin-top:20px;justify-content:flex-end"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="cf-ok" ${danger?'style="background:var(--bad);border-color:var(--bad);color:#fff"':""}>${okLabel}</button></div></div>`;
+  m.querySelector("[data-close]").onclick=()=>m.hidden=true;
+  m.querySelector("#cf-ok").onclick=()=>{m.hidden=true;onOk()};
+}
+
+/* ---------- Inquiries ---------- */
+const ainq={status:"All",src:"",owner:""};
+function renderInquiries(){
+  const is=ADM.inquiries;
+  const ss=$("#ainq-src");ss.innerHTML='<option value="">All sources</option>'+[...new Set(is.map(i=>i.source))].sort().map(s=>`<option ${ainq.src===s?"selected":""}>${esc(s)}</option>`).join("");ss.onchange=e=>{ainq.src=e.target.value;renderInquiries()};
+  const os=$("#ainq-owner");os.innerHTML='<option value="">All owners</option><option value="__none" '+(ainq.owner==="__none"?"selected":"")+'>Unassigned</option>'+SALES.map(s=>`<option ${ainq.owner===s?"selected":""}>${s}</option>`).join("");os.onchange=e=>{ainq.owner=e.target.value;renderInquiries()};
+  const today=isoOf(TODAY), due=is.filter(i=>i.next&&i.next<=today&&!["Converted","Lost"].includes(i.status));
+  const thisMonth=is.filter(i=>i.received.startsWith(today.slice(0,7))).length, conv=is.filter(i=>i.status==="Converted").length, closed=is.filter(i=>["Converted","Lost"].includes(i.status)).length;
+  $("#ainq-kpis").innerHTML=`
+   <div class="card kpi hero-k"><span class="eyebrow">New inquiries</span><div class="v">${is.filter(i=>i.status==="New").length}</div><div class="ft">not yet contacted</div></div>
+   <div class="card kpi ${due.length?"k-bad":""}"><span class="eyebrow">Follow-ups due</span><div class="v ${due.length?"bad":""}">${due.length}</div><div class="ft">today or overdue</div></div>
+   <div class="card kpi"><span class="eyebrow">Received this month</span><div class="v">${thisMonth}</div><div class="ft">${is.length} in total</div></div>
+   <div class="card kpi"><span class="eyebrow">Conversion rate</span><div class="v">${closed?Math.round(conv/closed*100):0}<small>%</small></div><div class="ft">${conv} converted of ${closed} closed</div></div>`;
+  const q=admQ();
+  const base=is.filter(i=>(!ainq.src||i.source===ainq.src)&&(!ainq.owner||(ainq.owner==="__none"?!i.owner:i.owner===ainq.owner))&&(!q||[i.name,i.company,i.email,i.phone,i.country,i.message,i.plan].join(" ").toLowerCase().includes(q)));
+  const tabs=["All","New","Contacted","Demo scheduled","Converted","Lost"];
+  $("#ainq-tabs").innerHTML=tabs.map(s=>`<button class="${ainq.status===s?"on":""}" data-s="${s}">${s==="All"?"All inquiries":s}<span class="n">${s==="All"?base.length:base.filter(i=>i.status===s).length}</span></button>`).join("");
+  $("#ainq-tabs").onclick=e=>{const b=e.target.closest("button");if(b){ainq.status=b.dataset.s;renderInquiries()}};
+  const rows=base.filter(i=>ainq.status==="All"||i.status===ainq.status).sort((a,b)=>b.received.localeCompare(a.received));
+  $("#ainq-count").textContent=`${rows.length} inquir${rows.length===1?"y":"ies"}`;
+  $("#ainq-body").innerHTML=rows.length?rows.map(i=>{const late=i.next&&i.next<=today&&!["Converted","Lost"].includes(i.status);return `<tr class="r" data-inq="${i.id}" tabindex="0"><td class="mono-s">${fmtDate(i.received)}</td><td><div class="co-cell">${coAv(i.company)}<div style="min-width:0"><b>${esc(i.name)}</b><small>${esc(i.company)} · ${esc(i.country)}</small></div></div></td><td><div class="em" style="color:var(--ink)" title="${esc(i.email)}">${esc(i.email)}</div><div class="em muted">${esc(i.phone)}</div></td><td><span class="ptag ${i.plan}">${i.plan}</span><div class="muted" style="font-size:12px;margin-top:3px">${esc(i.size)} staff</div></td><td><div class="src">${esc(i.source)}</div></td><td>${sx(inqStatus,i.status)}</td><td class="mono-s" style="${late?"color:var(--bad);font-weight:600":""}">${i.next?(late?"Due ":"")+fmtDate(i.next).slice(0,-5):"—"}</td><td>${i.owner?avatar(i.owner).replace(/background:#[0-9A-F]{6}/i,"background:"+COL[hash(i.owner)%COL.length]):'<span class="muted">Unassigned</span>'}</td></tr>`}).join(""):`<tr><td colspan="8"><div class="empty">No inquiries match.</div></td></tr>`;
+}
+function openInquiry(id){
+  const i=ADM.inquiries.find(x=>x.id===id);if(!i)return;
+  const conv=ADM.companies.find(c=>c.fromInquiry===i.id);
+  $("#drawer").innerHTML=`
+   <div class="dr-h"><div class="row">${sx(inqStatus,i.status)}<span class="ptag ${i.plan}">${i.plan}</span><div style="flex:1"></div><button class="iconbtn" id="dr-x" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+   <h2>${esc(i.company)}</h2><p>${esc(i.name)} · ${esc(i.role)} · received ${fmtDate(i.received)} via ${esc(i.source)}</p></div>
+   <div class="dr-b">
+    <div class="quote">${esc(i.message)}</div>
+    <div class="dsec"><h4>Contact details</h4><div class="contact-card">
+      <div class="ln"><svg class="i"><use href="#i-users"/></svg><span>${esc(i.name)}, ${esc(i.role)}</span></div>
+      <div class="ln"><svg class="i"><use href="#i-mail"/></svg><span>${esc(i.email)}</span><button class="copyb" data-copy="${esc(i.email)}">Copy</button></div>
+      <div class="ln"><svg class="i"><use href="#i-bell"/></svg><span>${esc(i.phone)}</span><button class="copyb" data-copy="${esc(i.phone)}">Copy</button></div></div>
+      <dl class="kv" style="margin-top:12px"><div><dt>Company size</dt><dd>${esc(i.size)} staff</dd></div><div><dt>Country</dt><dd>${esc(i.country)}</dd></div><div><dt>Interested in</dt><dd>${esc(i.plan)} package</dd></div><div><dt>Source</dt><dd>${esc(i.source)}</dd></div></dl></div>
+    <div class="dsec"><h4>Follow-up</h4>
+      <div class="seg" id="inq-st" style="margin-bottom:12px">${["New","Contacted","Demo scheduled","Converted","Lost"].map(s=>`<button class="${s===i.status?"on":""}" data-s="${s}">${s}</button>`).join("")}</div>
+      <div class="inline-fld"><div class="fld"><label for="inq-owner">Owner</label><select class="inp" id="inq-owner"><option value="">Unassigned</option>${SALES.map(s=>`<option ${s===i.owner?"selected":""}>${s}</option>`).join("")}</select></div><div class="fld"><label for="inq-next">Next follow-up</label><input class="inp" type="date" id="inq-next" value="${i.next||""}"></div></div></div>
+    <div class="dsec"><h4>Notes</h4><div class="note-add"><textarea class="inp" id="inq-note" placeholder="e.g. Called Megan, demo booked for Thursday 2pm" style="min-height:70px"></textarea><div><button class="btn sm primary" id="inq-addnote">Add note</button></div></div>
+      <div style="margin-top:14px">${activityHTML({log:i.notes.map(n=>({at:n.at,by:n.by,action:n.text.startsWith("Status")||n.text.startsWith("Owner")||n.text.startsWith("Next")?"Updated":"Note",detail:n.text}))})}</div></div>
+   </div>
+   <div class="dr-f">${conv?`<button class="btn primary" data-co="${conv.id}">View company account</button>`:`<button class="btn primary" id="inq-convert"><svg class="i"><use href="#i-building"/></svg>Convert to company (start trial)</button>`}${i.status!=="Lost"&&!conv?`<button class="btn" id="inq-lost">Mark as lost</button>`:""}</div>`;
+  $("#drawer").classList.add("on");$("#scrim").classList.add("on");
+  $("#dr-x").onclick=closeDrawer;
+  const note=(t,by)=>i.notes.push({at:nowStamp(),by:by||"Softnear Admin",text:t});
+  $("#inq-st").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.s===i.status)return;note(`Status: ${i.status} → ${b.dataset.s}`);i.status=b.dataset.s;admSave();openInquiry(id);refreshAdmin();admBadges()};
+  $("#inq-owner").onchange=e=>{note(`Owner: ${i.owner||"Unassigned"} → ${e.target.value||"Unassigned"}`);i.owner=e.target.value||null;admSave();openInquiry(id);refreshAdmin()};
+  $("#inq-next").onchange=e=>{note(`Next follow-up: ${i.next?fmtDate(i.next):"none"} → ${e.target.value?fmtDate(e.target.value):"none"}`);i.next=e.target.value||null;admSave();openInquiry(id);refreshAdmin()};
+  $("#inq-addnote").onclick=()=>{const t=$("#inq-note").value.trim();if(!t){$("#inq-note").classList.add("err");$("#inq-note").focus();return}note(t);if(i.status==="New"){note("Status: New → Contacted");i.status="Contacted"}admSave();openInquiry(id);refreshAdmin();admBadges();toast("Note added")};
+  $("#inq-lost")&&($("#inq-lost").onclick=()=>{note(`Status: ${i.status} → Lost`);i.status="Lost";i.next=null;admSave();openInquiry(id);refreshAdmin();admBadges()});
+  $("#inq-convert")&&($("#inq-convert").onclick=()=>{
+    const d=isoOf(TODAY);const c={id:"co"+(Date.now()%1e7),name:i.company,contact:i.name,email:i.email,phone:i.phone,country:i.country,industry:"Food manufacturing",plan:i.plan,status:"Trial",users:1,started:d,gateway:i.country==="India"?"Razorpay":"Stripe",customPrice:i.plan==="Enterprise"?600:null,mrr:0,trialEnds:addDaysISO(d,14),renews:addDaysISO(d,14),cancelledOn:null,tickets:0,fromInquiry:i.id,log:[{at:nowStamp(),by:"Softnear Admin",action:"Started free trial",detail:`${i.plan} package · converted from inquiry`}]};
+    ADM.companies.push(c);note(`Status: ${i.status} → Converted · trial account created`);i.status="Converted";i.next=null;admSave();openInquiry(id);refreshAdmin();admBadges();toast(`${i.company} added as a trial company`)});
+}
+function inquiryForm(fromSite){
+  const m=$("#modal");m.hidden=false;
+  m.innerHTML=`<div class="modal-c" role="dialog" aria-modal="true" aria-labelledby="iq-t"><h3 id="iq-t">${fromSite?"Book a demo":"Add inquiry"}</h3><p class="muted">${fromSite?"Tell us about your team and we'll be in touch within one working day.":"Log an inquiry that came in by phone, email or an event."}</p>
+   <form id="iq-f" novalidate>
+    <div class="inline-fld"><div class="fld"><label for="iq-name">Your name<span class="req">*</span></label><input class="inp" id="iq-name"></div><div class="fld"><label for="iq-role">Job title</label><input class="inp" id="iq-role" placeholder="e.g. Quality Manager"></div></div>
+    <div class="fld"><label for="iq-co">Company<span class="req">*</span></label><input class="inp" id="iq-co"></div>
+    <div class="inline-fld"><div class="fld"><label for="iq-email">Work email<span class="req">*</span></label><input class="inp" id="iq-email" type="email"></div><div class="fld"><label for="iq-phone">Phone<span class="req">*</span></label><input class="inp" id="iq-phone" type="tel"></div></div>
+    <div class="inline-fld"><div class="fld"><label for="iq-size">Company size</label><select class="inp" id="iq-size"><option>1–10</option><option selected>11–50</option><option>51–200</option><option>201–500</option><option>500+</option></select></div><div class="fld"><label for="iq-plan">Interested in</label><select class="inp" id="iq-plan">${ADM.plans.map(p=>`<option ${p.name==="Growth"?"selected":""}>${p.name}</option>`).join("")}</select></div></div>
+    <div class="fld"><label for="iq-country">Country</label><input class="inp" id="iq-country" value="United Kingdom"></div>
+    <div class="fld"><label for="iq-msg">How can we help?</label><textarea class="inp" id="iq-msg" style="min-height:80px" placeholder="e.g. We log 40 complaints a month across two sites"></textarea></div>
+    <div class="fu-err" id="iq-err" hidden></div>
+    <button class="btn primary" type="submit">${fromSite?"Request my demo":"Save inquiry"}</button><button class="btn ghost" type="button" data-close>Cancel</button>
+   </form></div>`;
+  m.querySelector("[data-close]").onclick=()=>m.hidden=true;
+  m.querySelector("#iq-f").addEventListener("submit",e=>{e.preventDefault();
+    const g=k=>m.querySelector("#iq-"+k).value.trim();const req=["name","co","email","phone"];const miss=req.filter(k=>!g(k));
+    m.querySelectorAll(".inp.err").forEach(x=>x.classList.remove("err"));miss.forEach(k=>m.querySelector("#iq-"+k).classList.add("err"));
+    if(miss.length){const err=m.querySelector("#iq-err");err.hidden=false;err.textContent="Add your name, company, email and phone so we can contact you.";return}
+    const d=isoOf(TODAY);ADM.inquiries.push({id:"inq"+Date.now(),name:g("name"),company:g("co"),role:g("role")||"—",email:g("email"),phone:g("phone"),country:g("country")||"—",size:g("size"),plan:g("plan"),source:fromSite?"Website · demo request":"Added manually",message:g("msg")||"No message",received:d,status:"New",owner:null,next:null,notes:[{at:nowStamp(),by:fromSite?"Website":"Softnear Admin",text:"Inquiry received"}]});
+    admSave();m.hidden=true;admBadges();refreshAdmin();toast(fromSite?"Thanks, we'll be in touch within one working day":"Inquiry added")});
+  setTimeout(()=>m.querySelector("#iq-name").focus(),50);
+}
+function addCompanyForm(){
+  const m=$("#modal");m.hidden=false;
+  m.innerHTML=`<div class="modal-c" role="dialog" aria-modal="true" aria-labelledby="ac-t"><h3 id="ac-t">Add company</h3><p class="muted">Creates the account and starts a 14-day free trial.</p>
+   <form id="ac-f" novalidate><div class="fld"><label for="ac-name">Company name<span class="req">*</span></label><input class="inp" id="ac-name"></div>
+   <div class="inline-fld"><div class="fld"><label for="ac-contact">Contact name<span class="req">*</span></label><input class="inp" id="ac-contact"></div><div class="fld"><label for="ac-email">Email<span class="req">*</span></label><input class="inp" id="ac-email" type="email"></div></div>
+   <div class="inline-fld"><div class="fld"><label for="ac-plan">Package</label><select class="inp" id="ac-plan">${ADM.plans.map(p=>`<option>${p.name}</option>`).join("")}</select></div><div class="fld"><label for="ac-country">Country</label><input class="inp" id="ac-country" value="United Kingdom"></div></div>
+   <div class="fu-err" id="ac-err" hidden></div><button class="btn primary" type="submit">Create company</button><button class="btn ghost" type="button" data-close>Cancel</button></form></div>`;
+  m.querySelector("[data-close]").onclick=()=>m.hidden=true;
+  m.querySelector("#ac-f").addEventListener("submit",e=>{e.preventDefault();const g=k=>m.querySelector("#ac-"+k).value.trim();const miss=["name","contact","email"].filter(k=>!g(k));
+    miss.forEach(k=>m.querySelector("#ac-"+k).classList.add("err"));if(miss.length){const er=m.querySelector("#ac-err");er.hidden=false;er.textContent="Add the company name, contact and email.";return}
+    adminAddCompany({name:g("name"),contact:g("contact"),email:g("email"),plan:g("plan"),country:g("country")},"Added by Softnear Admin");m.hidden=true;refreshAdmin();toast(`${g("name")} created on a free trial`)});
+}
+function adminAddCompany(o,how){
+  const d=isoOf(TODAY);
+  const c={id:"co"+Date.now(),name:o.name,contact:o.contact||"—",email:o.email||"—",phone:o.phone||"—",country:o.country||"United Kingdom",industry:"Food manufacturing",plan:o.plan||"Growth",status:"Trial",users:1,started:d,gateway:"Stripe",customPrice:o.plan==="Enterprise"?600:null,mrr:0,trialEnds:addDaysISO(d,14),renews:addDaysISO(d,14),cancelledOn:null,tickets:0,log:[{at:nowStamp(),by:how&&how.includes("Admin")?"Softnear Admin":"Website",action:"Started free trial",detail:`${o.plan||"Growth"} package · ${how||"signed up on the website"}`}]};
+  ADM.companies.push(c);admSave();return c;
+}
+
+/* ---------- Packages ---------- */
+function renderPackages(){
+  $("#apkg").innerHTML=ADM.plans.map((p,ix)=>{const subs=ADM.companies.filter(c=>c.plan===p.name&&c.status!=="Cancelled").length;return `<div class="card pkg"><div class="card-h"><h3>${esc(p.name)}</h3><span class="ptag ${p.name}">${subs} compan${subs===1?"y":"ies"}</span><div class="sp"></div>${p.popular?'<span class="sx a">Most popular</span>':""}</div>
+   <form data-pkg="${ix}" novalidate>
+    <div class="inline-fld"><div class="fld"><label for="pk-price-${ix}">Monthly price (£)</label><input class="inp" id="pk-price-${ix}" type="number" min="0" step="1" value="${p.custom?"":p.price}" ${p.custom?"disabled placeholder='Custom'":""}></div><div class="fld"><label for="pk-users-${ix}">User limit</label><input class="inp" id="pk-users-${ix}" value="${esc(p.users)}"></div></div>
+    <label class="switch"><input type="checkbox" id="pk-custom-${ix}" ${p.custom?"checked":""}>Custom pricing ("Talk to sales")</label>
+    <div class="fld"><label for="pk-tag-${ix}">Short description</label><input class="inp" id="pk-tag-${ix}" value="${esc(p.tag)}"></div>
+    <div class="fld"><label for="pk-feat-${ix}">Features <span class="hint">one per line</span></label><textarea class="inp" id="pk-feat-${ix}" style="min-height:96px">${esc(p.features.join("\n"))}</textarea></div>
+    <label class="switch"><input type="radio" name="pk-pop" value="${ix}" ${p.popular?"checked":""}>Highlight as "Most popular"</label>
+    <label class="switch"><input type="checkbox" id="pk-vis-${ix}" ${p.visible?"checked":""}>Show on website</label>
+    <button class="btn primary" type="submit">Save ${esc(p.name)}</button>
+   </form></div>`}).join("");
+  $$("#apkg [id^=pk-custom-]").forEach(cb=>cb.onchange=()=>{const ix=cb.id.split("-").pop(),inp=$("#pk-price-"+ix);inp.disabled=cb.checked;if(cb.checked)inp.value=""});
+  $$("#apkg form").forEach(f=>f.addEventListener("submit",e=>{e.preventDefault();const ix=+f.dataset.pkg,p=ADM.plans[ix];
+    const custom=$("#pk-custom-"+ix).checked,price=+$("#pk-price-"+ix).value;
+    if(!custom&&!(price>0)){$("#pk-price-"+ix).classList.add("err");toast("Enter a monthly price above £0, or switch on custom pricing");return}
+    const was=p.custom?"Custom":"£"+p.price;
+    p.custom=custom;p.price=custom?null:price;p.users=$("#pk-users-"+ix).value.trim()||p.users;p.tag=$("#pk-tag-"+ix).value.trim();p.features=$("#pk-feat-"+ix).value.split("\n").map(s=>s.trim()).filter(Boolean).slice(0,6);p.visible=$("#pk-vis-"+ix).checked;
+    const pop=document.querySelector('#apkg input[name="pk-pop"]:checked');ADM.plans.forEach((x,j)=>x.popular=pop?+pop.value===j:x.popular);
+    ADM.companies.forEach(c=>{if(c.plan===p.name&&c.mrr&&c.plan!=="Enterprise"&&!p.custom)c.mrr=p.price});
+    admSave();applyPlans();renderPackages();toast(`${p.name} saved · website pricing updated${(p.custom?"Custom":"£"+p.price)!==was?` (${was} → ${p.custom?"Custom":"£"+p.price})`:""}`)}));
+}
+function applyPlans(){
+  const cards=$$(".pricing .plan");
+  ADM.plans.forEach((p,i)=>{const el=cards[i];if(!el)return;
+    el.hidden=!p.visible;el.classList.toggle("pop",!!p.popular);
+    let badge=el.querySelector(".badge");if(p.popular&&!badge){badge=document.createElement("span");badge.className="badge";badge.textContent="MOST POPULAR";el.prepend(badge)}if(!p.popular&&badge)badge.remove();
+    el.querySelector("h3").textContent=p.name;el.querySelector("p.muted").textContent=p.tag;
+    const pr=el.querySelector(".price");
+    if(p.custom){pr.removeAttribute("data-m");pr.removeAttribute("data-y");pr.textContent="Custom"}
+    else{pr.dataset.m=p.price;pr.dataset.y=Math.round(p.price*0.8);const yearly=$("#billtoggle .on")&&$("#billtoggle .on").dataset.b==="y";pr.innerHTML=`£${yearly?pr.dataset.y:p.price}<small> / month${yearly?", billed yearly":""}</small>`}
+    const chk='<svg class="i"><use href="#i-check"/></svg>';
+    el.querySelector("ul").innerHTML=[p.users,...p.features].map(f=>`<li>${chk}${esc(f)}</li>`).join("");
+    const btn=el.querySelector(".btn");if(p.custom){btn.textContent="Talk to sales";btn.dataset.act="demo-req";btn.className="btn"}else{btn.textContent="Start trial";btn.dataset.act="signup";btn.dataset.plan=p.name;btn.className="btn"+(p.popular?" primary":"")}
+  });
+  const vis=ADM.plans.filter(p=>p.visible).length;const grid=$(".pricing");if(grid)grid.style.gridTemplateColumns=vis<3&&innerWidth>960?`repeat(${vis},1fr)`:"";
+}
+
+/* ---------- admin events ---------- */
+document.addEventListener("click",e=>{
+  const co=e.target.closest("[data-co]");if(co&&!e.target.closest("[data-coact]")){openCompany(co.dataset.co);return}
+  const iq=e.target.closest("[data-inq]");if(iq){openInquiry(iq.dataset.inq);return}
+  const inv=e.target.closest("[data-inv]");if(inv){invoiceModal(inv.dataset.inv);return}
+  const rf=e.target.closest("[data-refund]");if(rf){const p=ADM.payments.find(x=>x.id===rf.dataset.refund);const c=coById(p.coId);confirmModal("Refund this payment?",`${money(p.amount,2)} will go back to ${esc(c.name)} through ${p.gateway}. Transaction ${esc(p.id)}.`,"Refund "+money(p.amount,2),()=>{p.status="Refunded";coLog(c,"Payment refunded",`${money(p.amount,2)} · ${p.id}`);admSave();refreshAdmin();toast(`Refund of ${money(p.amount,2)} issued to ${c.name}`)},true);return}
+  const rt=e.target.closest("[data-retry]");if(rt){const p=ADM.payments.find(x=>x.id===rt.dataset.retry);const c=coById(p.coId);p.status="Paid";p.id=txnId(p.gateway,p.id+"retry");if(c.status==="Past due"||c.status==="Suspended"){coLog(c,"Status changed",`${c.status} → Active (payment recovered)`);c.status="Active";c.mrr=c.mrr||(c.plan==="Enterprise"?c.customPrice:planPrice(c.plan))}admSave();refreshAdmin();toast(`Payment retried · ${money(p.amount,2)} collected from ${c.name}`);return}
+  const cp=e.target.closest("[data-copy]");if(cp){const t=cp.dataset.copy;navigator.clipboard?.writeText(t).then(()=>toast("Copied "+t)).catch(()=>toast("Select the text to copy it"));return}
+  const a=e.target.closest("[data-act]");if(a){if(a.dataset.act==="adm-addco")addCompanyForm();if(a.dataset.act==="adm-addinq")inquiryForm(false);if(a.dataset.act==="demo-req")inquiryForm(true);if(a.dataset.act==="adm-login"){$("#modal").hidden=true;go("admin");setTimeout(()=>toast("Signed in as Softnear super admin"),250)}}
+  const tb=e.target.closest("[data-themebtn]");if(tb)$("#themebtn").click();
+});
+document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const r=e.target.closest?.("[data-co],[data-inq]");if(r)r.click()});
+applyPlans();
 
 route();
 </script>
